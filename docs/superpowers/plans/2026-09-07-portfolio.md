@@ -832,18 +832,45 @@ describe('Reveal', () => {
     expect(container.firstElementChild).toHaveAttribute('data-revealed', 'true')
   })
 
-  it('is revealed immediately when reduced motion is requested', () => {
+  it('is revealed immediately under reduced motion, without waiting for an observer', () => {
     mockMatchMedia(true)
+    neverFiringObserver()
     const { container } = render(<Reveal><p>content</p></Reveal>)
     expect(container.firstElementChild).toHaveAttribute('data-revealed', 'true')
     expect(container.firstElementChild).toHaveAttribute('data-reduced', 'true')
   })
 })
 
+// An observer that never fires. Reduced-motion assertions must be made against
+// this, not the firing mock: with a firing observer both `reduced` and
+// `intersected` are true, so the test would still pass if the short-circuit
+// `reduced || intersected` were broken to `reduced && intersected` — leaving
+// reduced-motion users with permanently invisible content.
+function neverFiringObserver() {
+  window.IntersectionObserver = class {
+    observe() {}
+    unobserve() {} disconnect() {} takeRecords() { return [] }
+    root = null; rootMargin = ''; thresholds = []
+  } as unknown as typeof IntersectionObserver
+}
+
 describe('Rule', () => {
   it('renders a presentational separator', () => {
     const { container } = render(<Rule />)
     expect(container.firstElementChild).toHaveAttribute('role', 'presentation')
+  })
+
+  it('draws once it intersects', () => {
+    mockMatchMedia(false)
+    const { container } = render(<Rule />)
+    expect(container.firstElementChild).toHaveAttribute('data-drawn', 'true')
+  })
+
+  it('is drawn immediately under reduced motion, without waiting for an observer', () => {
+    mockMatchMedia(true)
+    neverFiringObserver()
+    const { container } = render(<Rule />)
+    expect(container.firstElementChild).toHaveAttribute('data-drawn', 'true')
   })
 })
 ```
@@ -970,6 +997,21 @@ export function Rule() {
   )
 }
 ```
+
+- [ ] **Step 5b: Add the no-JS fallback**
+
+`Reveal` and `Rule` both server-render hidden and depend on `IntersectionObserver`. With JavaScript blocked the
+observer never fires, so without this every section below the hero — and every hairline rule — stays invisible.
+Add to **both** root layouts (`app/(root)/layout.tsx` and `app/[locale]/layout.tsx`), inside `<head>`:
+
+```tsx
+<noscript>
+  <style>{`[data-revealed='false'], [data-drawn='false'] { opacity: 1 !important; transform: none !important; }`}</style>
+</noscript>
+```
+
+`<noscript>` is used rather than `@media (scripting: none)` because that CSS feature lacks Samsung Internet and
+pre-2023 browser support — it would fail in exactly the environments the fallback exists to protect.
 
 - [ ] **Step 6: Implement StatusDot**
 
