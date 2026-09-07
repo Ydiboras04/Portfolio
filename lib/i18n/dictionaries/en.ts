@@ -28,7 +28,7 @@ export const en: Dictionary = {
     viewCase: 'Read the case study',
     projects: {
       soluchat: { name: 'Soluchat', description: 'Real-time messaging built to hold up under load.' },
-      thynk: { name: 'Document automation', description: 'Document generation without mapping errors, for international clients.' },
+      automatisation: { name: 'Document automation', description: 'Document generation without mapping errors, for international clients.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Resource sharing and collaboration for doctoral researchers.' },
       inventaire: { name: 'Equipment tracking', description: 'Inventory check-in and check-out management software.' },
     },
@@ -85,4 +85,5 @@ export const en: Dictionary = {
     outcome: 'Outcome',
     back: 'Back to work',
   },
+  root: { continueToSite: 'Continue to the site' },
 }

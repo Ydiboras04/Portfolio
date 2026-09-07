@@ -28,7 +28,7 @@ export const fr: Dictionary = {
     viewCase: "Lire l'étude de cas",
     projects: {
       soluchat: { name: 'Soluchat', description: 'Messagerie temps réel conçue pour tenir la charge.' },
-      thynk: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients internationaux.' },
+      automatisation: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients internationaux.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Partage de ressources et collaboration entre doctorants.' },
       inventaire: { name: "Suivi d'équipements", description: "Logiciel de gestion des entrées et sorties d'inventaire." },
     },
@@ -85,4 +85,5 @@ export const fr: Dictionary = {
     outcome: 'Résultat',
     back: 'Retour aux travaux',
   },
+  root: { continueToSite: 'Continuer vers le site' },
 }

@@ -1,4 +1,4 @@
-export type ProjectSlug = 'soluchat' | 'thynk' | 'zarahay' | 'inventaire'
+export type ProjectSlug = 'soluchat' | 'automatisation' | 'zarahay' | 'inventaire'
 
 export interface Dictionary {
   meta: { title: string; description: string }
@@ -46,4 +46,5 @@ export interface Dictionary {
     outcome: string
     back: string
   }
+  root: { continueToSite: string }
 }

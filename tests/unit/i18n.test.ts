@@ -46,10 +46,18 @@ describe('dictionaries', () => {
     }
   })
 
-  it('never names the Salesforce client directly', () => {
+  // The employer (Solumada) and the schools are the subject's own history and may
+  // be named. The vendor platform the automation work ran on must not appear —
+  // including as a project slug, because slugs become public, crawlable URLs and a
+  // URL is a more durable identity leak than any sentence of prose.
+  it('never names the vendor platform, in copy or in slugs', () => {
+    const FORBIDDEN = ['thynk']
     for (const locale of locales) {
+      // stringify covers keys as well as values, so slugs are checked too
       const text = JSON.stringify(getDictionary(locale)).toLowerCase()
-      expect(text).not.toContain('thynk.cloud')
+      for (const term of FORBIDDEN) {
+        expect(text, `"${term}" must not appear in the ${locale} dictionary`).not.toContain(term)
+      }
     }
   })
 })
