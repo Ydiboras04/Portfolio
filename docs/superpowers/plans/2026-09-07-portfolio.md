@@ -1131,10 +1131,9 @@ export function LocaleSwitch({ current, label }: { current: Locale; label: strin
     <Link
       href={href}
       hrefLang={target}
-      aria-label={label}
-      className="rounded-[3px] border border-line px-[7px] py-[3px] font-mono text-[9.5px]
-                 uppercase tracking-[0.15em] text-amber transition-colors duration-150
-                 ease-(--ease-instrument) hover:border-amber/40"
+      aria-label={`${target.toUpperCase()} — ${label}`}
+      className="label rounded-[3px] border border-line px-[7px] py-[3px] text-amber
+                 transition-colors duration-150 ease-(--ease-instrument) hover:border-amber/40"
     >
       {target.toUpperCase()}
     </Link>
@@ -1164,7 +1163,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     <header className="sticky top-0 z-50 border-b border-line bg-bg/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-12">
         <Link href={`/${locale}/`} className="font-display text-[13.5px] font-semibold tracking-[-0.01em]">
-          Nomeny Mitia <span className="text-amber">/</span> Andriamaheva
+          Nomeny Mitia <span className="text-faint">/</span> Andriamaheva
         </Link>
         <nav className="flex items-center gap-4 sm:gap-5">
           <ul className="hidden items-center gap-5 sm:flex">
@@ -1172,8 +1171,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               <li key={s.href}>
                 <a
                   href={s.href}
-                  className="font-mono text-[9.5px] uppercase tracking-[0.15em] text-faint
-                             transition-colors duration-150 ease-(--ease-instrument) hover:text-ink"
+                  className="label transition-colors duration-150 ease-(--ease-instrument) hover:text-ink"
                 >
                   {s.label}
                 </a>
@@ -1233,7 +1231,7 @@ and replace only the bare `{children}` inside `<body>` with:
 ```tsx
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-amber focus:px-3 focus:py-2 focus:text-bg"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:bg-amber focus:px-3 focus:py-2 focus:text-bg"
         >
           {dict.nav.skipToContent}
         </a>
@@ -1329,8 +1327,7 @@ import { StatusDot } from '@/components/ui/StatusDot'
 export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <section className="mx-auto max-w-6xl px-5 pb-11 pt-14 sm:px-12">
-      <p className="mb-6 inline-flex items-center gap-2 rounded-[3px] border border-amber/30 px-[10px] py-[5px]
-                    font-mono text-[9.5px] uppercase tracking-[0.15em] text-amber">
+      <p className="label mb-6 inline-flex items-center gap-2 rounded-[3px] border border-amber/30 px-[10px] py-[5px] text-amber">
         <StatusDot />
         {dict.hero.availability}
       </p>
