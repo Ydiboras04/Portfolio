@@ -1002,7 +1002,7 @@ export function Rule() {
 
 `Reveal` and `Rule` both server-render hidden and depend on `IntersectionObserver`. With JavaScript blocked the
 observer never fires, so without this every section below the hero — and every hairline rule — stays invisible.
-Add to **both** root layouts (`app/(root)/layout.tsx` and `app/[locale]/layout.tsx`), inside `<head>`:
+Add to **both** root layouts (`app/(root)/layout.tsx` and `app/[locale]/layout.tsx`) as the first child of `<body>` (the App Router has no explicit `<head>` element):
 
 ```tsx
 <noscript>
@@ -1211,38 +1211,45 @@ export function Footer({ dict }: { dict: Dictionary }) {
 }
 ```
 
-- [ ] **Step 6: Wire the shell into the locale layout**
+- [ ] **Step 6: Add the skip-link copy to the dictionary**
 
-Replace the body of `app/[locale]/layout.tsx`'s default export:
+The skip link is user-facing text, so it belongs in the dictionary like every other string — not a
+`locale === 'fr' ? … : …` ternary in the layout. Add to `nav` in `lib/i18n/types.ts`:
 
-```tsx
-export default async function LocaleLayout({
-  children, params,
-}: { children: ReactNode; params: Promise<{ locale: string }> }) {
-  const { locale } = await params
-  if (!isLocale(locale)) notFound()
-  const dict = getDictionary(locale)
-  return (
-    <div lang={locale}>
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-amber focus:px-3 focus:py-2 focus:text-bg">
-        {locale === 'fr' ? 'Aller au contenu' : 'Skip to content'}
-      </a>
-      <Header locale={locale} dict={dict} />
-      <main id="main">{children}</main>
-      <Footer dict={dict} />
-    </div>
-  )
-}
+```ts
+  nav: { work: string; skills: string; path: string; contact: string; toggleLabel: string; skipToContent: string }
 ```
 
-Add the imports for `Header` and `Footer` at the top of the file.
+Then `skipToContent: 'Aller au contenu'` in `fr.ts` and `skipToContent: 'Skip to content'` in `en.ts`. The
+existing dictionary-parity test covers the new key automatically.
 
-- [ ] **Step 7: Run the tests**
+- [ ] **Step 7: Wire the shell into the locale layout**
+
+`app/[locale]/layout.tsx` already renders `<html lang>`, `<body>` with the three font-variable classes, and the
+`<noscript>` fallback — that structure came from Task 2 and Task 3 and **must be preserved**. Do not replace the
+return value. Add `const dict = getDictionary(locale)` after the `isLocale` guard, import `Header` and `Footer`,
+and replace only the bare `{children}` inside `<body>` with:
+
+```tsx
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-amber focus:px-3 focus:py-2 focus:text-bg"
+        >
+          {dict.nav.skipToContent}
+        </a>
+        <Header locale={locale} dict={dict} />
+        <main id="main">{children}</main>
+        <Footer dict={dict} />
+```
+
+The `<noscript>` block stays as the first child of `<body>`, above the skip link.
+
+- [ ] **Step 8: Run the tests**
 
 Run: `npm test -- shell`
 Expected: PASS.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
