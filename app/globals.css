@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg:    #08090A;
+  --color-ink:   #EDEFF1;
+  --color-dim:   #8A94A0;
+  --color-faint: #5A6470;
+  --color-line:  rgba(255, 255, 255, 0.085);
+  --color-amber: #E8A33D;
+
+  --font-display: var(--font-space-grotesk), sans-serif;
+  --font-body:    var(--font-plex-sans), sans-serif;
+  --font-mono:    var(--font-jetbrains-mono), monospace;
+
+  --ease-instrument: cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+
+@layer base {
+  html { color-scheme: dark; }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 2px;
+  }
+}
+
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+@keyframes draw   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
