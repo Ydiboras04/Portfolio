@@ -1805,7 +1805,12 @@ export function About({ dict }: { dict: Dictionary }) {
       <SectionHead id="a-propos-title" title={dict.about.title} note={dict.about.note} />
 
       <div className="grid gap-6 py-6 md:grid-cols-[118px_1fr] md:gap-4">
-        <span className="label md:pt-1">01 / 01</span>
+        {/* Empty left cell: it keeps this section on the same grid rhythm as
+            Skills and Parcours, whose left columns carry real data (levels,
+            periods). Filling it with a decorative index like "01 / 01" would be
+            inventing data to look instrument-like, which is the opposite of
+            what this design is doing. */}
+        <div aria-hidden="true" />
         <div className="max-w-[58ch]">
           {dict.about.body.map((paragraph, i) => (
             <Reveal key={paragraph.slice(0, 24)} delay={i * 40}>
