@@ -50,7 +50,7 @@ export default async function LocaleLayout({
         </noscript>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-amber focus:px-3 focus:py-2 focus:text-bg"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:bg-amber focus:px-3 focus:py-2 focus:text-bg"
         >
           {dict.nav.skipToContent}
         </a>
