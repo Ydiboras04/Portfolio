@@ -483,14 +483,14 @@ export const fr: Dictionary = {
     headlineBefore: 'Full-stack, et ',
     headlineAccent: 'automatisation documentaire',
     summary:
-      "Je construis des applications web robustes en Python, TypeScript et Rust — et j'automatise les processus documentaires qui font perdre des heures aux équipes. Master II MIAGE, un an en poste chez un intégrateur Salesforce.",
+      "Je construis des applications web robustes en Python, TypeScript et Rust — et j'automatise les processus documentaires qui font perdre des heures aux équipes. Master II MIAGE, un an en poste chez un intégrateur Salesforce, pour des clients européens.",
     ctaWork: 'Voir les travaux',
     ctaCv: 'Télécharger le CV',
   },
   credibility: [
     { value: 'Major', accent: ' de promo', label: 'Licence Informatique — Promotion « ROHY »' },
     { value: '1 an', accent: ' en poste', label: 'Et trois stages en entreprise' },
-    { value: 'Clients', accent: ' intl.', label: 'Livrés pour un intégrateur Salesforce européen' },
+    { value: 'Clients', accent: ' européens', label: 'Automatisation documentaire livrée depuis Antananarivo' },
     { value: '4', accent: ' langues', label: 'Français · Anglais · Japonais (N4) · Malgache' },
   ],
   work: {
@@ -499,7 +499,7 @@ export const fr: Dictionary = {
     viewCase: "Lire l'étude de cas",
     projects: {
       soluchat: { name: 'Soluchat', description: 'Messagerie temps réel conçue pour tenir la charge.' },
-      automatisation: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients internationaux.' },
+      automatisation: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients européens.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Partage de ressources et collaboration entre doctorants.' },
       inventaire: { name: "Suivi d'équipements", description: "Logiciel de gestion des entrées et sorties d'inventaire." },
     },
@@ -578,14 +578,14 @@ export const en: Dictionary = {
     headlineBefore: 'Full-stack, and ',
     headlineAccent: 'document automation',
     summary:
-      'I build web applications that hold up in production — Python, TypeScript and Rust — and automate the document processes that quietly cost teams hours every week. MSc in Applied Business Computing, one year in post at a Salesforce integrator.',
+      'I build web applications that hold up in production — Python, TypeScript and Rust — and automate the document processes that quietly cost teams hours every week. MSc in Applied Business Computing, one year in post at a Salesforce integrator, delivering for European clients.',
     ctaWork: 'See the work',
     ctaCv: 'Download CV',
   },
   credibility: [
     { value: 'Top', accent: ' of class', label: 'BSc Computer Science — "ROHY" cohort' },
     { value: '1 year', accent: ' in post', label: 'Plus three industry internships' },
-    { value: 'Intl.', accent: ' clients', label: 'Delivered for a European Salesforce integrator' },
+    { value: 'European', accent: ' clients', label: 'Document automation delivered from Antananarivo' },
     { value: '4', accent: ' languages', label: 'French · English · Japanese (N4) · Malagasy' },
   ],
   work: {
@@ -594,7 +594,7 @@ export const en: Dictionary = {
     viewCase: 'Read the case study',
     projects: {
       soluchat: { name: 'Soluchat', description: 'Real-time messaging built to hold up under load.' },
-      automatisation: { name: 'Document automation', description: 'Document generation without mapping errors, for international clients.' },
+      automatisation: { name: 'Document automation', description: 'Document generation without mapping errors, for European clients.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Resource sharing and collaboration for doctoral researchers.' },
       inventaire: { name: 'Equipment tracking', description: 'Inventory check-in and check-out management software.' },
     },
@@ -1807,13 +1807,11 @@ export function About({ dict }: { dict: Dictionary }) {
     <section id="a-propos" aria-labelledby="a-propos-title" className="mx-auto max-w-6xl px-5 sm:px-12">
       <SectionHead id="a-propos-title" title={dict.about.title} note={dict.about.note} />
 
-      <div className="grid gap-6 py-6 md:grid-cols-[118px_1fr] md:gap-4">
-        {/* Empty left cell: it keeps this section on the same grid rhythm as
-            Skills and Parcours, whose left columns carry real data (levels,
-            periods). Filling it with a decorative index like "01 / 01" would be
-            inventing data to look instrument-like, which is the opposite of
-            what this design is doing. */}
-        <div aria-hidden="true" />
+      {/* No two-column grid here. Skills and Parcours use one because their left
+          column carries real data (levels, periods); About has none. An empty
+          cell read as an unexplained indent on desktop and collapsed into a dead
+          gap on mobile, so the prose simply starts at the left margin. */}
+      <div className="py-6">
         <div className="max-w-[58ch]">
           {dict.about.body.map((paragraph, i) => (
             <Reveal key={paragraph.slice(0, 24)} delay={i * 40}>
@@ -2216,8 +2214,8 @@ consultable et une reconnexion transparente.
 ```mdx
 ## Contexte
 
-Un intégrateur Salesforce européen générait ses documents contractuels à la
-main depuis Salesforce : devis, confirmations, contrats. Chaque document
+Un intégrateur Salesforce générait à la main les documents contractuels de
+ses clients européens depuis Salesforce : devis, confirmations, contrats. Chaque document
 demandait une reprise manuelle, et chaque reprise introduisait un risque
 d'erreur sur des pièces qui engagent juridiquement le client final.
 
@@ -2251,7 +2249,7 @@ qu'à inspecter les PDF après coup.
 ## Résultat
 
 Génération documentaire de bout en bout, sans reprise manuelle, pour des
-clients internationaux. Les modèles restent maintenus par les équipes métier.
+clients européens. Les modèles restent maintenus par les équipes métier.
 ```
 
 Then write `soluchat.en.mdx` and `automatisation.en.mdx` as direct English translations of the two French files, keeping the six headings in the order given by `Dictionary.caseStudy`.
