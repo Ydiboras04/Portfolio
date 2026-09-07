@@ -35,12 +35,15 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
-        {/* Reveal renders hidden and relies on IntersectionObserver. Without JS
-            the observer never fires, so force the revealed state rather than
-            leave the page blank for a JS-disabled visitor or a non-executing
-            crawler. */}
+        {/* Reveal and Rule both render hidden and rely on IntersectionObserver.
+            Without JS the observer never fires, so force the revealed/drawn
+            state rather than leave the page blank (or every hairline
+            collapsed to zero width) for a JS-disabled visitor or a
+            non-executing crawler. */}
         <noscript>
-          <style>{"[data-revealed='false'] { opacity: 1 !important; transform: none !important; }"}</style>
+          <style>
+            {"[data-revealed='false'], [data-drawn='false'] { opacity: 1 !important; transform: none !important; }"}
+          </style>
         </noscript>
         {children}
       </body>
