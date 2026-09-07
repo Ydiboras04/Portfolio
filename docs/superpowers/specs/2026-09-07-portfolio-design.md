@@ -106,7 +106,7 @@ All animation runs on `transform` and `opacity` only.
 
 ## 8. Technical design
 
-- **Next.js 15** (App Router) + **TypeScript**, `output: 'export'` — fully static, deployable anywhere, nothing to keep running.
+- **Next.js 16** (App Router) + **TypeScript**, `output: 'export'` — fully static, deployable anywhere, nothing to keep running.
 - **Tailwind v4**, with the palette and type scale defined as CSS custom properties in a single token layer. Market-standard, and the tokens stay real CSS.
 - **i18n:** `/[locale]/` route segment with `generateStaticParams` for `fr` and `en`. Translations as typed dictionary modules — no runtime library, no dependency, fully static, and type errors catch a missing key at build time. `fr` is the default; `<html lang>` and `hreflang` set per locale.
 - **Case studies in MDX** — one file per study per locale. Content stays reviewable as text, and adding a fifth study is a file, not a code change.

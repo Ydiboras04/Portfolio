@@ -4,9 +4,9 @@
 
 **Goal:** Build and deploy a bilingual (FR/EN) static portfolio site for Nomeny Mitia Andriamaheva that presents case-study-driven evidence of engineering work to European remote employers.
 
-**Architecture:** Next.js 15 App Router with `output: 'export'` producing a fully static site. Locale is a route segment (`/[locale]/…`) resolved at build time by `generateStaticParams`; translations are typed dictionary modules with no runtime i18n library. Case studies are MDX files compiled at build. All motion is CSS `transform`/`opacity` driven by a single `IntersectionObserver` hook — no animation library.
+**Architecture:** Next.js 16 App Router with `output: 'export'` producing a fully static site. Locale is a route segment (`/[locale]/…`) resolved at build time by `generateStaticParams`; translations are typed dictionary modules with no runtime i18n library. Case studies are MDX files compiled at build. All motion is CSS `transform`/`opacity` driven by a single `IntersectionObserver` hook — no animation library.
 
-**Tech Stack:** Next.js 15, React 19, TypeScript (strict), Tailwind v4, `@next/mdx`, `next/font` (Space Grotesk / IBM Plex Sans / JetBrains Mono), Vitest + Testing Library, Playwright + `@axe-core/playwright`, Web3Forms, Vercel.
+**Tech Stack:** Next.js 16, React 19, TypeScript (strict), Tailwind v4, `@next/mdx`, `next/font` (Space Grotesk / IBM Plex Sans / JetBrains Mono), Vitest + Testing Library, Playwright + `@axe-core/playwright`, Web3Forms, Vercel.
 
 **Spec:** `docs/superpowers/specs/2026-09-07-portfolio-design.md`
 
@@ -2387,11 +2387,15 @@ import { ImageResponse } from 'next/og'
 import { isLocale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n'
 
+export const alt = 'Nomeny Mitia Andriamaheva'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default async function Image({ params }: { params: { locale: string } }) {
-  const locale = isLocale(params.locale) ? params.locale : 'fr'
+// Next 16 breaking change (v16.0.0): the default image function's `params`
+// is a Promise. The synchronous form from Next 15 no longer type-checks.
+export default async function Image({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: raw } = await params
+  const locale = isLocale(raw) ? raw : 'fr'
   const dict = getDictionary(locale)
 
   return new ImageResponse(
@@ -2663,7 +2667,7 @@ EOF
 ````markdown
 # nomeny.dev
 
-Bilingual (FR/EN) portfolio. Next.js 15, static export, no server.
+Bilingual (FR/EN) portfolio. Next.js 16, static export, no server.
 
 ## Development
 
