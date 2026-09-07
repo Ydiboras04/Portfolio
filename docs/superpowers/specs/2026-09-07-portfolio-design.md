@@ -102,7 +102,11 @@ Character: **precise and mechanical** — an instrument needle settling, never a
 
 **`prefers-reduced-motion: reduce` is a first-class path, not a fallback.** All transforms drop to opacity-only or instant; hairlines render static; the reticle and the pulse are disabled. The European Accessibility Act has been in force since June 2025 — an animation-rich site that degrades correctly is a competence signal to exactly the employers being targeted.
 
-All animation runs on `transform` and `opacity` only.
+**Scroll-driven and entrance animation runs on `transform` and `opacity` only** — those are the animations that
+run during scrolling, where compositing cost is real. Short hover and focus feedback on interactive elements may
+animate `color`, `background-color` and `border-color`: the motion system explicitly calls for the amber index to
+brighten on row hover, which is a colour change by definition, and no transform-based equivalent exists. Such
+transitions stay within the 150-350ms budget and use the same easing.
 
 ## 8. Technical design
 

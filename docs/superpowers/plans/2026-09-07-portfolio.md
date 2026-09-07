@@ -19,7 +19,7 @@ Every task's requirements implicitly include this section. Values are copied ver
 - **Typefaces:** Space Grotesk (headings), IBM Plex Sans (body), JetBrains Mono (labels/metadata/numbers). Self-hosted via `next/font` — no external font request.
 - **Micro-labels:** uppercase mono, ~9.5px, `.19em` tracking. **Headings:** `-.035em` tracking.
 - **Structure:** hairline rules + faint 32px background grid. No cards, no glow, `border-radius` never above 3px.
-- **Motion:** easing `cubic-bezier(.2,.8,.25,1)`, durations 150–350ms, `transform` and `opacity` only. No animation library. No counting-up numbers, no parallax, no scroll-jacking, no above-the-fold entrance animation.
+- **Motion:** easing `cubic-bezier(.2,.8,.25,1)`, durations 150–350ms. **Scroll-driven and entrance animation uses `transform`/`opacity` only**; short hover/focus feedback may animate colour (the motion system calls for the amber index to brighten on hover, which has no transform equivalent). No animation library. No counting-up numbers, no parallax, no scroll-jacking, no above-the-fold entrance animation.
 - **`prefers-reduced-motion: reduce` is a first-class path:** transforms drop to opacity-only or instant; hairlines static; cursor reticle and status pulse disabled.
 - **Locales:** `fr` (default) and `en`. Every user-facing string lives in a dictionary — no hardcoded copy in components.
 - **Quality gates:** Lighthouse ≥ 95 all four categories mobile+desktop; zero `axe` violations; full keyboard navigation with visible focus; correct at 320px width.
