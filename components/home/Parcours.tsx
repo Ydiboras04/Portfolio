@@ -7,7 +7,10 @@ export function Parcours({ dict }: { dict: Dictionary }) {
     <section id="parcours" aria-labelledby="parcours-title" className="mx-auto max-w-6xl px-5 sm:px-12">
       <SectionHead id="parcours-title" title={dict.parcours.title} note={dict.parcours.note} />
 
-      <ol>
+      {/* role="list" for the same reason as Work's <ul>: Tailwind's reset sets
+          list-style:none, which makes WebKit/VoiceOver drop the list role. axe
+          cannot detect it, so deferring it means never catching it. */}
+      <ol role="list">
         {dict.parcours.entries.map((entry, i) => (
           <li key={`${entry.period}-${entry.role}`}>
             <Reveal delay={i * 40}>
