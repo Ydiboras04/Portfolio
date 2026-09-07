@@ -16,7 +16,16 @@ const mono = JetBrains_Mono({
 export default function RootRedirectLayout({ children }: { children: ReactNode }) {
   return (
     <html lang={defaultLocale} suppressHydrationWarning>
-      <body className={`${display.variable} ${body.variable} ${mono.variable}`}>{children}</body>
+      <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
+        {/* Reveal renders hidden and relies on IntersectionObserver. Without JS
+            the observer never fires, so force the revealed state rather than
+            leave the page blank for a JS-disabled visitor or a non-executing
+            crawler. */}
+        <noscript>
+          <style>{"[data-revealed='false'] { opacity: 1 !important; transform: none !important; }"}</style>
+        </noscript>
+        {children}
+      </body>
     </html>
   )
 }
