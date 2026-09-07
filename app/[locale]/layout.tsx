@@ -3,6 +3,8 @@ import { Space_Grotesk, IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { locales, isLocale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n'
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
 import type { Metadata } from 'next'
 import '../globals.css'
 
@@ -32,6 +34,7 @@ export default async function LocaleLayout({
 }: { children: ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
+  const dict = getDictionary(locale)
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
@@ -45,7 +48,15 @@ export default async function LocaleLayout({
             {"[data-revealed='false'], [data-drawn='false'] { opacity: 1 !important; transform: none !important; }"}
           </style>
         </noscript>
-        {children}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-amber focus:px-3 focus:py-2 focus:text-bg"
+        >
+          {dict.nav.skipToContent}
+        </a>
+        <Header locale={locale} dict={dict} />
+        <main id="main">{children}</main>
+        <Footer dict={dict} />
       </body>
     </html>
   )

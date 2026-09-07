@@ -2,7 +2,7 @@ export type ProjectSlug = 'soluchat' | 'automatisation' | 'zarahay' | 'inventair
 
 export interface Dictionary {
   meta: { title: string; description: string }
-  nav: { work: string; skills: string; path: string; contact: string; toggleLabel: string }
+  nav: { work: string; skills: string; path: string; contact: string; toggleLabel: string; skipToContent: string }
   hero: {
     availability: string
     headlineBefore: string

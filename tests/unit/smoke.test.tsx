@@ -1,7 +1,17 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import LocaleLayout from '@/app/[locale]/layout'
 import RootRedirectLayout from '@/app/(root)/layout'
+
+// LocaleLayout now renders Header -> LocaleSwitch, which calls usePathname().
+// Outside a real Next.js router (as here) that context is unset and
+// usePathname() returns null, so LocaleSwitch's pathname.split('/') throws.
+// Mock only usePathname and keep every other export (notFound included,
+// since LocaleLayout itself calls it) real via importOriginal.
+vi.mock('next/navigation', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('next/navigation')>()
+  return { ...actual, usePathname: () => '/fr/' }
+})
 
 // The app has two independent root layouts (see the multiple-root-layouts
 // note in task-2-report.md for why: app/[locale]/layout.tsx and

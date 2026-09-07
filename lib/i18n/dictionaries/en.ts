@@ -6,7 +6,7 @@ export const en: Dictionary = {
     description:
       'Full-stack developer. Custom web applications in Python, TypeScript and Rust, plus Salesforce document automation. Available remote from Antananarivo.',
   },
-  nav: { work: 'Work', skills: 'Skills', path: 'Background', contact: 'Contact', toggleLabel: 'Switch language' },
+  nav: { work: 'Work', skills: 'Skills', path: 'Background', contact: 'Contact', toggleLabel: 'Switch language', skipToContent: 'Skip to content' },
   hero: {
     availability: 'Available — full-time & contract · Remote Europe',
     headlineBefore: 'Full-stack, and ',
