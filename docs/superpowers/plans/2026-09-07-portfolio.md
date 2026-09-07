@@ -916,7 +916,14 @@ export function useReducedMotion(): boolean {
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 
-export function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+// `className` exists so a caller can style Reveal's own wrapper rather than nest
+// another <div> inside it. That matters inside a <dl>, whose content model allows
+// a single <div> wrapping each dt/dd pair but not a <div> inside a <div>.
+export function Reveal({
+  children,
+  delay = 0,
+  className = '',
+}: { children: ReactNode; delay?: number; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [revealed, setRevealed] = useState(false)
   const reduced = useReducedMotion()
@@ -945,7 +952,8 @@ export function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: n
       style={{ transitionDelay: reduced ? '0ms' : `${delay}ms` }}
       className={
         'transition-[opacity,transform] duration-[350ms] ease-(--ease-instrument) motion-reduce:transition-none ' +
-        (revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2')
+        (revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2') +
+        (className ? ` ${className}` : '')
       }
     >
       {children}
@@ -1731,19 +1739,24 @@ export function Skills({ dict }: { dict: Dictionary }) {
 
       <dl>
         {dict.skills.groups.map((group, i) => (
-          <Reveal key={group.level} delay={i * 40}>
-            <div className="grid grid-cols-1 items-start gap-2 border-b border-line py-[14px] sm:grid-cols-[118px_1fr] sm:gap-4">
-              <dt className={`label pt-1 ${i === dict.skills.groups.length - 1 ? '' : 'text-amber'}`}>
-                {group.level}
-              </dt>
-              <dd className="flex flex-wrap gap-[7px]">
-                {group.items.map((item) => (
-                  <span key={item} className="rounded-[3px] border border-line px-[9px] py-1 text-[12px]">
-                    {item}
-                  </span>
-                ))}
-              </dd>
-            </div>
+          {/* The grid classes go on Reveal's own wrapper. A second <div> inside it
+              would give <dl> > div > div > dt, which the HTML content model
+              forbids: a div wrapping a dt/dd pair must contain them directly. */}
+          <Reveal
+            key={group.level}
+            delay={i * 40}
+            className="grid grid-cols-1 items-start gap-2 border-b border-line py-[14px] sm:grid-cols-[118px_1fr] sm:gap-4"
+          >
+            <dt className={`label pt-1 ${i === dict.skills.groups.length - 1 ? '' : 'text-amber'}`}>
+              {group.level}
+            </dt>
+            <dd className="flex flex-wrap gap-[7px]">
+              {group.items.map((item) => (
+                <span key={item} className="rounded-[3px] border border-line px-[9px] py-1 text-[12px]">
+                  {item}
+                </span>
+              ))}
+            </dd>
           </Reveal>
         ))}
       </dl>
@@ -1814,7 +1827,7 @@ export function About({ dict }: { dict: Dictionary }) {
       <div className="py-6">
         <div className="max-w-[58ch]">
           {dict.about.body.map((paragraph, i) => (
-            <Reveal key={paragraph.slice(0, 24)} delay={i * 40}>
+            <Reveal key={i} delay={i * 40}>
               <p className="mb-4 text-[13.5px] leading-[1.75] text-dim">{paragraph}</p>
             </Reveal>
           ))}
