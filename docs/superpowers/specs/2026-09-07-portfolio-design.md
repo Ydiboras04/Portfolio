@@ -127,7 +127,7 @@ All animation runs on `transform` and `opacity` only.
 
 The build is blocked on writing, not code. In priority order:
 
-1. **Two deep case studies for launch — Soluchat and Thynk Automation.** All four projects appear as rows on the homepage, but only these two need full case-study pages to go live; the other two link to a short summary until written. Two deep studies beat four thin ones, and this keeps the launch unblocked.
+1. **Two deep case studies for launch — Soluchat and the document-automation project.** All four projects appear as rows on the homepage, but only these two need full case-study pages to go live; the other two link to a short summary until written. Two deep studies beat four thin ones, and this keeps the launch unblocked.
 2. **Zarahay Doctorants and Suivi d'équipements** promoted to full case studies after launch.
 3. **Screenshots**, cleared for confidentiality and stripped of client data.
 4. **English CV** (the French one exists).

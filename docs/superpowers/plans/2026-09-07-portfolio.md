@@ -372,10 +372,18 @@ describe('dictionaries', () => {
     }
   })
 
-  it('never names the Salesforce client directly', () => {
+  // The employer (Solumada) and the schools are the subject's own history and may
+  // be named. The vendor platform the automation work ran on must not appear —
+  // including as a project slug, because slugs become public, crawlable URLs and a
+  // URL is a more durable identity leak than any sentence of prose.
+  it('never names the vendor platform, in copy or in slugs', () => {
+    const FORBIDDEN = ['thynk']
     for (const locale of locales) {
+      // stringify covers keys as well as values, so slugs are checked too
       const text = JSON.stringify(getDictionary(locale)).toLowerCase()
-      expect(text).not.toContain('thynk.cloud')
+      for (const term of FORBIDDEN) {
+        expect(text, `"${term}" must not appear in the ${locale} dictionary`).not.toContain(term)
+      }
     }
   })
 })
@@ -405,7 +413,7 @@ export function isLocale(value: string): value is Locale {
 `lib/i18n/types.ts`:
 
 ```ts
-export type ProjectSlug = 'soluchat' | 'thynk' | 'zarahay' | 'inventaire'
+export type ProjectSlug = 'soluchat' | 'automatisation' | 'zarahay' | 'inventaire'
 
 export interface Dictionary {
   meta: { title: string; description: string }
@@ -491,7 +499,7 @@ export const fr: Dictionary = {
     viewCase: "Lire l'étude de cas",
     projects: {
       soluchat: { name: 'Soluchat', description: 'Messagerie temps réel conçue pour tenir la charge.' },
-      thynk: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients internationaux.' },
+      automatisation: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients internationaux.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Partage de ressources et collaboration entre doctorants.' },
       inventaire: { name: "Suivi d'équipements", description: "Logiciel de gestion des entrées et sorties d'inventaire." },
     },
@@ -586,7 +594,7 @@ export const en: Dictionary = {
     viewCase: 'Read the case study',
     projects: {
       soluchat: { name: 'Soluchat', description: 'Real-time messaging built to hold up under load.' },
-      thynk: { name: 'Document automation', description: 'Document generation without mapping errors, for international clients.' },
+      automatisation: { name: 'Document automation', description: 'Document generation without mapping errors, for international clients.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Resource sharing and collaboration for doctoral researchers.' },
       inventaire: { name: 'Equipment tracking', description: 'Inventory check-in and check-out management software.' },
     },
@@ -1463,7 +1471,7 @@ export interface Project {
 
 export const projects: readonly Project[] = [
   { slug: 'soluchat',   index: '01', stack: ['React', 'TypeScript', 'Rust'], year: '2025', hasCaseStudy: true },
-  { slug: 'thynk',      index: '02', stack: ['Salesforce', 'PDF Butler'],    year: '2025', hasCaseStudy: true },
+  { slug: 'automatisation', index: '02', stack: ['Salesforce', 'PDF Butler'], year: '2025', hasCaseStudy: true },
   { slug: 'zarahay',    index: '03', stack: ['Angular', 'Django'],           year: '2024', hasCaseStudy: false },
   { slug: 'inventaire', index: '04', stack: ['Java Swing'],                  year: '2023', hasCaseStudy: false },
 ] as const
@@ -1987,12 +1995,12 @@ EOF
 ### Task 9: Case study pages
 
 **Files:**
-- Create: `lib/content/case-studies.ts`, `app/[locale]/travaux/[slug]/page.tsx`, `mdx-components.tsx`, `content/case-studies/soluchat.fr.mdx`, `content/case-studies/soluchat.en.mdx`, `content/case-studies/thynk.fr.mdx`, `content/case-studies/thynk.en.mdx`, `tests/unit/case-studies.test.ts`
+- Create: `lib/content/case-studies.ts`, `app/[locale]/travaux/[slug]/page.tsx`, `mdx-components.tsx`, `content/case-studies/soluchat.fr.mdx`, `content/case-studies/soluchat.en.mdx`, `content/case-studies/automatisation.fr.mdx`, `content/case-studies/automatisation.en.mdx`, `tests/unit/case-studies.test.ts`
 
 **Interfaces:**
 - Consumes: `Locale`, `Dictionary`, `projects`.
 - Produces:
-  - `caseStudySlugs: readonly ['soluchat','thynk']`, `type CaseStudySlug`
+  - `caseStudySlugs: readonly ['soluchat','automatisation']`, `type CaseStudySlug`
   - `hasCaseStudy(slug: string): slug is CaseStudySlug`
   - `loadCaseStudy(slug: CaseStudySlug, locale: Locale): Promise<ComponentType>`
 
@@ -2070,7 +2078,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 import type { ComponentType } from 'react'
 import type { Locale } from '@/lib/i18n/config'
 
-export const caseStudySlugs = ['soluchat', 'thynk'] as const
+export const caseStudySlugs = ['soluchat', 'automatisation'] as const
 export type CaseStudySlug = (typeof caseStudySlugs)[number]
 
 export function hasCaseStudy(slug: string): slug is CaseStudySlug {
@@ -2082,9 +2090,9 @@ const loaders: Record<CaseStudySlug, Record<Locale, () => Promise<{ default: Com
     fr: () => import('@/content/case-studies/soluchat.fr.mdx'),
     en: () => import('@/content/case-studies/soluchat.en.mdx'),
   },
-  thynk: {
-    fr: () => import('@/content/case-studies/thynk.fr.mdx'),
-    en: () => import('@/content/case-studies/thynk.en.mdx'),
+  automatisation: {
+    fr: () => import('@/content/case-studies/automatisation.fr.mdx'),
+    en: () => import('@/content/case-studies/automatisation.en.mdx'),
   },
 }
 
@@ -2139,7 +2147,7 @@ Messagerie utilisée quotidiennement par les équipes projet, avec un historique
 consultable et une reconnexion transparente.
 ```
 
-`content/case-studies/thynk.fr.mdx` — same six headings, anonymised per the Global Constraints:
+`content/case-studies/automatisation.fr.mdx` — same six headings, anonymised per the Global Constraints:
 
 ```mdx
 ## Contexte
@@ -2182,7 +2190,7 @@ Génération documentaire de bout en bout, sans reprise manuelle, pour des
 clients internationaux. Les modèles restent maintenus par les équipes métier.
 ```
 
-Then write `soluchat.en.mdx` and `thynk.en.mdx` as direct English translations of the two French files, keeping the six headings in the order given by `Dictionary.caseStudy`.
+Then write `soluchat.en.mdx` and `automatisation.en.mdx` as direct English translations of the two French files, keeping the six headings in the order given by `Dictionary.caseStudy`.
 
 **These four files are starter drafts.** They are structurally complete and safe to ship, but Nomeny replaces the prose with the real detail — the actual numbers, the actual failures — because the specificity is the whole point of the case study. **Per the Global Constraints, the client is named only as "un intégrateur Salesforce européen" / "a European Salesforce integrator".**
 
@@ -2249,7 +2257,7 @@ export default async function CaseStudyPage(
 
 ```bash
 npm test -- case-studies && npm run build
-ls out/fr/travaux/soluchat/index.html out/en/travaux/thynk/index.html
+ls out/fr/travaux/soluchat/index.html out/en/travaux/automatisation/index.html
 ```
 
 Expected: tests PASS, both files exist.
@@ -2548,7 +2556,7 @@ npm install -D serve
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-const PAGES = ['/fr/', '/en/', '/fr/travaux/soluchat/', '/en/travaux/thynk/']
+const PAGES = ['/fr/', '/en/', '/fr/travaux/soluchat/', '/en/travaux/automatisation/']
 
 for (const path of PAGES) {
   test(`${path} has no accessibility violations`, async ({ page }) => {
