@@ -1,12 +1,28 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import LocaleLayout from '@/app/[locale]/layout'
+import RootRedirectLayout from '@/app/(root)/layout'
 
-// app/[locale]/layout.tsx is a root layout (it renders <html>/<body> itself —
-// see the multiple-root-layouts note in task-2-report.md for why). It is an
-// async Server Component, so it must be invoked and awaited directly to get
-// the element tree, rather than rendered as a JSX component reference.
+// The app has two independent root layouts (see the multiple-root-layouts
+// note in task-2-report.md for why: app/[locale]/layout.tsx and
+// app/(root)/layout.tsx each render their own <html>/<body>). Each wires the
+// same three next/font/google families independently, because font-loader
+// calls must be literal top-level consts in the file that uses them. That
+// duplication is exactly the shape of bug this suite exists to catch: a
+// layout that forgets to wire a font is invisible unless something asserts
+// against it specifically. assertFontVariablesOnBody is called once per
+// layout below so that adding a third root layout without a matching call
+// here is a visible gap in this file, not a silent one.
+function assertFontVariablesOnBody(): void {
+  expect(document.body.className).toContain('--font-space-grotesk')
+  expect(document.body.className).toContain('--font-plex-sans')
+  expect(document.body.className).toContain('--font-jetbrains-mono')
+}
+
 describe('locale layout', () => {
+  // app/[locale]/layout.tsx is an async Server Component, so it must be
+  // invoked and awaited directly to get the element tree, rather than
+  // rendered as a JSX component reference.
   it('renders its children', async () => {
     const ui = await LocaleLayout({ children: <p>hello</p>, params: Promise.resolve({ locale: 'fr' }) })
     render(ui)
@@ -20,14 +36,29 @@ describe('locale layout', () => {
     // that's where the font variable classes actually land.
     const ui = await LocaleLayout({ children: <span />, params: Promise.resolve({ locale: 'fr' }) })
     render(ui)
-    expect(document.body.className).toContain('--font-space-grotesk')
-    expect(document.body.className).toContain('--font-plex-sans')
-    expect(document.body.className).toContain('--font-jetbrains-mono')
+    assertFontVariablesOnBody()
   })
 
   it('sets html lang from the resolved locale param', async () => {
     const ui = await LocaleLayout({ children: <span />, params: Promise.resolve({ locale: 'en' }) })
     render(ui)
     expect(document.documentElement.lang).toBe('en')
+  })
+})
+
+describe('root redirect layout', () => {
+  it('renders its children', () => {
+    render(<RootRedirectLayout><p>hello</p></RootRedirectLayout>)
+    expect(screen.getByText('hello')).toBeInTheDocument()
+  })
+
+  it('applies all three font variables to the body', () => {
+    render(<RootRedirectLayout><span /></RootRedirectLayout>)
+    assertFontVariablesOnBody()
+  })
+
+  it('sets html lang to the default locale', () => {
+    render(<RootRedirectLayout><span /></RootRedirectLayout>)
+    expect(document.documentElement.lang).toBe('fr')
   })
 })
