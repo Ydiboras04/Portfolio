@@ -12,14 +12,14 @@ export const fr: Dictionary = {
     headlineBefore: 'Full-stack, et ',
     headlineAccent: 'automatisation documentaire',
     summary:
-      "Je construis des applications web robustes en Python, TypeScript et Rust — et j'automatise les processus documentaires qui font perdre des heures aux équipes. Master II MIAGE, un an en poste chez un intégrateur Salesforce.",
+      "Je construis des applications web robustes en Python, TypeScript et Rust — et j'automatise les processus documentaires qui font perdre des heures aux équipes. Master II MIAGE, un an en poste chez un intégrateur Salesforce, pour des clients européens.",
     ctaWork: 'Voir les travaux',
     ctaCv: 'Télécharger le CV',
   },
   credibility: [
     { value: 'Major', accent: ' de promo', label: 'Licence Informatique — Promotion « ROHY »' },
     { value: '1 an', accent: ' en poste', label: 'Et trois stages en entreprise' },
-    { value: 'Clients', accent: ' intl.', label: 'Livrés pour un intégrateur Salesforce européen' },
+    { value: 'Clients', accent: ' européens', label: 'Automatisation documentaire livrée depuis Antananarivo' },
     { value: '4', accent: ' langues', label: 'Français · Anglais · Japonais (N4) · Malgache' },
   ],
   work: {
@@ -28,7 +28,7 @@ export const fr: Dictionary = {
     viewCase: "Lire l'étude de cas",
     projects: {
       soluchat: { name: 'Soluchat', description: 'Messagerie temps réel conçue pour tenir la charge.' },
-      automatisation: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients internationaux.' },
+      automatisation: { name: 'Automatisation documentaire', description: 'Génération de documents sans erreur de mapping, pour des clients européens.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Partage de ressources et collaboration entre doctorants.' },
       inventaire: { name: "Suivi d'équipements", description: "Logiciel de gestion des entrées et sorties d'inventaire." },
     },

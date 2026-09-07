@@ -12,14 +12,14 @@ export const en: Dictionary = {
     headlineBefore: 'Full-stack, and ',
     headlineAccent: 'document automation',
     summary:
-      'I build web applications that hold up in production — Python, TypeScript and Rust — and automate the document processes that quietly cost teams hours every week. MSc in Applied Business Computing, one year in post at a Salesforce integrator.',
+      'I build web applications that hold up in production — Python, TypeScript and Rust — and automate the document processes that quietly cost teams hours every week. MSc in Applied Business Computing, one year in post at a Salesforce integrator, delivering for European clients.',
     ctaWork: 'See the work',
     ctaCv: 'Download CV',
   },
   credibility: [
     { value: 'Top', accent: ' of class', label: 'BSc Computer Science — "ROHY" cohort' },
     { value: '1 year', accent: ' in post', label: 'Plus three industry internships' },
-    { value: 'Intl.', accent: ' clients', label: 'Delivered for a European Salesforce integrator' },
+    { value: 'European', accent: ' clients', label: 'Document automation delivered from Antananarivo' },
     { value: '4', accent: ' languages', label: 'French · English · Japanese (N4) · Malagasy' },
   ],
   work: {
@@ -28,7 +28,7 @@ export const en: Dictionary = {
     viewCase: 'Read the case study',
     projects: {
       soluchat: { name: 'Soluchat', description: 'Real-time messaging built to hold up under load.' },
-      automatisation: { name: 'Document automation', description: 'Document generation without mapping errors, for international clients.' },
+      automatisation: { name: 'Document automation', description: 'Document generation without mapping errors, for European clients.' },
       zarahay: { name: 'Zarahay Doctorants', description: 'Resource sharing and collaboration for doctoral researchers.' },
       inventaire: { name: 'Equipment tracking', description: 'Inventory check-in and check-out management software.' },
     },
