@@ -73,7 +73,14 @@ Dark, technical, dense — but readable. The reference is a precision instrument
 | `--line` | `rgba(255,255,255,.085)` | Hairlines — the primary structural device |
 | `--amber` | `#E8A33D` | The single accent |
 
-Amber is deliberate: neon violet, cyan and emerald are the defaults across dev portfolios right now. A warm accent against cold near-black reads as instrumentation and is markedly rarer. Amber is reserved for wayfinding and status — index numbers, availability, active state, links. It is never decorative.
+Amber is deliberate: neon violet, cyan and emerald are the defaults across dev portfolios right now. A warm accent
+against cold near-black reads as instrumentation and is markedly rarer.
+
+Amber marks three things and nothing else: **wayfinding** (index numbers, active state, links), **status** (the
+availability indicator), and **one semantic accent** — the single word or phrase in a heading or statistic that
+carries its meaning, such as the differentiating half of the hero headline or the key term in a credibility fact.
+It never colours punctuation, separators, or a qualifier where the keyword beside it is left plain: if the amber
+is not on the word that matters, it is decoration.
 
 **Typography**
 
