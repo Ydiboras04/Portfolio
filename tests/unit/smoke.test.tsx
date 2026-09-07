@@ -14,6 +14,8 @@ describe('root layout', () => {
     // props to the real document.body instead of the container's subtree —
     // that's where the font variable classes actually land.
     render(<RootLayout><span /></RootLayout>)
-    expect(document.body.className).toContain('__variable')
+    expect(document.body.className).toContain('--font-space-grotesk')
+    expect(document.body.className).toContain('--font-plex-sans')
+    expect(document.body.className).toContain('--font-jetbrains-mono')
   })
 })

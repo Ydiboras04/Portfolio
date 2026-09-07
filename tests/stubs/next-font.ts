@@ -1,4 +1,8 @@
-const loader = () => ({ variable: '__variable_stub', className: '__className_stub', style: { fontFamily: 'stub' } })
+const loader = (opts: { variable: string }) => ({
+  variable: opts.variable,
+  className: opts.variable,
+  style: { fontFamily: opts.variable },
+})
 export const Space_Grotesk = loader
 export const IBM_Plex_Sans = loader
 export const JetBrains_Mono = loader
