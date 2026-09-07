@@ -1565,7 +1565,10 @@ export function Work({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     <section id="travaux" aria-labelledby="travaux-title" className="mx-auto max-w-6xl px-5 sm:px-12">
       <SectionHead id="travaux-title" title={dict.work.title} note={dict.work.note} />
 
-      <ul>
+      {/* role="list" is redundant in the HTML spec but not in practice: Tailwind's
+          reset sets list-style:none, which makes WebKit/VoiceOver drop the list
+          role entirely. axe cannot catch this — it is AT behaviour, not static DOM. */}
+      <ul role="list">
         {projects.map((project, i) => {
           const copy = dict.work.projects[project.slug]
           const row = (
@@ -1586,7 +1589,11 @@ export function Work({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 {project.hasCaseStudy ? (
                   <Link href={`/${locale}/travaux/${project.slug}/`} className="group block">{row}</Link>
                 ) : (
-                  <div className="group">{row}</div>
+                  // No `group` class here: the row markup carries
+                  // `group-hover:border-amber/25`, and binding it on a
+                  // non-interactive row would signal "clickable" in the one
+                  // colour reserved for wayfinding, on a row that goes nowhere.
+                  <div>{row}</div>
                 )}
               </Reveal>
             </li>
