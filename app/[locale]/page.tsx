@@ -3,6 +3,7 @@ import { isLocale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n'
 import { Hero } from '@/components/home/Hero'
 import { Credibility } from '@/components/home/Credibility'
+import { Work } from '@/components/home/Work'
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -12,6 +13,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     <>
       <Hero locale={locale} dict={dict} />
       <Credibility dict={dict} />
+      <Work locale={locale} dict={dict} />
     </>
   )
 }
