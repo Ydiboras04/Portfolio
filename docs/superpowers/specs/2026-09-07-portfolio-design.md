@@ -49,7 +49,8 @@ This is expressed in the hero copy and inside the case studies. It is *not* expr
 4. Selected work — four rows, each linking to a full case study
 5. Skills — graded by honest depth
 6. Parcours — experience and education, interleaved chronologically
-7. Contact — remote roles first, freelance missions named second, timezone stated
+7. About — short and human; the accounting-to-engineering path, and why the automation work is not accidental
+8. Contact — remote roles first, freelance missions named second, timezone stated
 
 **Case study pages** — same template throughout: Context → Constraints → Stack → Decisions & trade-offs → What went wrong → Outcome. Screenshots where available; prose where not. Two are written for launch (Soluchat, Thynk Automation); the remaining two ship as short summaries and are promoted later — see §9.
 
