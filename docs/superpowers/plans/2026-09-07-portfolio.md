@@ -2838,9 +2838,9 @@ Expected: all specs PASS. Fix any axe violation before proceeding — zero viola
 - [ ] **Step 7: Run Lighthouse**
 
 ```bash
-npx serve out -l 3000 &
-npx lighthouse http://localhost:3000/fr/ --preset=desktop --quiet --chrome-flags="--headless" --output=json --output-path=./lighthouse-desktop.json
-npx lighthouse http://localhost:3000/fr/ --quiet --chrome-flags="--headless" --output=json --output-path=./lighthouse-mobile.json
+npx serve out -l 4173 &
+npx lighthouse http://localhost:4173/fr/ --preset=desktop --quiet --chrome-flags="--headless" --output=json --output-path=./lighthouse-desktop.json
+npx lighthouse http://localhost:4173/fr/ --quiet --chrome-flags="--headless" --output=json --output-path=./lighthouse-mobile.json
 node -e "for (const f of ['desktop','mobile']) { const r = require('./lighthouse-'+f+'.json'); const s = Object.entries(r.categories).map(([k,v])=>k+': '+Math.round(v.score*100)); console.log(f, s.join(', ')); }"
 ```
 

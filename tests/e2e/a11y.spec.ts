@@ -13,6 +13,21 @@ const PAGES = [
   ...locales.flatMap((locale) => caseStudySlugs.map((slug) => `/${locale}/travaux/${slug}/`)),
 ]
 
+// PAGES is derived, not hand-listed, so nothing here reminds a future editor
+// to keep it non-empty. If locales or caseStudySlugs were ever emptied (or
+// this file's derivation were refactored into something that silently
+// produces fewer paths), the `for` loop below would register zero tests and
+// the whole file would report a trivial pass — no failing assertion, no
+// signal that accessibility went unchecked. The expectations below are
+// hard-coded literals, deliberately not computed from locales.length and
+// caseStudySlugs.length — a formula built from those same arrays would
+// shrink right along with them and this guard would still pass at 0 vs 0.
+test('PAGES covers every locale x case-study combination', () => {
+  expect(locales.length).toBe(2)
+  expect(caseStudySlugs.length).toBe(2)
+  expect(PAGES).toHaveLength(6) // 2 homepages + 2 locales x 2 case studies
+})
+
 for (const path of PAGES) {
   test(`${path} has no accessibility violations`, async ({ page }) => {
     // Every section below the hero is wrapped in Reveal, which renders at

@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nomeny.dev
 
-## Getting Started
+Bilingual (FR/EN) portfolio. Next.js 16, static export, no server.
 
-First, run the development server:
+## Development
 
 ```bash
+npm install
+cp .env.local.example .env.local   # then fill in the Web3Forms key
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Verification
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm test          # unit — Vitest
+npm run typecheck # TypeScript
+npm run lint       # ESLint
+npm run build     # static export to out/
+npx playwright test  # a11y, reduced-motion, responsive gates
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`npx playwright test` serves the static export itself (`npx serve out`) on
+**port 4173**, not 3000, and always starts its own server
+(`reuseExistingServer: false`) rather than adopting one that happens to
+already be listening. A stray `next dev` server left running on 3000 once
+caused the whole quality suite — Playwright and both Lighthouse runs — to
+silently measure a development build instead of the static export, with no
+test failure to flag it. If you run Lighthouse by hand, point it at 4173 too
+(`npx serve out -l 4173`, then `http://localhost:4173/fr/`).
 
-## Learn More
+## Adding a case study
 
-To learn more about Next.js, take a look at the following resources:
+1. Write `content/case-studies/<slug>.fr.mdx` and `<slug>.en.mdx` using the
+   six headings: Contexte, Contraintes, Stack, Décisions & arbitrages,
+   Ce qui n'a pas marché, Résultat.
+2. Add a loader entry in `lib/content/case-studies.ts` and the slug to
+   `caseStudySlugs`.
+3. Flip `hasCaseStudy` to `true` for that project in `lib/content/projects.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The test suite fails if those three fall out of sync.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+Deployment is a manual step the site owner runs himself — it is not part of
+this repository's automation.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx vercel --prod
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run from the project root. Then, in the Vercel project's environment
+variables, set:
+
+- `NEXT_PUBLIC_WEB3FORMS_KEY`
+- `NEXT_PUBLIC_SITE_URL`
+
+Both are `NEXT_PUBLIC_` variables, so they are baked into the static build at
+build time rather than read at request time — setting them alone has no
+effect on the already-deployed output. **Redeploy after setting or changing
+either one** for the new value to take effect.
+
+After deploying, check by hand on the live URL:
+
+- `/` redirects to `/fr/`
+- the FR↔EN switch preserves the current path
+- the CV downloads in both locales
+- the contact form delivers a real email
+- both case studies render
+
+## Known placeholders
+
+- **English CV.** `public/cv/nomeny-mitia-andriamaheva-en.pdf` is currently a
+  byte-identical copy of the French CV. This is a deliberate placeholder so
+  the download link is never broken, not a translation — the English CV is
+  in French.
+- **School name mismatch.** The CV PDF names the school as "École Supérieure
+  de Management et Informatique Appliqué – Mahamasina", while the site's
+  dictionaries (`lib/i18n/dictionaries/fr.ts`, `lib/i18n/dictionaries/en.ts`)
+  say "ESMIA Innovation". The two disagree, and a visitor can open both from
+  the same page (the Parcours section and the CV download).
+
+## Constraint
+
+No client names or client data in copy, screenshots, or commit messages.
