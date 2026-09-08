@@ -2721,7 +2721,10 @@ export function CursorReticle() {
 }
 ```
 
-Render `<CursorReticle />` inside `app/[locale]/layout.tsx`, just before `</div>`.
+Render `<CursorReticle />` inside `app/[locale]/layout.tsx` as the last child of `<body>`, after `<Footer />`.
+(The layout has no wrapper `<div>` — Task 2's per-locale `<html lang>` fix made this file own `<html>` and `<body>`
+directly.) It is `position: fixed` and `aria-hidden`, so its position in the DOM does not affect layout, focus
+order, or the accessibility tree — but keeping it last keeps the document's reading order clean.
 
 - [ ] **Step 2: Configure Playwright**
 
