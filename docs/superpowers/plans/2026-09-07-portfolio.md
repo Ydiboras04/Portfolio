@@ -3016,6 +3016,9 @@ export function Services({ dict }: { dict: Dictionary }) {
       <SectionHead id="services-title" title={dict.services.title} note={dict.services.note} />
 
       <div className="mx-auto max-w-6xl px-5 sm:px-12">
+        {/* role="list" for the same reason as Work and Parcours: Tailwind's reset
+            sets list-style:none, which makes WebKit/VoiceOver drop the list role.
+            axe cannot detect it, so deferring it means never catching it. */}
         <ol role="list">
           {dict.services.items.map((item, i) => (
             <li key={item.title}>
