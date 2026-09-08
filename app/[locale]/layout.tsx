@@ -26,7 +26,21 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   if (!isLocale(locale)) return {}
   const dict = getDictionary(locale)
-  return { title: dict.meta.title, description: dict.meta.description }
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nomeny.dev'),
+    title: dict.meta.title,
+    description: dict.meta.description,
+    alternates: {
+      canonical: `/${locale}/`,
+      languages: Object.fromEntries(locales.map((l) => [l, `/${l}/`])),
+    },
+    openGraph: {
+      title: dict.meta.title,
+      description: dict.meta.description,
+      locale: locale === 'fr' ? 'fr_FR' : 'en_GB',
+      type: 'website',
+    },
+  }
 }
 
 export default async function LocaleLayout({
