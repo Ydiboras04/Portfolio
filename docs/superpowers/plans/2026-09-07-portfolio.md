@@ -2476,7 +2476,7 @@ EOF
 
 **Files:**
 - Create: `app/[locale]/opengraph-image.tsx`, `public/cv/` assets, `public/robots.txt`, `app/sitemap.ts`
-- Modify: `app/[locale]/layout.tsx`, `app/layout.tsx`
+- Modify: `app/[locale]/layout.tsx`
 
 **Interfaces:**
 - Consumes: `getDictionary`, `locales`, `caseStudySlugs`.
@@ -2540,13 +2540,22 @@ export async function generateMetadata(
 }
 ```
 
-Add `metadataBase` in `app/layout.tsx` so relative URLs resolve:
+Add `metadataBase` so relative URLs (the OG image, canonicals) resolve to absolute ones. **There is no
+`app/layout.tsx` any more** — Task 2's `<html lang>` fix split the app into two root layouts, `app/(root)/layout.tsx`
+for the `/` redirect and `app/[locale]/layout.tsx` for the site. Put it in the locale layout's `generateMetadata`
+return, alongside the other fields:
 
 ```tsx
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nomeny.dev'),
-}
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nomeny.dev'),
+    title: dict.meta.title,
+    description: dict.meta.description,
+    alternates: { … },
+    openGraph: { … },
+  }
 ```
+
+The `(root)` redirect page needs none of this: it has no OG image and no canonical worth declaring.
 
 Add `NEXT_PUBLIC_SITE_URL=` to `.env.local.example`.
 
@@ -2642,7 +2651,7 @@ npm test && npm run build && ls out/sitemap.xml
 
 Expected: PASS, sitemap present.
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add -A
