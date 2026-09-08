@@ -12,7 +12,8 @@
     "package-lock.json",
     "public/**",
     "*.pdf",
-    "*.docx"
+    "*.docx",
+    "lighthouse-*.json"
   ],
   "ignoreRegExpList": [
     "TailwindArbitraryValue",
