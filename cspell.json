@@ -65,6 +65,7 @@
     "noscript",
     "opengraph",
     "overclaiming",
+    "pdftotext",
     "pgi",
     "plex",
     "pointermove",
@@ -76,10 +77,13 @@
     "tailwindcss",
     "tsimbazaza",
     "turbopack",
+    "unevidenced",
     "unobserve",
+    "unscanned",
     "unscrolled",
     "wayfinding",
     "wcag",
+    "wordmark",
     "zarahay"
   ]
 }
