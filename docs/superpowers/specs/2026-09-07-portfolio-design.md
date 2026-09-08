@@ -52,7 +52,7 @@ This is expressed in the hero copy and inside the case studies. It is *not* expr
 7. About — short and human; the accounting-to-engineering path, and why the automation work is not accidental
 8. Contact — remote roles first, freelance missions named second, timezone stated
 
-**Case study pages** — same template throughout: Context → Constraints → Stack → Decisions & trade-offs → What went wrong → Outcome. Screenshots where available; prose where not. Two are written for launch (Soluchat, Thynk Automation); the remaining two ship as short summaries and are promoted later — see §9.
+**Case study pages** — same template throughout: Context → Constraints → Stack → Decisions & trade-offs → What didn't work → Outcome. Screenshots where available; prose where not. Two are written for launch (Soluchat, Thynk Automation); the remaining two ship as short summaries and are promoted later — see §9.
 
 **CV** — downloadable PDF, FR and EN.
 
