@@ -23,7 +23,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               <li key={s.href}>
                 <a
                   href={s.href}
-                  className="label transition-colors duration-150 ease-(--ease-instrument) hover:text-ink"
+                  className="label transition-colors duration-150 ease-instrument hover:text-ink"
                 >
                   {s.label}
                 </a>

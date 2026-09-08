@@ -31,7 +31,7 @@ export function Rule() {
       role="presentation"
       data-drawn={drawn}
       className={
-        'h-px w-full origin-left bg-line transition-transform duration-[350ms] ease-(--ease-instrument) ' +
+        'h-px w-full origin-left bg-line transition-transform duration-[350ms] ease-instrument ' +
         'motion-reduce:transition-none ' + (drawn ? 'scale-x-100' : 'scale-x-0')
       }
     />

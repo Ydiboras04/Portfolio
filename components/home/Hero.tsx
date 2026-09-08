@@ -21,12 +21,12 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <div className="flex flex-wrap items-center gap-[10px]">
         <a href="#travaux"
            className="rounded-[3px] bg-amber px-[18px] py-[11px] font-mono text-[10.5px] font-medium uppercase
-                      tracking-[0.11em] text-bg transition-opacity duration-150 ease-(--ease-instrument) hover:opacity-90">
+                      tracking-[0.11em] text-bg transition-opacity duration-150 ease-instrument hover:opacity-90">
           {dict.hero.ctaWork} ↓
         </a>
         <a href={`/cv/nomeny-mitia-andriamaheva-${locale}.pdf`} download
            className="rounded-[3px] border border-line px-[18px] py-[11px] font-mono text-[10.5px] uppercase
-                      tracking-[0.11em] text-dim transition-colors duration-150 ease-(--ease-instrument)
+                      tracking-[0.11em] text-dim transition-colors duration-150 ease-instrument
                       hover:border-amber/40 hover:text-ink">
           {dict.hero.ctaCv}
         </a>

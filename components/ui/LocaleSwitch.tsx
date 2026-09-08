@@ -17,7 +17,7 @@ export function LocaleSwitch({ current, label }: { current: Locale; label: strin
       hrefLang={target}
       aria-label={`${target.toUpperCase()} — ${label}`}
       className="label rounded-[3px] border border-line px-[7px] py-[3px] text-amber
-                 transition-colors duration-150 ease-(--ease-instrument) hover:border-amber/40"
+                 transition-colors duration-150 ease-instrument hover:border-amber/40"
     >
       {target.toUpperCase()}
     </Link>

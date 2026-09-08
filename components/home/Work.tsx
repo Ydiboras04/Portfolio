@@ -18,7 +18,7 @@ export function Work({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           const copy = dict.work.projects[project.slug]
           const row = (
             <div className="grid grid-cols-[26px_1fr] items-center gap-4 border-b border-line py-4
-                            transition-colors duration-150 ease-(--ease-instrument)
+                            transition-colors duration-150 ease-instrument
                             md:grid-cols-[32px_1fr_2fr_150px_54px] group-hover:border-amber/25">
               <span className="font-mono text-[10px] text-amber">{project.index}</span>
               <span className="font-display text-[16.5px] font-medium tracking-[-0.018em]">{copy.name}</span>

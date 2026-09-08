@@ -42,7 +42,7 @@ export function Reveal({
       data-reduced={reduced}
       style={{ transitionDelay: reduced ? '0ms' : `${delay}ms` }}
       className={
-        'transition-[opacity,transform] duration-[350ms] ease-(--ease-instrument) motion-reduce:transition-none ' +
+        'transition-[opacity,transform] duration-[350ms] ease-instrument motion-reduce:transition-none ' +
         (revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2') +
         (className ? ` ${className}` : '')
       }

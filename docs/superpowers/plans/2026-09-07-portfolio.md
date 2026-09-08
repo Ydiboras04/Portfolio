@@ -951,7 +951,7 @@ export function Reveal({
       data-reduced={reduced}
       style={{ transitionDelay: reduced ? '0ms' : `${delay}ms` }}
       className={
-        'transition-[opacity,transform] duration-[350ms] ease-(--ease-instrument) motion-reduce:transition-none ' +
+        'transition-[opacity,transform] duration-[350ms] ease-instrument motion-reduce:transition-none ' +
         (revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2') +
         (className ? ` ${className}` : '')
       }
@@ -998,7 +998,7 @@ export function Rule() {
       role="presentation"
       data-drawn={drawn}
       className={
-        'h-px w-full origin-left bg-line transition-transform duration-[350ms] ease-(--ease-instrument) ' +
+        'h-px w-full origin-left bg-line transition-transform duration-[350ms] ease-instrument ' +
         'motion-reduce:transition-none ' + (drawn ? 'scale-x-100' : 'scale-x-0')
       }
     />
@@ -1141,7 +1141,7 @@ export function LocaleSwitch({ current, label }: { current: Locale; label: strin
       hrefLang={target}
       aria-label={`${target.toUpperCase()} — ${label}`}
       className="label rounded-[3px] border border-line px-[7px] py-[3px] text-amber
-                 transition-colors duration-150 ease-(--ease-instrument) hover:border-amber/40"
+                 transition-colors duration-150 ease-instrument hover:border-amber/40"
     >
       {target.toUpperCase()}
     </Link>
@@ -1179,7 +1179,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               <li key={s.href}>
                 <a
                   href={s.href}
-                  className="label transition-colors duration-150 ease-(--ease-instrument) hover:text-ink"
+                  className="label transition-colors duration-150 ease-instrument hover:text-ink"
                 >
                   {s.label}
                 </a>
@@ -1351,12 +1351,12 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <div className="flex flex-wrap items-center gap-[10px]">
         <a href="#travaux"
            className="rounded-[3px] bg-amber px-[18px] py-[11px] font-mono text-[10.5px] font-medium uppercase
-                      tracking-[0.11em] text-bg transition-opacity duration-150 ease-(--ease-instrument) hover:opacity-90">
+                      tracking-[0.11em] text-bg transition-opacity duration-150 ease-instrument hover:opacity-90">
           {dict.hero.ctaWork} ↓
         </a>
         <a href={`/cv/nomeny-mitia-andriamaheva-${locale}.pdf`} download
            className="rounded-[3px] border border-line px-[18px] py-[11px] font-mono text-[10.5px] uppercase
-                      tracking-[0.11em] text-dim transition-colors duration-150 ease-(--ease-instrument)
+                      tracking-[0.11em] text-dim transition-colors duration-150 ease-instrument
                       hover:border-amber/40 hover:text-ink">
           {dict.hero.ctaCv}
         </a>
@@ -1585,7 +1585,7 @@ export function Work({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           // than one line of information.
           const row = (
             <div className="grid grid-cols-[26px_1fr] items-center gap-4 border-b border-line py-4
-                            transition-colors duration-150 ease-(--ease-instrument)
+                            transition-colors duration-150 ease-instrument
                             md:grid-cols-[32px_1fr_2fr_150px_54px] group-hover:border-amber/25">
               <span className="font-mono text-[10px] text-amber">{project.index}</span>
               <span className="font-display text-[16.5px] font-medium tracking-[-0.018em]">{copy.name}</span>
@@ -1953,7 +1953,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'failed'
 
 const FIELD =
   'w-full rounded-[3px] border border-line bg-transparent px-3 py-2 text-[13px] text-ink ' +
-  'transition-colors duration-150 ease-(--ease-instrument) placeholder:text-faint focus:border-amber/50'
+  'transition-colors duration-150 ease-instrument placeholder:text-faint focus:border-amber/50'
 
 export function ContactForm({ dict }: { dict: Dictionary }) {
   const [status, setStatus] = useState<Status>('idle')
@@ -2017,7 +2017,7 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
 
       <button type="submit" disabled={status === 'sending'}
         className="rounded-[3px] bg-amber px-[18px] py-[11px] font-mono text-[10.5px] font-medium uppercase
-                   tracking-[0.11em] text-bg transition-opacity duration-150 ease-(--ease-instrument)
+                   tracking-[0.11em] text-bg transition-opacity duration-150 ease-instrument
                    hover:opacity-90 disabled:opacity-60">
         {status === 'sending' ? dict.contact.sending : dict.contact.submit}
       </button>

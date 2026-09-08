@@ -7,7 +7,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'failed'
 
 const FIELD =
   'w-full rounded-[3px] border border-line bg-transparent px-3 py-2 text-[13px] text-ink ' +
-  'transition-colors duration-150 ease-(--ease-instrument) placeholder:text-faint focus:border-amber/50'
+  'transition-colors duration-150 ease-instrument placeholder:text-faint focus:border-amber/50'
 
 export function ContactForm({ dict }: { dict: Dictionary }) {
   const [status, setStatus] = useState<Status>('idle')
@@ -71,7 +71,7 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
 
       <button type="submit" disabled={status === 'sending'}
         className="rounded-[3px] bg-amber px-[18px] py-[11px] font-mono text-[10.5px] font-medium uppercase
-                   tracking-[0.11em] text-bg transition-opacity duration-150 ease-(--ease-instrument)
+                   tracking-[0.11em] text-bg transition-opacity duration-150 ease-instrument
                    hover:opacity-90 disabled:opacity-60">
         {status === 'sending' ? dict.contact.sending : dict.contact.submit}
       </button>
