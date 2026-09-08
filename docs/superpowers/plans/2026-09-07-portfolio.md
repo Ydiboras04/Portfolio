@@ -519,11 +519,11 @@ export const fr: Dictionary = {
     note: 'Expérience & formation',
     entries: [
       { period: '09/25 — 09/26', role: 'Développeur Polyvalent', org: 'Solumada Ivandry', detail: 'Administration Salesforce, automatisation documentaire, application temps réel React/Rust.' },
-      { period: '01/26 — présent', role: 'Master II MIAGE', org: 'ESMIA Mahamasina', detail: 'Architectures Big Data, cybersécurité, gestion de projet, programmation sous contraintes.' },
-      { period: '01/25 — 09/25', role: 'Master I MIAGE', org: 'ESMIA Mahamasina', detail: 'Technologies web avancées, machine learning, IHM avancée, PGI.' },
+      { period: '01/26 — présent', role: 'Master II MIAGE', org: 'ESMIA Innovation', detail: 'Architectures Big Data, cybersécurité, gestion de projet, programmation sous contraintes.' },
+      { period: '01/25 — 09/25', role: 'Master I MIAGE', org: 'ESMIA Innovation', detail: 'Technologies web avancées, machine learning, IHM avancée, PGI.' },
       { period: '02/24 — 05/24', role: 'Développeur Web — Stage de fin d\u2019études', org: 'CIDST Tsimbazaza', detail: 'Application de collaboration pour doctorants en Angular et Django.' },
       { period: '07/23 — 09/23', role: 'Développeur Java — Stage', org: 'Groupe Tahina Ivandry', detail: "Logiciel de suivi d'équipements en Java Swing." },
-      { period: '03/22 — 10/24', role: 'Licence Informatique, Risque et Décision', org: 'ESMIA Mahamasina', detail: 'Major de promotion — Promotion « ROHY ».' },
+      { period: '03/22 — 10/24', role: 'Licence Informatique, Risque et Décision', org: 'ESMIA Innovation', detail: 'Major de promotion — Promotion « ROHY ».' },
     ],
   },
   about: {
@@ -614,11 +614,11 @@ export const en: Dictionary = {
     note: 'Experience & education',
     entries: [
       { period: '09/25 — 09/26', role: 'Software Developer', org: 'Solumada Ivandry', detail: 'Salesforce administration, document automation, real-time React/Rust application.' },
-      { period: '01/26 — present', role: 'MSc year 2, Applied Business Computing', org: 'ESMIA Mahamasina', detail: 'Big data architectures, cybersecurity, project management, constraint programming.' },
-      { period: '01/25 — 09/25', role: 'MSc year 1, Applied Business Computing', org: 'ESMIA Mahamasina', detail: 'Advanced web technologies, machine learning, advanced HCI, ERP.' },
+      { period: '01/26 — present', role: 'MSc year 2, Applied Business Computing', org: 'ESMIA Innovation', detail: 'Big data architectures, cybersecurity, project management, constraint programming.' },
+      { period: '01/25 — 09/25', role: 'MSc year 1, Applied Business Computing', org: 'ESMIA Innovation', detail: 'Advanced web technologies, machine learning, advanced HCI, ERP.' },
       { period: '02/24 — 05/24', role: 'Web Developer — final-year placement', org: 'CIDST Tsimbazaza', detail: 'Collaboration platform for doctoral researchers in Angular and Django.' },
       { period: '07/23 — 09/23', role: 'Java Developer — internship', org: 'Groupe Tahina Ivandry', detail: 'Equipment tracking software in Java Swing.' },
-      { period: '03/22 — 10/24', role: 'BSc Computer Science, Risk and Decision', org: 'ESMIA Mahamasina', detail: 'Top of class — "ROHY" cohort.' },
+      { period: '03/22 — 10/24', role: 'BSc Computer Science, Risk and Decision', org: 'ESMIA Innovation', detail: 'Top of class — "ROHY" cohort.' },
     ],
   },
   about: {

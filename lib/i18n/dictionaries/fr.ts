@@ -48,11 +48,11 @@ export const fr: Dictionary = {
     note: 'Expérience & formation',
     entries: [
       { period: '09/25 — 09/26', role: 'Développeur Polyvalent', org: 'Solumada Ivandry', detail: 'Administration Salesforce, automatisation documentaire, application temps réel React/Rust.' },
-      { period: '01/26 — présent', role: 'Master II MIAGE', org: 'ESMIA Mahamasina', detail: 'Architectures Big Data, cybersécurité, gestion de projet, programmation sous contraintes.' },
-      { period: '01/25 — 09/25', role: 'Master I MIAGE', org: 'ESMIA Mahamasina', detail: 'Technologies web avancées, machine learning, IHM avancée, PGI.' },
+      { period: '01/26 — présent', role: 'Master II MIAGE', org: 'ESMIA Innovation', detail: 'Architectures Big Data, cybersécurité, gestion de projet, programmation sous contraintes.' },
+      { period: '01/25 — 09/25', role: 'Master I MIAGE', org: 'ESMIA Innovation', detail: 'Technologies web avancées, machine learning, IHM avancée, PGI.' },
       { period: '02/24 — 05/24', role: 'Développeur Web — Stage de fin d’études', org: 'CIDST Tsimbazaza', detail: 'Application de collaboration pour doctorants en Angular et Django.' },
       { period: '07/23 — 09/23', role: 'Développeur Java — Stage', org: 'Groupe Tahina Ivandry', detail: "Logiciel de suivi d'équipements en Java Swing." },
-      { period: '03/22 — 10/24', role: 'Licence Informatique, Risque et Décision', org: 'ESMIA Mahamasina', detail: 'Major de promotion — Promotion « ROHY ».' },
+      { period: '03/22 — 10/24', role: 'Licence Informatique, Risque et Décision', org: 'ESMIA Innovation', detail: 'Major de promotion — Promotion « ROHY ».' },
     ],
   },
   about: {

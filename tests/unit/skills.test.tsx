@@ -52,7 +52,7 @@ describe('Parcours', () => {
   // still pass it. This ties each entry's organisation to that entry's own
   // list item (not just "the text appears somewhere"), which also catches
   // two entries rendering identically: several real entries here share the
-  // same `org` ("ESMIA Mahamasina"), so a bug that duplicated one row's
+  // same `org` ("ESMIA Innovation"), so a bug that duplicated one row's
   // content into another's slot would still fail this because the org is
   // checked inside the row scoped by that row's own role.
   it('renders each entry with its own organisation, not a borrowed one', () => {
