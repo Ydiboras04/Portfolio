@@ -1,7 +1,9 @@
 {
   "version": "0.2",
-  "language": "en,fr",
-  "import": ["@cspell/dict-fr-fr/cspell-ext.json"],
+  "language": "en,en-GB,fr",
+  "import": [
+    "@cspell/dict-fr-fr/cspell-ext.json"
+  ],
   "ignorePaths": [
     "node_modules/**",
     ".next/**",
@@ -12,37 +14,71 @@
     "*.pdf",
     "*.docx"
   ],
+  "ignoreRegExpList": [
+    "TailwindArbitraryValue",
+    "LongHexOrHash",
+    "CssHexColor"
+  ],
+  "patterns": [
+    {
+      "name": "TailwindArbitraryValue",
+      "pattern": "/\\[[^\\]\\s]*\\]/g"
+    },
+    {
+      "name": "LongHexOrHash",
+      "pattern": "/\\b[0-9a-f]{16,}\\b/gi"
+    },
+    {
+      "name": "CssHexColor",
+      "pattern": "/#[0-9a-fA-F]{3,8}\\b/g"
+    }
+  ],
   "words": [
-    "Andriamaheva",
-    "Antananarivo",
-    "Antsimondrano",
+    "andria",
+    "andriamaheva",
+    "antananarivo",
+    "antsimondrano",
+    "bezier",
     "botcheck",
-    "CIDST",
+    "cidst",
+    "cookieless",
+    "crawlable",
+    "crossfade",
     "cspell",
-    "ESMIA",
+    "esmia",
+    "esnext",
+    "fullbleed",
+    "grotesk",
     "hreflang",
-    "Itaosy",
-    "Ivandry",
-    "JLPT",
+    "hrefs",
+    "itaosy",
+    "ivandry",
+    "jetbrains",
+    "jlpt",
     "jsdom",
-    "Mahamasina",
-    "Malagasy",
-    "MIAGE",
-    "Mitia",
-    "Nomeny",
+    "mahamasina",
+    "malagasy",
+    "miage",
+    "mitia",
+    "nomeny",
+    "nomenymitia",
     "noscript",
     "opengraph",
-    "PGI",
-    "ROHY",
-    "Soluchat",
-    "Solumada",
-    "Tahina",
-    "Tsimbazaza",
-    "Turbopack",
-    "Zarahay"
-  ],
-  "ignoreRegExpList": [
-    "/[a-z0-9]{20,}/",
-    "/#[0-9A-Fa-f]{3,8}\\b/"
+    "pgi",
+    "plex",
+    "pointermove",
+    "rgba",
+    "rohy",
+    "soluchat",
+    "solumada",
+    "tahina",
+    "tailwindcss",
+    "thynk",
+    "tsimbazaza",
+    "turbopack",
+    "unobserve",
+    "wayfinding",
+    "wcag",
+    "zarahay"
   ]
 }

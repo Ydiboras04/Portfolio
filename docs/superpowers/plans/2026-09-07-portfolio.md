@@ -1969,7 +1969,7 @@ describe('ContactForm', () => {
 
 This last test is the one that would have caught the original bug: the component's first implementation
 decided success from `response.ok` alone, which reads a 2xx-with-`success:false` response (Web3Forms' spam
-heuristic false-positiving on a real message) as delivered and shows the visitor "Message sent" while nothing
+heuristic rejecting a legitimate message) as delivered and shows the visitor "Message sent" while nothing
 went out. Fixed by reading `response.json()` and requiring both `response.ok` and `data.success === true`,
 with `response.json()` itself guarded by a nested `try`/`catch` since a non-JSON body would otherwise throw
 past the status update.
