@@ -4,12 +4,18 @@ import type { Dictionary } from '@/lib/i18n/types'
 import { LocaleSwitch } from '@/components/ui/LocaleSwitch'
 
 export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  // Locale-absolute so the links still resolve from a page that isn't the
+  // homepage -- a case-study page renders this same Header but has none of
+  // these ids. A browser treats a same-document href (matching path, `#id`
+  // fragment) as a same-page scroll, so this is still an in-page jump when
+  // it's already on `/${locale}/`; it only stops being a dead link
+  // everywhere else.
   const sections = [
-    { href: '#travaux', label: dict.nav.work },
-    { href: '#competences', label: dict.nav.skills },
-    { href: '#parcours', label: dict.nav.path },
-    { href: '#services', label: dict.nav.services },
-    { href: '#contact', label: dict.nav.contact },
+    { href: `/${locale}/#travaux`, label: dict.nav.work },
+    { href: `/${locale}/#competences`, label: dict.nav.skills },
+    { href: `/${locale}/#parcours`, label: dict.nav.path },
+    { href: `/${locale}/#services`, label: dict.nav.services },
+    { href: `/${locale}/#contact`, label: dict.nav.contact },
   ]
 
   return (

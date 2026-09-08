@@ -42,7 +42,7 @@ describe('Header', () => {
     render(<Header locale="fr" dict={dict} />)
     const nav = screen.getByRole('navigation')
     expect(nav).toBeInTheDocument()
-    for (const label of [dict.nav.work, dict.nav.skills, dict.nav.path, dict.nav.contact]) {
+    for (const label of [dict.nav.work, dict.nav.skills, dict.nav.path, dict.nav.services, dict.nav.contact]) {
       expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
     }
   })
