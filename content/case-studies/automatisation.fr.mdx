@@ -1,0 +1,38 @@
+## Contexte
+
+Un intégrateur Salesforce générait à la main les documents contractuels de
+ses clients européens depuis Salesforce : devis, confirmations, contrats. Chaque document
+demandait une reprise manuelle, et chaque reprise introduisait un risque
+d'erreur sur des pièces qui engagent juridiquement le client final.
+
+## Contraintes
+
+- Les documents devaient rester conformes à la charte de chaque client final.
+- Aucune intervention manuelle entre la donnée Salesforce et le PDF signé.
+- Les modèles devaient rester modifiables par des non-développeurs.
+
+## Stack
+
+Salesforce (administration, profils), PDF Butler, FORM Butler, SIGN Butler.
+
+## Décisions & arbitrages
+
+Le mapping des données a été centralisé plutôt que dupliqué par modèle. C'était
+plus long à mettre en place, mais un changement de structure côté Salesforce ne
+casse plus dix modèles à la fois.
+
+Les modèles sont restés pilotés par les équipes métier. Il aurait été plus
+rapide de tout coder en dur ; cela aurait rendu l'équipe dépendante d'un
+développeur pour chaque virgule.
+
+## Ce qui n'a pas marché
+
+Les premiers workflows échouaient silencieusement quand un champ attendu était
+vide côté Salesforce — le document se générait, incomplet, sans alerte. La
+correction a consisté à valider les données en amont de la génération plutôt
+qu'à inspecter les PDF après coup.
+
+## Résultat
+
+Génération documentaire de bout en bout, sans reprise manuelle, pour des
+clients européens. Les modèles restent maintenus par les équipes métier.

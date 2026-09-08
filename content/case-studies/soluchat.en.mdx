@@ -1,0 +1,37 @@
+## Context
+
+Soluchat is a real-time messaging application built at a Salesforce
+integrator, meant to replace an email thread between project teams spread
+across several time zones.
+
+## Constraints
+
+- Perceived latency under 200ms on unstable connections.
+- History browsable without reloading the entire conversation.
+- No dependency on a third-party messaging service.
+
+## Stack
+
+React, TypeScript on the client. Backend in Rust, communication over
+WebSocket.
+
+## Decisions & trade-offs
+
+The backend was written in **Rust** rather than Node: the learning cost was
+real, but predictable memory management and the absence of GC pauses
+mattered more on connections that were already fragile.
+
+Client-side state stayed deliberately simple — no global state management
+library. At this scale, one would have added indirection without solving a
+real problem.
+
+## What didn't work
+
+The first version reloaded the entire history on every reconnection, which
+made network drops very costly. Cursor-based pagination arrived in the
+second iteration, after measuring the impact.
+
+## Outcome
+
+Messaging used daily by project teams, with browsable history and seamless
+reconnection.

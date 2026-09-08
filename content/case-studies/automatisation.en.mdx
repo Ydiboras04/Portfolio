@@ -1,0 +1,38 @@
+## Context
+
+A Salesforce integrator generated its European clients' contractual
+documents by hand from Salesforce: quotes, confirmations, contracts. Each
+document required manual rework, and each rework introduced a risk of error
+on paperwork that carries legal weight for the end client.
+
+## Constraints
+
+- Documents had to stay compliant with each end client's brand guidelines.
+- No manual intervention between the Salesforce data and the signed PDF.
+- Templates had to remain editable by non-developers.
+
+## Stack
+
+Salesforce (administration, profiles), PDF Butler, FORM Butler, SIGN Butler.
+
+## Decisions & trade-offs
+
+Data mapping was centralised rather than duplicated per template. It took
+longer to set up, but a structural change on the Salesforce side no longer
+breaks ten templates at once.
+
+Templates stayed owned by the business teams. It would have been faster to
+hard-code everything; that would have made the team dependent on a
+developer for every comma.
+
+## What didn't work
+
+The first workflows failed silently when an expected field was empty on the
+Salesforce side — the document was generated, incomplete, with no alert. The
+fix was to validate the data upstream of generation rather than inspect the
+PDFs afterwards.
+
+## Outcome
+
+End-to-end document generation, with no manual rework, for European
+clients. Templates remain maintained by the business teams.

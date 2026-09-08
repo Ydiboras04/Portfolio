@@ -1,0 +1,36 @@
+## Contexte
+
+Soluchat est une application de messagerie temps réel développée chez un
+intégrateur Salesforce, destinée à remplacer un fil de discussion par e-mail
+entre équipes projet réparties sur plusieurs fuseaux horaires.
+
+## Contraintes
+
+- Latence perceptible inférieure à 200 ms sur des connexions instables.
+- Historique consultable sans recharger la conversation entière.
+- Aucune dépendance à un service de messagerie tiers.
+
+## Stack
+
+React, TypeScript côté client. Backend en Rust, communication par WebSocket.
+
+## Décisions & arbitrages
+
+Le backend a été écrit en **Rust** plutôt qu'en Node : le coût d'apprentissage
+était réel, mais la gestion mémoire prévisible et l'absence de pauses GC
+comptaient davantage sur des connexions déjà fragiles.
+
+L'état côté client est resté volontairement simple — pas de bibliothèque de
+gestion d'état globale. À cette échelle, elle aurait ajouté de l'indirection
+sans résoudre de problème réel.
+
+## Ce qui n'a pas marché
+
+La première version rechargeait l'historique complet à chaque reconnexion, ce
+qui rendait les coupures réseau très coûteuses. La pagination par curseur est
+arrivée en deuxième itération, après mesure.
+
+## Résultat
+
+Messagerie utilisée quotidiennement par les équipes projet, avec un historique
+consultable et une reconnexion transparente.
