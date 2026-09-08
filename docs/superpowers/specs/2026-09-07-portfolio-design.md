@@ -31,11 +31,11 @@ For EU hiring — where reviewers routinely read candidate code — this is a re
 2. **The site is the code sample.** It is the single artifact a reviewer can open, inspect, resize, and run Lighthouse against. Its execution quality is therefore a functional requirement, not polish.
 3. **Skills are attached to evidence, never listed as bare claims.** No logo wall, no percentage bars.
 
-**Confidentiality guard-rail:** client names and client document contents from the Solumada/Thynk work must not be published without written permission. Case studies describe the *problem class* and the *solution*, with the client anonymised (e.g. "un intégrateur Salesforce européen"). Screenshots must be checked for client data before use — this includes names in test records.
+**Confidentiality guard-rail:** client names and client document contents from the Solumada work must not be published without written permission. The employer is based in **Madagascar**; its **clients are European**. Case studies describe the *problem class* and the *solution*, naming the employer only as "un intégrateur Salesforce" and its clients only as "des clients européens" — never an individual client. Screenshots must be checked for client data before use, including names in test records.
 
 ## 4. Positioning
 
-The differentiator is the pairing: **custom full-stack engineering + Salesforce document automation with real international delivery.** "Full-stack developer" is a crowded category in Europe; "developer who also automates Salesforce document generation for international clients" is nearly empty.
+The differentiator is the pairing: **custom full-stack engineering + Salesforce document automation delivered from Antananarivo to European clients.** "Full-stack developer" is a crowded category in Europe; "developer who also automates Salesforce document generation for European clients, in a timezone that overlaps their whole working day" is nearly empty.
 
 This is expressed in the hero copy and inside the case studies. It is *not* expressed as a fork in the navigation — a split site reads as unfocused to a recruiter filtering for a single role.
 
@@ -50,9 +50,10 @@ This is expressed in the hero copy and inside the case studies. It is *not* expr
 5. Skills — graded by honest depth
 6. Parcours — experience and education, interleaved chronologically
 7. About — short and human; the accounting-to-engineering path, and why the automation work is not accidental
-8. Contact — remote roles first, freelance missions named second, timezone stated
+8. Services — what he takes on freelance, each offering tied to delivered evidence
+9. Contact — remote roles first, freelance missions named second, timezone stated
 
-**Case study pages** — same template throughout: Context → Constraints → Stack → Decisions & trade-offs → What didn't work → Outcome. Screenshots where available; prose where not. Two are written for launch (Soluchat, Thynk Automation); the remaining two ship as short summaries and are promoted later — see §9.
+**Case study pages** — same template throughout: Context → Constraints → Stack → Decisions & trade-offs → What didn't work → Outcome. Screenshots where available; prose where not. Two are written for launch (Soluchat, and the document-automation project at slug `automatisation`); the remaining two ship as short summaries and are promoted later — see §9.
 
 **CV** — downloadable PDF, FR and EN.
 
