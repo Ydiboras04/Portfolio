@@ -8,6 +8,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     { href: '#travaux', label: dict.nav.work },
     { href: '#competences', label: dict.nav.skills },
     { href: '#parcours', label: dict.nav.path },
+    { href: '#services', label: dict.nav.services },
     { href: '#contact', label: dict.nav.contact },
   ]
 

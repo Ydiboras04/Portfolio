@@ -6,7 +6,7 @@ export const fr: Dictionary = {
     description:
       "Développeur full-stack. Applications web sur mesure en Python, TypeScript et Rust, et automatisation documentaire Salesforce. Disponible en remote depuis Antananarivo.",
   },
-  nav: { work: 'Travaux', skills: 'Compétences', path: 'Parcours', contact: 'Contact', toggleLabel: 'Changer de langue', skipToContent: 'Aller au contenu' },
+  nav: { work: 'Travaux', skills: 'Compétences', path: 'Parcours', services: 'Services', contact: 'Contact', toggleLabel: 'Changer de langue', skipToContent: 'Aller au contenu' },
   hero: {
     availability: 'Disponible — CDI & missions · Remote Europe',
     headlineBefore: 'Full-stack, et ',
@@ -62,6 +62,27 @@ export const fr: Dictionary = {
       "J'ai commencé par la comptabilité — baccalauréat technique, mention Très Bien — avant de basculer vers l'informatique. Ce détour explique beaucoup : quand j'automatise un processus documentaire, je comprends le métier qu'il y a derrière, pas seulement le champ à mapper.",
       "Aujourd'hui je partage mon temps entre le développement d'applications web et l'automatisation Salesforce. Les deux se nourrissent : écrire du code m'a appris à voir où l'automatisation casse, et automatiser m'a appris à écouter avant de coder.",
       'Basé à Antananarivo, je travaille en UTC+3 — un fuseau qui recouvre entièrement la journée de travail européenne.',
+    ],
+  },
+  services: {
+    title: 'Services',
+    note: 'Disponible en freelance',
+    items: [
+      {
+        title: 'Applications web sur mesure',
+        description:
+          "Conception et développement d'applications métier de bout en bout, en Django ou Next.js — de la modélisation des données à la mise en production.",
+      },
+      {
+        title: 'Applications temps réel',
+        description:
+          'Messagerie, tableaux de bord, notifications : des interfaces qui restent fluides quand la charge monte. React et TypeScript côté client, Rust ou Python côté serveur.',
+      },
+      {
+        title: "Intégration d'API et de services",
+        description:
+          "Connecter votre application aux services dont elle dépend : APIs REST, authentification, outils métier.",
+      },
     ],
   },
   contact: {

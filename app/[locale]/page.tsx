@@ -7,6 +7,7 @@ import { Work } from '@/components/home/Work'
 import { Skills } from '@/components/home/Skills'
 import { Parcours } from '@/components/home/Parcours'
 import { About } from '@/components/home/About'
+import { Services } from '@/components/home/Services'
 import { Contact } from '@/components/home/Contact'
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -21,6 +22,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <Skills dict={dict} />
       <Parcours dict={dict} />
       <About dict={dict} />
+      <Services dict={dict} />
       <Contact dict={dict} />
     </>
   )

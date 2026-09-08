@@ -51,7 +51,7 @@ Every task's requirements implicitly include this section. Values are copied ver
 | `components/ui/LocaleSwitch.tsx` | FR/EN switch preserving current path |
 | `components/ui/CursorReticle.tsx` | Desktop crosshair cursor |
 | `components/layout/{Header,Footer}.tsx` | Shell chrome |
-| `components/home/{Hero,Credibility,Work,Skills,Parcours,Contact}.tsx` | Homepage sections |
+| `components/home/{Hero,Credibility,Work,Skills,Parcours,About,Services,Contact}.tsx` | Homepage sections |
 | `content/case-studies/*.{fr,en}.mdx` | Case study prose |
 | `tests/unit/**` | Vitest component + logic tests |
 | `tests/e2e/**` | Playwright a11y + behaviour tests |
@@ -2906,6 +2906,171 @@ Check by hand on the deployed URL:
 git add -A
 git commit -m "$(cat <<'EOF'
 Add README and deployment configuration
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+EOF
+)"
+```
+
+---
+
+### Task 13: Services section
+
+Added after the homepage was otherwise complete (hero, credibility, work, skills, background, about, contact). It
+sits between About and Contact, not higher: the homepage leads employer-first, so a services block placed above
+About would read as "freelancer" to a recruiter scanning for a full-stack hire. By the bottom, a recruiter has
+already got the employment story, and a potential client still reading lands on services immediately before the
+contact form.
+
+**Files:**
+- Create: `components/home/Services.tsx`, `tests/unit/services.test.tsx`
+- Modify: `lib/i18n/types.ts`, `lib/i18n/dictionaries/{fr,en}.ts`, `app/[locale]/page.tsx`,
+  `components/layout/Header.tsx`, `tests/unit/layout.test.tsx`
+
+**Interfaces:**
+- Consumes: `Dictionary`, `SectionHead`, `Reveal` (grid classes on `Reveal`'s own `className`, not a nested `<div>`
+  — the same nesting rule `Skills`' `<dl>` follows).
+- Produces: `<Services dict />`, rendered between `<About />` and `<Contact />`.
+
+Only three services ship, each mapped to delivered evidence in the CV — no service is listed without a shipped
+project behind it:
+
+| Service | Evidence |
+|---|---|
+| Custom web applications | Zarahay Doctorants (Angular/Django) |
+| Real-time applications | Soluchat (React/TypeScript + Rust) |
+| API and service integration | "Intégration d'APIs RESTful complexes et de services backend en Rust" |
+
+Dictionary addition, `lib/i18n/types.ts` (after `about`, plus `services: string` on `nav`):
+
+```ts
+  services: {
+    title: string
+    note: string
+    items: Array<{ title: string; description: string }>
+  }
+```
+
+`lib/i18n/dictionaries/fr.ts`:
+
+```ts
+  services: {
+    title: 'Services',
+    note: 'Disponible en freelance',
+    items: [
+      {
+        title: 'Applications web sur mesure',
+        description:
+          "Conception et développement d'applications métier de bout en bout, en Django ou Next.js — de la modélisation des données à la mise en production.",
+      },
+      {
+        title: 'Applications temps réel',
+        description:
+          'Messagerie, tableaux de bord, notifications : des interfaces qui restent fluides quand la charge monte. React et TypeScript côté client, Rust ou Python côté serveur.',
+      },
+      {
+        title: "Intégration d'API et de services",
+        description:
+          "Connecter votre application aux services dont elle dépend : APIs REST, authentification, outils métier.",
+      },
+    ],
+  },
+```
+
+`lib/i18n/dictionaries/en.ts`:
+
+```ts
+  services: {
+    title: 'Services',
+    note: 'Available for freelance work',
+    items: [
+      {
+        title: 'Custom web applications',
+        description:
+          'End-to-end business applications in Django or Next.js — from data modelling through to production.',
+      },
+      {
+        title: 'Real-time applications',
+        description:
+          'Messaging, dashboards, notifications: interfaces that stay responsive as load grows. React and TypeScript on the client, Rust or Python on the server.',
+      },
+      {
+        title: 'API and service integration',
+        description:
+          'Connecting an application to the services it depends on: REST APIs, authentication, business tools.',
+      },
+    ],
+  },
+```
+
+`components/home/Services.tsx`:
+
+```tsx
+import type { Dictionary } from '@/lib/i18n/types'
+import { SectionHead } from './SectionHead'
+import { Reveal } from '@/components/ui/Reveal'
+
+export function Services({ dict }: { dict: Dictionary }) {
+  return (
+    <section id="services" aria-labelledby="services-title">
+      <SectionHead id="services-title" title={dict.services.title} note={dict.services.note} />
+
+      <div className="mx-auto max-w-6xl px-5 sm:px-12">
+        <ol role="list">
+          {dict.services.items.map((item, i) => (
+            <li key={item.title}>
+              <Reveal
+                delay={i * 40}
+                className="grid grid-cols-[26px_1fr] gap-x-4 gap-y-1 border-b border-line py-4 md:grid-cols-[32px_1fr_2fr] md:items-baseline md:gap-y-0"
+              >
+                <span className="font-mono text-[10px] text-amber md:pt-1">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="font-display text-[16.5px] font-medium tracking-[-0.018em]">{item.title}</h3>
+                <p className="col-start-2 text-[12.5px] leading-[1.55] text-dim md:col-start-3">
+                  {item.description}
+                </p>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+```
+
+`app/[locale]/page.tsx` renders `<Services dict={dict} />` between `<About />` and `<Contact />`. Amber stays
+reserved for wayfinding: the index numbers are the only amber in this section, same rule as `Work`'s row index.
+
+`components/layout/Header.tsx` gets `{ href: '#services', label: dict.nav.services }` in the `sections` array,
+between Parcours and Contact, so nav order matches homepage order: Travaux → Compétences → Parcours → Services →
+Contact.
+
+- [ ] **Step 1: Write the failing tests, run them to confirm failure, implement, and run again to confirm they pass**
+
+`tests/unit/services.test.tsx` covers, for both locales: every service title and description renders; each item's
+own two-digit index is asserted against the rendered markup inside that item's own row (not against the dictionary
+array — a component emitting a fixed placeholder instead of the position-derived index must fail this); the
+section contributes exactly one `<h2>` and one `<h3>` per service, no `<h1>`; `aria-labelledby` on the `<section>`
+matches the `<h2>` id `SectionHead` renders; the `<ol>` carries `role="list"`.
+
+`tests/unit/layout.test.tsx` gets a seventh full-bleed structural guard alongside the existing six: the `Services`
+`<section>` must not carry `max-w-6xl` while its content wrapper does.
+
+- [ ] **Step 2: Verify — `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`, `cspell`, built-output
+  greps for both locales (one `<main>`, one `<h1>`, Services present, nav order), 320px overflow check**
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add -A
+git commit -m "$(cat <<'EOF'
+Add Services section between About and Contact
+
+Employer-first ordering: a services block above About would read as
+"freelancer" to a recruiter scanning for a full-stack hire. Three
+services ship, each mapped to delivered evidence in the CV.
 
 Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
 EOF

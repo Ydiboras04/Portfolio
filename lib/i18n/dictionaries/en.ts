@@ -6,7 +6,7 @@ export const en: Dictionary = {
     description:
       'Full-stack developer. Custom web applications in Python, TypeScript and Rust, plus Salesforce document automation. Available remote from Antananarivo.',
   },
-  nav: { work: 'Work', skills: 'Skills', path: 'Background', contact: 'Contact', toggleLabel: 'Switch language', skipToContent: 'Skip to content' },
+  nav: { work: 'Work', skills: 'Skills', path: 'Background', services: 'Services', contact: 'Contact', toggleLabel: 'Switch language', skipToContent: 'Skip to content' },
   hero: {
     availability: 'Available — full-time & contract · Remote Europe',
     headlineBefore: 'Full-stack, and ',
@@ -62,6 +62,27 @@ export const en: Dictionary = {
       'I started in accounting — a technical baccalaureate, passed with distinction — before moving into software. That detour explains a lot: when I automate a document process, I understand the business behind it, not just the field to be mapped.',
       'Today I split my time between building web applications and Salesforce automation. Each feeds the other: writing code taught me where automation breaks, and automating taught me to listen before I build.',
       'I am based in Antananarivo and work in UTC+3 — a timezone that overlaps the entire European working day.',
+    ],
+  },
+  services: {
+    title: 'Services',
+    note: 'Available for freelance work',
+    items: [
+      {
+        title: 'Custom web applications',
+        description:
+          'End-to-end business applications in Django or Next.js — from data modelling through to production.',
+      },
+      {
+        title: 'Real-time applications',
+        description:
+          'Messaging, dashboards, notifications: interfaces that stay responsive as load grows. React and TypeScript on the client, Rust or Python on the server.',
+      },
+      {
+        title: 'API and service integration',
+        description:
+          'Connecting an application to the services it depends on: REST APIs, authentication, business tools.',
+      },
     ],
   },
   contact: {

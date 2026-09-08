@@ -6,6 +6,7 @@ import { Parcours } from '@/components/home/Parcours'
 import { About } from '@/components/home/About'
 import { Credibility } from '@/components/home/Credibility'
 import { Contact } from '@/components/home/Contact'
+import { Services } from '@/components/home/Services'
 import { SectionHead } from '@/components/home/SectionHead'
 import { getDictionary } from '@/lib/i18n'
 
@@ -81,6 +82,14 @@ describe('full-bleed section structure', () => {
     const dict = getDictionary('fr')
     const { container } = render(<About dict={dict} />)
     const section = container.querySelector('#a-propos') as HTMLElement
+    expect(section.className).not.toContain('max-w-6xl')
+    expect(findMaxW6xlChild(section)).toBeTruthy()
+  })
+
+  it('Services: section carries no width constraint; its content wrapper does', () => {
+    const dict = getDictionary('fr')
+    const { container } = render(<Services dict={dict} />)
+    const section = container.querySelector('#services') as HTMLElement
     expect(section.className).not.toContain('max-w-6xl')
     expect(findMaxW6xlChild(section)).toBeTruthy()
   })
