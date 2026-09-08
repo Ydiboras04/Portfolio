@@ -1,0 +1,48 @@
+{
+  "version": "0.2",
+  "language": "en,fr",
+  "import": ["@cspell/dict-fr-fr/cspell-ext.json"],
+  "ignorePaths": [
+    "node_modules/**",
+    ".next/**",
+    "out/**",
+    ".superpowers/**",
+    "package-lock.json",
+    "public/**",
+    "*.pdf",
+    "*.docx"
+  ],
+  "words": [
+    "Andriamaheva",
+    "Antananarivo",
+    "Antsimondrano",
+    "botcheck",
+    "CIDST",
+    "cspell",
+    "ESMIA",
+    "hreflang",
+    "Itaosy",
+    "Ivandry",
+    "JLPT",
+    "jsdom",
+    "Mahamasina",
+    "Malagasy",
+    "MIAGE",
+    "Mitia",
+    "Nomeny",
+    "noscript",
+    "opengraph",
+    "PGI",
+    "ROHY",
+    "Soluchat",
+    "Solumada",
+    "Tahina",
+    "Tsimbazaza",
+    "Turbopack",
+    "Zarahay"
+  ],
+  "ignoreRegExpList": [
+    "/[a-z0-9]{20,}/",
+    "/#[0-9A-Fa-f]{3,8}\\b/"
+  ]
+}
