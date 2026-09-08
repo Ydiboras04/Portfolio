@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import LocaleLayout from '@/app/[locale]/layout'
 import RootRedirectLayout from '@/app/(root)/layout'
+import GlobalNotFound from '@/app/global-not-found'
 
 // LocaleLayout now renders Header -> LocaleSwitch, which calls usePathname().
 // Outside a real Next.js router (as here) that context is unset and
@@ -13,16 +14,21 @@ vi.mock('next/navigation', async (importOriginal) => {
   return { ...actual, usePathname: () => '/fr/' }
 })
 
-// The app has two independent root layouts (see the multiple-root-layouts
-// note in task-2-report.md for why: app/[locale]/layout.tsx and
-// app/(root)/layout.tsx each render their own <html>/<body>). Each wires the
-// same three next/font/google families independently, because font-loader
-// calls must be literal top-level consts in the file that uses them. That
+// The app has three independent root-level files that each render their own
+// <html>/<body>, because the site has no single shared app/layout.tsx:
+// app/[locale]/layout.tsx, app/(root)/layout.tsx, and app/global-not-found.tsx
+// (see the multiple-root-layouts note in task-2-report.md for why the first
+// two exist, and next.config.ts for why the third does). Each wires the same
+// three next/font/google families independently, because font-loader calls
+// must be literal top-level consts in the file that uses them. That
 // duplication is exactly the shape of bug this suite exists to catch: a
-// layout that forgets to wire a font is invisible unless something asserts
-// against it specifically. assertFontVariablesOnBody is called once per
-// layout below so that adding a third root layout without a matching call
-// here is a visible gap in this file, not a silent one.
+// root-level file that forgets to wire a font is invisible unless something
+// asserts against it specifically -- global-not-found.tsx did, silently,
+// until this file's own coverage caught up to it. assertFontVariablesOnBody
+// is called once per root-level file below -- three calls for three files --
+// so adding a fourth without a matching call here is a visible gap in this
+// file (one more root-level file than assertFontVariablesOnBody call sites),
+// not a silent one.
 function assertFontVariablesOnBody(): void {
   expect(document.body.className).toContain('--font-space-grotesk')
   expect(document.body.className).toContain('--font-plex-sans')
@@ -70,5 +76,22 @@ describe('root redirect layout', () => {
   it('sets html lang to the default locale', () => {
     render(<RootRedirectLayout><span /></RootRedirectLayout>)
     expect(document.documentElement.lang).toBe('fr')
+  })
+})
+
+describe('global not-found page', () => {
+  // GlobalNotFound bypasses normal rendering (see next.config.ts's
+  // globalNotFound note) and returns its own full <html>/<body>, so it needs
+  // its own font wiring the same as the two layouts above -- and, until now,
+  // silently didn't have it: the page still rendered, dark and on-brand in
+  // every colour, just in generic system fonts instead of the site's three.
+  it('renders', () => {
+    render(<GlobalNotFound />)
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
+  })
+
+  it('applies all three font variables to the body', () => {
+    render(<GlobalNotFound />)
+    assertFontVariablesOnBody()
   })
 })
