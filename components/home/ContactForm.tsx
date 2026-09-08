@@ -14,12 +14,26 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    // Captured before the await: currentTarget is null once React pools past the tick.
+    const formEl = event.currentTarget
     setStatus('sending')
-    const form = new FormData(event.currentTarget)
+    const form = new FormData(formEl)
     form.append('access_key', process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? '')
+
+    // Not a dictionary string: this is the subject line in the site owner's own
+    // inbox, never shown to a visitor, so it stays in his language regardless of
+    // which locale the sender was browsing.
+    const senderName = String(form.get('name') ?? '').trim()
+    form.append('subject', senderName ? `Portfolio — message de ${senderName}` : 'Portfolio — nouveau message')
+
     try {
       const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: form })
-      setStatus(response.ok ? 'sent' : 'failed')
+      if (response.ok) {
+        setStatus('sent')
+        formEl.reset()
+      } else {
+        setStatus('failed')
+      }
     } catch {
       setStatus('failed')
     }
@@ -27,6 +41,21 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
 
   return (
     <form onSubmit={onSubmit} className="flex w-full max-w-sm flex-col gap-3">
+      {/* Web3Forms honeypot. The access key is public by design in a static site,
+          so the endpoint is a spam target; bots fill hidden fields and Web3Forms
+          rejects any submission where this is checked. Kept out of the tab order
+          and the accessibility tree so it can never trap a keyboard or screen
+          reader user. */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        className="hidden"
+        style={{ display: 'none' }}
+        tabIndex={-1}
+        aria-hidden="true"
+        autoComplete="off"
+      />
+
       <div>
         <label htmlFor="cf-name" className="label mb-1 block">{dict.contact.nameField}</label>
         <input id="cf-name" name="name" required autoComplete="name" className={FIELD} />
