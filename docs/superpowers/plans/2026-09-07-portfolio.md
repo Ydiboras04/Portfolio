@@ -23,7 +23,7 @@ Every task's requirements implicitly include this section. Values are copied ver
 - **`prefers-reduced-motion: reduce` is a first-class path:** transforms drop to opacity-only or instant; hairlines static; cursor reticle and status pulse disabled.
 - **Locales:** `fr` (default) and `en`. Every user-facing string lives in a dictionary — no hardcoded copy in components.
 - **Quality gates:** Lighthouse ≥ 95 all four categories mobile+desktop; zero `axe` violations; full keyboard navigation with visible focus; correct at 320px width.
-- **Confidentiality:** no client names and no client data in copy, screenshots, or commit messages. The Salesforce client is referred to only as "un intégrateur Salesforce européen" / "a European Salesforce integrator".
+- **Confidentiality:** no client names and no client data in copy, screenshots, or commit messages. The employer is referred to only as "un intégrateur Salesforce" / "a Salesforce integrator" — it is based in Madagascar, not Europe — and its clients only as "des clients européens" / "European clients". No client of the employer is ever named.
 
 ---
 
@@ -1044,7 +1044,7 @@ export function StatusDot() {
 Run: `npm test -- motion`
 Expected: PASS.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -1632,7 +1632,7 @@ In `app/[locale]/page.tsx`, import `Work` and render `<Work locale={locale} dict
 Run: `npm test -- work`
 Expected: PASS.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -1867,7 +1867,7 @@ In `app/[locale]/page.tsx`, import and render `<Skills dict={dict} />`, `<Parcou
 Run: `npm test -- skills`
 Expected: PASS.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -2147,7 +2147,7 @@ In `app/[locale]/page.tsx`, import and render `<Contact dict={dict} />` last.
 Run: `npm test -- contact`
 Expected: PASS, all four assertions.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -2210,12 +2210,33 @@ describe('case studies', () => {
 
 The first assertion is the one that matters: it makes `projects.hasCaseStudy` and the actual MDX files impossible to drift apart.
 
-- [ ] **Step 2: Run to verify failure**
+- [ ] **Step 2: Teach Vitest to read MDX**
+
+The test above imports `.mdx` directly. `vitest.config.ts` carries only the React plugin, so without an MDX plugin
+the import fails on a syntax error that has nothing to do with the code under test.
+
+```bash
+npm install -D @mdx-js/rollup
+```
+
+Add it to `vitest.config.ts`'s plugins, **before** `react()`:
+
+```ts
+import mdx from '@mdx-js/rollup'
+// ...
+plugins: [mdx(), react()],
+```
+
+This is a second MDX toolchain alongside Next's own, so an MDX feature that works under Vitest could still differ
+in the build — Step 8's `npm run build` is what catches that.
+
+- [ ] **Step 3: Run to verify failure**
 
 Run: `npm test -- case-studies`
-Expected: FAIL — module not found.
+Expected: FAIL — module not found (an MDX *parse* error here means the plugin is misconfigured, not that the
+test is correctly red).
 
-- [ ] **Step 3: Add the MDX components file**
+- [ ] **Step 4: Add the MDX components file**
 
 `mdx-components.tsx` at the project root — required by `@next/mdx`:
 
@@ -2242,7 +2263,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 }
 ```
 
-- [ ] **Step 4: Implement the case study registry**
+- [ ] **Step 5: Implement the case study registry**
 
 `lib/content/case-studies.ts`:
 
@@ -2276,7 +2297,7 @@ export async function loadCaseStudy(slug: CaseStudySlug, locale: Locale): Promis
 
 Static import paths keep every case study in the build graph, which `output: 'export'` requires.
 
-- [ ] **Step 5: Write the case study content**
+- [ ] **Step 6: Write the case study content**
 
 Each file follows the spec's fixed template. `content/case-studies/soluchat.fr.mdx` — **Nomeny writes the real prose; this is the structure with placeholder-free starter text he replaces:**
 
@@ -2364,9 +2385,9 @@ clients européens. Les modèles restent maintenus par les équipes métier.
 
 Then write `soluchat.en.mdx` and `automatisation.en.mdx` as direct English translations of the two French files, keeping the six headings in the order given by `Dictionary.caseStudy`.
 
-**These four files are starter drafts.** They are structurally complete and safe to ship, but Nomeny replaces the prose with the real detail — the actual numbers, the actual failures — because the specificity is the whole point of the case study. **Per the Global Constraints, the client is named only as "un intégrateur Salesforce européen" / "a European Salesforce integrator".**
+**These four files are starter drafts.** They are structurally complete and safe to ship, but Nomeny replaces the prose with the real detail — the actual numbers, the actual failures — because the specificity is the whole point of the case study. **Per the Global Constraints, the employer is named only as "un intégrateur Salesforce" (it is in Madagascar, not Europe) and its clients only as "des clients européens" / "European clients".**
 
-- [ ] **Step 6: Implement the case study page**
+- [ ] **Step 7: Implement the case study page**
 
 `app/[locale]/travaux/[slug]/page.tsx`:
 
@@ -2425,7 +2446,7 @@ export default async function CaseStudyPage(
 }
 ```
 
-- [ ] **Step 7: Run tests and confirm every page exports**
+- [ ] **Step 8: Run tests and confirm every page exports**
 
 ```bash
 npm test -- case-studies && npm run build
@@ -2434,7 +2455,7 @@ ls out/fr/travaux/soluchat/index.html out/en/travaux/automatisation/index.html
 
 Expected: tests PASS, both files exist.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -2621,7 +2642,7 @@ npm test && npm run build && ls out/sitemap.xml
 
 Expected: PASS, sitemap present.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -2813,7 +2834,7 @@ node -e "for (const f of ['desktop','mobile']) { const r = require('./lighthouse
 
 Expected: every category ≥ 95 on both. Add `lighthouse-*.json` to `.gitignore`.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add -A
