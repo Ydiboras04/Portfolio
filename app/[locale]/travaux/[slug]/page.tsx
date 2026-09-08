@@ -24,6 +24,17 @@ export async function generateMetadata(
       canonical: `/${locale}/travaux/${slug}/`,
       languages: Object.fromEntries(locales.map((l) => [l, `/${l}/travaux/${slug}/`])),
     },
+    // Without this, Next's mergeMetadata fills the key this segment doesn't
+    // return from the layout above -- the layout's whole `openGraph`
+    // object, homepage title and description included -- so every case
+    // study's link preview would show the homepage's card instead of its
+    // own. Same bug `alternates` was fixed for above; see metadata.test.ts.
+    openGraph: {
+      title: `${copy.name} — Nomeny Mitia Andriamaheva`,
+      description: copy.description,
+      type: 'article',
+      locale: locale === 'fr' ? 'fr_FR' : 'en_GB',
+    },
   }
 }
 

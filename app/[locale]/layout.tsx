@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Space_Grotesk, IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
-import { locales, isLocale } from '@/lib/i18n/config'
+import { locales, defaultLocale, isLocale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
@@ -34,7 +34,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: dict.meta.description,
     alternates: {
       canonical: `/${locale}/`,
-      languages: Object.fromEntries(locales.map((l) => [l, `/${l}/`])),
+      // 'x-default' is the fallback hreflang crawlers use when none of the
+      // declared locales matches the visitor's own -- without it, a
+      // locale-agnostic visitor has no declared entry point at all, even
+      // though `/` already redirects to the default locale for a human.
+      languages: { ...Object.fromEntries(locales.map((l) => [l, `/${l}/`])), 'x-default': `/${defaultLocale}/` },
     },
     openGraph: {
       title: dict.meta.title,
