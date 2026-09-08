@@ -5,6 +5,7 @@ import { locales, isLocale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { CursorReticle } from '@/components/ui/CursorReticle'
 import { getSiteUrl } from '@/lib/site'
 import type { Metadata } from 'next'
 import '../globals.css'
@@ -72,6 +73,7 @@ export default async function LocaleLayout({
         <Header locale={locale} dict={dict} />
         <main id="main">{children}</main>
         <Footer dict={dict} />
+        <CursorReticle />
       </body>
     </html>
   )

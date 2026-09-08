@@ -7,3 +7,6 @@ out/
 .DS_Store
 next-env.d.ts
 *.tsbuildinfo
+lighthouse-*.json
+test-results/
+playwright-report/
