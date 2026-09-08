@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ContactForm } from '@/components/home/ContactForm'
 import { Contact } from '@/components/home/Contact'
 import { getDictionary } from '@/lib/i18n'
+import { CONTACT_EMAIL } from '@/lib/site'
 
 beforeEach(() => { vi.restoreAllMocks() })
 
@@ -11,8 +12,8 @@ describe('Contact', () => {
   it('always shows the email address as a fallback', () => {
     const dict = getDictionary('fr')
     render(<Contact dict={dict} />)
-    expect(screen.getByRole('link', { name: /nomenymitia\.andria@gmail\.com/i }))
-      .toHaveAttribute('href', 'mailto:nomenymitia.andria@gmail.com')
+    expect(screen.getByRole('link', { name: new RegExp(CONTACT_EMAIL.replace(/\./g, '\\.'), 'i') }))
+      .toHaveAttribute('href', `mailto:${CONTACT_EMAIL}`)
   })
 })
 

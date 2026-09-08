@@ -1,7 +1,6 @@
 import type { Dictionary } from '@/lib/i18n/types'
+import { CONTACT_EMAIL } from '@/lib/site'
 import { ContactForm } from './ContactForm'
-
-const EMAIL = 'nomenymitia.andria@gmail.com'
 
 export function Contact({ dict }: { dict: Dictionary }) {
   return (
@@ -14,8 +13,8 @@ export function Contact({ dict }: { dict: Dictionary }) {
             </h2>
             <p className="mb-5 text-[13px] leading-[1.65] text-dim">{dict.contact.body}</p>
             <p className="label mb-[7px]">{dict.contact.emailLabel}</p>
-            <a href={`mailto:${EMAIL}`} className="font-mono text-[12px] text-amber underline-offset-4 hover:underline">
-              {EMAIL}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="font-mono text-[12px] text-amber underline-offset-4 hover:underline">
+              {CONTACT_EMAIL}
             </a>
           </div>
           <ContactForm dict={dict} />

@@ -1,4 +1,5 @@
 import type { Dictionary } from '@/lib/i18n/types'
+import { CONTACT_EMAIL } from '@/lib/site'
 
 export function Footer({ dict }: { dict: Dictionary }) {
   return (
@@ -8,7 +9,7 @@ export function Footer({ dict }: { dict: Dictionary }) {
         <p className="label">
           Antananarivo, Madagascar · UTC+3
           {' · '}
-          <a href={`mailto:nomenymitia.andria@gmail.com`} className="text-amber">{dict.contact.emailLabel}</a>
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-amber">{dict.contact.emailLabel}</a>
         </p>
       </div>
     </footer>
