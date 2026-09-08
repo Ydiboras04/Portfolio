@@ -7,6 +7,10 @@
   --color-faint: #5A6470;
   --color-line:  rgba(255, 255, 255, 0.085);
   --color-amber: #E8A33D;
+  /* A lighter tint of --color-amber, not a second brand colour: the motion
+     spec calls for the amber index to "brighten" on row hover, which is a
+     colour change by definition (see globals note in Work.tsx). */
+  --color-amber-bright: #EFBF77;
 
   --font-display: var(--font-space-grotesk), sans-serif;
   --font-body:    var(--font-plex-sans), sans-serif;
@@ -42,7 +46,6 @@
   color: var(--color-faint);
 }
 
-@keyframes draw   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
 @media (prefers-reduced-motion: reduce) {

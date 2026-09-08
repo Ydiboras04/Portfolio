@@ -104,6 +104,22 @@ describe('full-bleed section structure', () => {
     expect(dl.className).toContain('max-w-6xl')
   })
 
+  // The amber span always wraps `fact.value` and, by default, renders
+  // first. For the fr locale's "Clients européens" fact, the differentiator
+  // is "européens" -- not everyone's clients are European -- so this fact
+  // needs its amber word second (`accentFirst: true`), unlike the other
+  // three facts, which put their meaningful figure first. Reverting
+  // `accentFirst`, or putting "Clients" back in the amber span, would fail
+  // one half of this each.
+  it('Credibility: highlights "européens", not "Clients", keeping the phrase in its natural order', () => {
+    const dict = getDictionary('fr')
+    const { container } = render(<Credibility dict={dict} />)
+    const dt = Array.from(container.querySelectorAll('dt')).find((el) => el.textContent === 'Clients européens')
+    expect(dt, 'no dt renders the exact phrase "Clients européens"').toBeTruthy()
+    const amber = dt!.querySelector('.text-amber')
+    expect(amber).toHaveTextContent('européens')
+  })
+
   it('Contact: border-t sits on the section, not on the constrained wrapper', () => {
     const dict = getDictionary('fr')
     const { container } = render(<Contact dict={dict} />)

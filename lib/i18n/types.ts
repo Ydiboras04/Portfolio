@@ -11,11 +11,18 @@ export interface Dictionary {
     ctaWork: string
     ctaCv: string
   }
-  credibility: Array<{ value: string; accent: string; label: string }>
+  // `value` is always the amber word, `accent` the plain qualifier beside
+  // it -- but which one reads first in the sentence is language-dependent
+  // (an adjective like "European" precedes its noun in English but follows
+  // it in French: "clients européens", never "européens clients"). Rather
+  // than force every locale into English word order to keep `value` first,
+  // `accentFirst` lets a fact render `accent` before the amber `value`
+  // while both fields keep their fixed meaning (value = amber, accent =
+  // plain). Optional and false by default, so existing entries are unaffected.
+  credibility: Array<{ value: string; accent: string; accentFirst?: boolean; label: string }>
   work: {
     title: string
     note: string
-    viewCase: string
     projects: Record<ProjectSlug, { name: string; description: string }>
   }
   skills: { title: string; note: string; groups: Array<{ level: string; items: string[] }> }

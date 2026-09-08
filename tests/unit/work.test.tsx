@@ -58,4 +58,21 @@ describe('Work', () => {
       expect(within(row as HTMLElement).getByText(project.index)).toBeInTheDocument()
     }
   })
+
+  // The motion spec calls for the amber index to brighten and the row
+  // background to lift on hover (`components/home/Work.tsx`'s own comment
+  // quotes the reasoning). `:hover` never fires in jsdom, so this can't
+  // assert the *applied* style -- it asserts the `group-hover:*` utility
+  // classes are actually present on the elements that carry them, which
+  // fails if either hover treatment is removed or only wired on the wrong
+  // element (e.g. the row instead of the index span).
+  it('wires the index-brighten and row-lift hover classes', () => {
+    const dict = getDictionary('fr')
+    const { container } = render(<Work locale="fr" dict={dict} />)
+    const row = container.querySelector('#travaux [class*="grid-cols-[26px_1fr]"]') as HTMLElement
+    expect(row).toBeTruthy()
+    expect(row.className).toContain('group-hover:bg-white/[0.03]')
+    const index = within(row).getByText(projects[0].index)
+    expect(index.className).toContain('group-hover:text-amber-bright')
+  })
 })

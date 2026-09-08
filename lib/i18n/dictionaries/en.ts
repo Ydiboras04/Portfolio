@@ -19,13 +19,15 @@ export const en: Dictionary = {
   credibility: [
     { value: 'Top', accent: ' of class', label: 'BSc Computer Science — "ROHY" cohort' },
     { value: '1 year', accent: ' in post', label: 'Plus three industry internships' },
-    { value: 'European', accent: ' clients', label: 'Document automation delivered from Antananarivo' },
+    // accentFirst: false here (explicit, matching fr.ts's use of the same key on its
+    // "Clients européens" entry) -- English's "European clients" already puts the
+    // amber word first, so no reordering is needed.
+    { value: 'European', accent: ' clients', accentFirst: false, label: 'Document automation delivered from Antananarivo' },
     { value: '4', accent: ' languages', label: 'French · English · Japanese (N4) · Malagasy' },
   ],
   work: {
     title: 'Selected work',
     note: 'Full case study',
-    viewCase: 'Read the case study',
     projects: {
       soluchat: { name: 'Soluchat', description: 'Real-time messaging built to hold up under load.' },
       automatisation: { name: 'Document automation', description: 'Document generation without mapping errors, for European clients.' },
