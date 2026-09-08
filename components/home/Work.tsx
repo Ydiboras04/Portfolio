@@ -19,7 +19,7 @@ export function Work({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           const row = (
             <div className="grid grid-cols-[26px_1fr] items-center gap-4 border-b border-line py-4
                             transition-colors duration-150 ease-(--ease-instrument)
-                            md:grid-cols-[32px_1.5fr_1.3fr_150px_54px] group-hover:border-amber/25">
+                            md:grid-cols-[32px_1fr_2fr_150px_54px] group-hover:border-amber/25">
               <span className="font-mono text-[10px] text-amber">{project.index}</span>
               <span className="font-display text-[16.5px] font-medium tracking-[-0.018em]">{copy.name}</span>
               <span className="hidden text-[12.5px] leading-[1.55] text-dim md:block">{copy.description}</span>
