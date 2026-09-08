@@ -28,7 +28,20 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: form })
-      if (response.ok) {
+      // A 2xx status only means Web3Forms accepted the request, not that it
+      // delivered the message — its spam heuristic can reject a legitimate
+      // submission while still answering 200, with `success: false` in the
+      // body. response.json() can itself throw on a non-JSON body, so that
+      // (and a network failure from fetch itself) must also read as "failed"
+      // rather than let an exception skip past setStatus entirely.
+      let delivered = false
+      try {
+        const data = (await response.json()) as { success?: boolean }
+        delivered = response.ok && data?.success === true
+      } catch {
+        delivered = false
+      }
+      if (delivered) {
         setStatus('sent')
         formEl.reset()
       } else {
@@ -50,7 +63,6 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
         type="checkbox"
         name="botcheck"
         className="hidden"
-        style={{ display: 'none' }}
         tabIndex={-1}
         aria-hidden="true"
         autoComplete="off"

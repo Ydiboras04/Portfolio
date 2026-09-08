@@ -46,4 +46,21 @@ describe('ContactForm', () => {
     await userEvent.click(screen.getByRole('button', { name: dict.contact.submit }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(dict.contact.error))
   })
+
+  // Web3Forms can answer with a 2xx status whose JSON body carries
+  // `success: false` — its own spam heuristic rejecting a legitimate
+  // submission. `response.ok` alone can't see that: only the body can. A
+  // component that trusts HTTP status alone tells the visitor "Message
+  // sent" while nothing was delivered and the visitor is never pointed
+  // back to the fallback email address.
+  it('reports an error when the endpoint returns 2xx but success: false in the body', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ success: false }) }))
+    const dict = getDictionary('fr')
+    render(<ContactForm dict={dict} />)
+    await userEvent.type(screen.getByLabelText(dict.contact.nameField), 'Camille')
+    await userEvent.type(screen.getByLabelText(dict.contact.emailField), 'c@example.com')
+    await userEvent.type(screen.getByLabelText(dict.contact.messageField), 'Bonjour')
+    await userEvent.click(screen.getByRole('button', { name: dict.contact.submit }))
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(dict.contact.error))
+  })
 })

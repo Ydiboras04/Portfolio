@@ -74,7 +74,7 @@ export const fr: Dictionary = {
     submit: 'Envoyer',
     sending: 'Envoi…',
     success: 'Message envoyé. Je vous réponds sous 24 h.',
-    error: "L'envoi a échoué. Écrivez-moi directement à l'adresse ci-dessus.",
+    error: "L'envoi a échoué. Écrivez-moi directement à l'adresse indiquée.",
   },
   caseStudy: {
     context: 'Contexte',

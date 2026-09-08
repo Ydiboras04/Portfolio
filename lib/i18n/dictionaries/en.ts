@@ -74,7 +74,7 @@ export const en: Dictionary = {
     submit: 'Send',
     sending: 'Sending…',
     success: "Message sent. I'll reply within 24 hours.",
-    error: 'Sending failed. Please email me directly at the address above.',
+    error: 'Sending failed. Please email me directly at the address shown.',
   },
   caseStudy: {
     context: 'Context',

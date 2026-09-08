@@ -545,7 +545,7 @@ export const fr: Dictionary = {
     submit: 'Envoyer',
     sending: 'Envoi…',
     success: 'Message envoyé. Je vous réponds sous 24 h.',
-    error: "L'envoi a échoué. Écrivez-moi directement à l'adresse ci-dessus.",
+    error: "L'envoi a échoué. Écrivez-moi directement à l'adresse indiquée.",
   },
   caseStudy: {
     context: 'Contexte',
@@ -640,7 +640,7 @@ export const en: Dictionary = {
     submit: 'Send',
     sending: 'Sending…',
     success: "Message sent. I'll reply within 24 hours.",
-    error: 'Sending failed. Please email me directly at the address above.',
+    error: 'Sending failed. Please email me directly at the address shown.',
   },
   caseStudy: {
     context: 'Context',
@@ -1947,8 +1947,39 @@ describe('ContactForm', () => {
     await userEvent.click(screen.getByRole('button', { name: dict.contact.submit }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(dict.contact.error))
   })
+
+  // Web3Forms can answer with a 2xx status whose JSON body carries
+  // `success: false` — its own spam heuristic rejecting a legitimate
+  // submission. `response.ok` alone can't see that: only the body can. A
+  // component that trusts HTTP status alone tells the visitor "Message
+  // sent" while nothing was delivered and the visitor is never pointed
+  // back to the fallback email address.
+  it('reports an error when the endpoint returns 2xx but success: false in the body', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ success: false }) }))
+    const dict = getDictionary('fr')
+    render(<ContactForm dict={dict} />)
+    await userEvent.type(screen.getByLabelText(dict.contact.nameField), 'Camille')
+    await userEvent.type(screen.getByLabelText(dict.contact.emailField), 'c@example.com')
+    await userEvent.type(screen.getByLabelText(dict.contact.messageField), 'Bonjour')
+    await userEvent.click(screen.getByRole('button', { name: dict.contact.submit }))
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(dict.contact.error))
+  })
 })
 ```
+
+This last test is the one that would have caught the original bug: the component's first implementation
+decided success from `response.ok` alone, which reads a 2xx-with-`success:false` response (Web3Forms' spam
+heuristic false-positiving on a real message) as delivered and shows the visitor "Message sent" while nothing
+went out. Fixed by reading `response.json()` and requiring both `response.ok` and `data.success === true`,
+with `response.json()` itself guarded by a nested `try`/`catch` since a non-JSON body would otherwise throw
+past the status update.
+
+Also added, in a separate `tests/unit/layout.test.tsx`: cheap `className`-only structural assertions (jsdom has
+no layout engine, so nothing here can check actual geometry) that each restructured section's `<section>`
+element carries no `max-w-6xl` while its content wrapper does, that `SectionHead`'s heading row is constrained
+while `Rule` is not, and that the Work row's desktop grid template keeps the `1fr_2fr` title:description ratio.
+Every one of these was proven to fail by deliberately reverting the relevant class, running the suite, and
+restoring it — see `fullbleed-report.md` for the captured failures.
 
 - [ ] **Step 2: Run to verify failure**
 
@@ -1990,7 +2021,20 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: form })
-      if (response.ok) {
+      // A 2xx status only means Web3Forms accepted the request, not that it
+      // delivered the message — its spam heuristic can reject a legitimate
+      // submission while still answering 200, with `success: false` in the
+      // body. response.json() can itself throw on a non-JSON body, so that
+      // (and a network failure from fetch itself) must also read as "failed"
+      // rather than let an exception skip past setStatus entirely.
+      let delivered = false
+      try {
+        const data = (await response.json()) as { success?: boolean }
+        delivered = response.ok && data?.success === true
+      } catch {
+        delivered = false
+      }
+      if (delivered) {
         setStatus('sent')
         formEl.reset()
       } else {
@@ -2012,7 +2056,6 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
         type="checkbox"
         name="botcheck"
         className="hidden"
-        style={{ display: 'none' }}
         tabIndex={-1}
         aria-hidden="true"
         autoComplete="off"
