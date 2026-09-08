@@ -2735,11 +2735,18 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: './tests/e2e',
-  use: { baseURL: 'http://localhost:3000' },
+  use: { baseURL: 'http://localhost:4173' },
   webServer: {
-    command: 'npx serve out -l 3000',
-    url: 'http://localhost:3000/fr/',
-    reuseExistingServer: !process.env.CI,
+    // Port 4173, not 3000, and reuseExistingServer: false — both deliberate.
+    // A stray `next dev` on :3000 was once silently adopted by Playwright
+    // instead of starting `npx serve out`, so the whole e2e suite and both
+    // Lighthouse runs measured dev-mode output rather than the shipped static
+    // export. Desktop performance read 65 instead of 100 purely from that, with
+    // no test failure to flag it. 3000 is one `npm run dev` away from collision
+    // at any moment; a leftover process on 4173 now fails loudly instead.
+    command: 'npx serve out -l 4173',
+    url: 'http://localhost:4173/fr/',
+    reuseExistingServer: false,
     timeout: 60_000,
   },
   projects: [
