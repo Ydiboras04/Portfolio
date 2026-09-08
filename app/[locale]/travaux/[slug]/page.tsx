@@ -17,7 +17,14 @@ export async function generateMetadata(
   if (!isLocale(locale) || !hasCaseStudy(slug)) return {}
   const dict = getDictionary(locale)
   const copy = dict.work.projects[slug]
-  return { title: `${copy.name} — Nomeny Mitia Andriamaheva`, description: copy.description }
+  return {
+    title: `${copy.name} — Nomeny Mitia Andriamaheva`,
+    description: copy.description,
+    alternates: {
+      canonical: `/${locale}/travaux/${slug}/`,
+      languages: Object.fromEntries(locales.map((l) => [l, `/${l}/travaux/${slug}/`])),
+    },
+  }
 }
 
 export default async function CaseStudyPage(

@@ -5,6 +5,7 @@ import { locales, isLocale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { getSiteUrl } from '@/lib/site'
 import type { Metadata } from 'next'
 import '../globals.css'
 
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!isLocale(locale)) return {}
   const dict = getDictionary(locale)
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nomeny.dev'),
+    metadataBase: new URL(getSiteUrl()),
     title: dict.meta.title,
     description: dict.meta.description,
     alternates: {
