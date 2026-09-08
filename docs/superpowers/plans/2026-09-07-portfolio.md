@@ -1377,8 +1377,8 @@ import type { Dictionary } from '@/lib/i18n/types'
 
 export function Credibility({ dict }: { dict: Dictionary }) {
   return (
-    <section className="mx-auto max-w-6xl px-5 sm:px-12">
-      <dl className="grid grid-cols-2 border-y border-line md:grid-cols-4">
+    <section className="border-y border-line">
+      <dl className="mx-auto grid max-w-6xl grid-cols-2 px-5 sm:px-12 md:grid-cols-4">
         {dict.credibility.map((fact) => (
           <div key={fact.label} className="border-line px-4 py-[17px] max-md:odd:pl-0 md:border-r md:pl-4 md:first:pl-0 md:last:border-r-0">
             {/* Amber goes on `value` — the word that carries the meaning ("Major", "1 an",
@@ -1546,7 +1546,7 @@ import { Rule } from '@/components/ui/Rule'
 export function SectionHead({ id, title, note }: { id: string; title: string; note: string }) {
   return (
     <div className="mt-11">
-      <div className="flex items-baseline justify-between pb-[10px]">
+      <div className="mx-auto flex max-w-6xl items-baseline justify-between px-5 pb-[10px] sm:px-12">
         <h2 id={id} className="font-display text-[15px] font-semibold tracking-[-0.015em]">{title}</h2>
         <span className="label">{note}</span>
       </div>
@@ -1555,6 +1555,10 @@ export function SectionHead({ id, title, note }: { id: string; title: string; no
   )
 }
 ```
+
+`SectionHead` constrains only its own heading row; `<Rule />` is left unconstrained (it is already `w-full`)
+so that once its parent — the section, now full width — no longer clips it, the hairline runs edge to edge
+while the title/note stay lined up with the rest of the page's content measure.
 
 - [ ] **Step 5: Implement Work**
 
@@ -1570,52 +1574,54 @@ import { Reveal } from '@/components/ui/Reveal'
 
 export function Work({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
-    <section id="travaux" aria-labelledby="travaux-title" className="mx-auto max-w-6xl px-5 sm:px-12">
+    <section id="travaux" aria-labelledby="travaux-title">
       <SectionHead id="travaux-title" title={dict.work.title} note={dict.work.note} />
 
-      {/* role="list" is redundant in the HTML spec but not in practice: Tailwind's
-          reset sets list-style:none, which makes WebKit/VoiceOver drop the list
-          role entirely. axe cannot catch this — it is AT behaviour, not static DOM. */}
-      <ul role="list">
-        {projects.map((project, i) => {
-          const copy = dict.work.projects[project.slug]
-          // Column ratio is 1fr:2fr, not 1.5fr:1.3fr. Project titles need about
-          // 240px; the wider share left ~500px of dead space between a title and
-          // its description, so each row read as two disconnected clusters rather
-          // than one line of information.
-          const row = (
-            <div className="grid grid-cols-[26px_1fr] items-center gap-4 border-b border-line py-4
-                            transition-colors duration-150 ease-instrument
-                            md:grid-cols-[32px_1fr_2fr_150px_54px] group-hover:border-amber/25">
-              <span className="font-mono text-[10px] text-amber">{project.index}</span>
-              <span className="font-display text-[16.5px] font-medium tracking-[-0.018em]">{copy.name}</span>
-              <span className="hidden text-[12.5px] leading-[1.55] text-dim md:block">{copy.description}</span>
-              <span className="hidden font-mono text-[10px] text-faint md:block">{project.stack.join(' · ')}</span>
-              <span className="hidden text-right font-mono text-[10px] text-faint md:block">{project.year}</span>
-            </div>
-          )
+      <div className="mx-auto max-w-6xl px-5 sm:px-12">
+        {/* role="list" is redundant in the HTML spec but not in practice: Tailwind's
+            reset sets list-style:none, which makes WebKit/VoiceOver drop the list
+            role entirely. axe cannot catch this — it is AT behaviour, not static DOM. */}
+        <ul role="list">
+          {projects.map((project, i) => {
+            const copy = dict.work.projects[project.slug]
+            const row = (
+              <div className="grid grid-cols-[26px_1fr] items-center gap-4 border-b border-line py-4
+                              transition-colors duration-150 ease-instrument
+                              md:grid-cols-[32px_1fr_2fr_150px_54px] group-hover:border-amber/25">
+                <span className="font-mono text-[10px] text-amber">{project.index}</span>
+                <span className="font-display text-[16.5px] font-medium tracking-[-0.018em]">{copy.name}</span>
+                <span className="hidden text-[12.5px] leading-[1.55] text-dim md:block">{copy.description}</span>
+                <span className="hidden font-mono text-[10px] text-faint md:block">{project.stack.join(' · ')}</span>
+                <span className="hidden text-right font-mono text-[10px] text-faint md:block">{project.year}</span>
+              </div>
+            )
 
-          return (
-            <li key={project.slug}>
-              <Reveal delay={i * 40}>
-                {project.hasCaseStudy ? (
-                  <Link href={`/${locale}/travaux/${project.slug}/`} className="group block">{row}</Link>
-                ) : (
-                  // No `group` class here: the row markup carries
-                  // `group-hover:border-amber/25`, and binding it on a
-                  // non-interactive row would signal "clickable" in the one
-                  // colour reserved for wayfinding, on a row that goes nowhere.
-                  <div>{row}</div>
-                )}
-              </Reveal>
-            </li>
-          )
-        })}
-      </ul>
+            return (
+              <li key={project.slug}>
+                <Reveal delay={i * 40}>
+                  {project.hasCaseStudy ? (
+                    <Link href={`/${locale}/travaux/${project.slug}/`} className="group block">{row}</Link>
+                  ) : (
+                    // No `group` class here: the row markup carries
+                    // `group-hover:border-amber/25`, and binding it on a
+                    // non-interactive row would signal "clickable" in the one
+                    // colour reserved for wayfinding, on a row that goes nowhere.
+                    <div>{row}</div>
+                  )}
+                </Reveal>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </section>
   )
 }
 ```
+
+The section itself is now full width; `<SectionHead>` and this inner `max-w-6xl` wrapper each constrain their
+own content, so the row `border-b` above stays scoped to the row's own width while `SectionHead`'s `<Rule />`
+spans edge to edge.
 
 - [ ] **Step 6: Add Work to the homepage**
 
@@ -1738,36 +1744,42 @@ import { Reveal } from '@/components/ui/Reveal'
 
 export function Skills({ dict }: { dict: Dictionary }) {
   return (
-    <section id="competences" aria-labelledby="competences-title" className="mx-auto max-w-6xl px-5 sm:px-12">
+    <section id="competences" aria-labelledby="competences-title">
       <SectionHead id="competences-title" title={dict.skills.title} note={dict.skills.note} />
 
-      <dl>
-        {dict.skills.groups.map((group, i) => (
-          {/* The grid classes go on Reveal's own wrapper. A second <div> inside it
-              would give <dl> > div > div > dt, which the HTML content model
-              forbids: a div wrapping a dt/dd pair must contain them directly. */}
-          <Reveal
-            key={group.level}
-            delay={i * 40}
-            className="grid grid-cols-1 items-start gap-2 border-b border-line py-[14px] sm:grid-cols-[118px_1fr] sm:gap-4"
-          >
-            <dt className={`label pt-1 ${i === dict.skills.groups.length - 1 ? '' : 'text-amber'}`}>
-              {group.level}
-            </dt>
-            <dd className="flex flex-wrap gap-[7px]">
-              {group.items.map((item) => (
-                <span key={item} className="rounded-[3px] border border-line px-[9px] py-1 text-[12px]">
-                  {item}
-                </span>
-              ))}
-            </dd>
-          </Reveal>
-        ))}
-      </dl>
+      <div className="mx-auto max-w-6xl px-5 sm:px-12">
+        <dl>
+          {dict.skills.groups.map((group, i) => (
+            // The grid classes go on Reveal's own wrapper. A second <div> inside it
+            // would give <dl> > div > div > dt, which the HTML content model
+            // forbids: a div wrapping a dt/dd pair must contain them directly.
+            <Reveal
+              key={group.level}
+              delay={i * 40}
+              className="grid grid-cols-1 items-start gap-2 border-b border-line py-[14px] sm:grid-cols-[118px_1fr] sm:gap-4"
+            >
+              <dt className={`label pt-1 ${i === dict.skills.groups.length - 1 ? '' : 'text-amber'}`}>
+                {group.level}
+              </dt>
+              <dd className="flex flex-wrap gap-[7px]">
+                {group.items.map((item) => (
+                  <span key={item} className="rounded-[3px] border border-line px-[9px] py-1 text-[12px]">
+                    {item}
+                  </span>
+                ))}
+              </dd>
+            </Reveal>
+          ))}
+        </dl>
+      </div>
     </section>
   )
 }
 ```
+
+The `mx-auto max-w-6xl px-5 sm:px-12` wrapper sits **outside** the `<dl>`, not between it and its `dt`/`dd`
+groups — so the HTML content-model constraint the comment above describes still holds; only the section
+element that used to carry those classes lost them.
 
 The last group ("Notions" / "Familiar") deliberately keeps the faint label colour — amber is reserved for claims backed by production work.
 
@@ -1782,29 +1794,31 @@ import { Reveal } from '@/components/ui/Reveal'
 
 export function Parcours({ dict }: { dict: Dictionary }) {
   return (
-    <section id="parcours" aria-labelledby="parcours-title" className="mx-auto max-w-6xl px-5 sm:px-12">
+    <section id="parcours" aria-labelledby="parcours-title">
       <SectionHead id="parcours-title" title={dict.parcours.title} note={dict.parcours.note} />
 
-      {/* role="list" for the same reason as Work's <ul>: Tailwind's reset sets
-          list-style:none, which makes WebKit/VoiceOver drop the list role. axe
-          cannot detect it, so deferring it means never catching it. */}
-      <ol role="list">
-        {dict.parcours.entries.map((entry, i) => (
-          <li key={`${entry.period}-${entry.role}`}>
-            <Reveal delay={i * 40}>
-              <div className="grid grid-cols-1 gap-1 border-b border-line py-[14px] sm:grid-cols-[118px_1fr] sm:gap-4">
-                <span className="font-mono text-[10px] text-faint sm:pt-[3px]">{entry.period}</span>
-                <div>
-                  <h3 className="mb-[3px] font-display text-[14.5px] font-medium tracking-[-0.015em]">{entry.role}</h3>
-                  <p className="text-[12px] text-dim">
-                    <span className="font-medium text-amber">{entry.org}</span> — {entry.detail}
-                  </p>
+      <div className="mx-auto max-w-6xl px-5 sm:px-12">
+        {/* role="list" for the same reason as Work's <ul>: Tailwind's reset sets
+            list-style:none, which makes WebKit/VoiceOver drop the list role. axe
+            cannot detect it, so deferring it means never catching it. */}
+        <ol role="list">
+          {dict.parcours.entries.map((entry, i) => (
+            <li key={`${entry.period}-${entry.role}`}>
+              <Reveal delay={i * 40}>
+                <div className="grid grid-cols-1 gap-1 border-b border-line py-[14px] sm:grid-cols-[118px_1fr] sm:gap-4">
+                  <span className="font-mono text-[10px] text-faint sm:pt-[3px]">{entry.period}</span>
+                  <div>
+                    <h3 className="mb-[3px] font-display text-[14.5px] font-medium tracking-[-0.015em]">{entry.role}</h3>
+                    <p className="text-[12px] text-dim">
+                      <span className="font-medium text-amber">{entry.org}</span> — {entry.detail}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Reveal>
-          </li>
-        ))}
-      </ol>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   )
 }
@@ -1821,20 +1835,22 @@ import { Reveal } from '@/components/ui/Reveal'
 
 export function About({ dict }: { dict: Dictionary }) {
   return (
-    <section id="a-propos" aria-labelledby="a-propos-title" className="mx-auto max-w-6xl px-5 sm:px-12">
+    <section id="a-propos" aria-labelledby="a-propos-title">
       <SectionHead id="a-propos-title" title={dict.about.title} note={dict.about.note} />
 
-      {/* No two-column grid here. Skills and Parcours use one because their left
-          column carries real data (levels, periods); About has none. An empty
-          cell read as an unexplained indent on desktop and collapsed into a dead
-          gap on mobile, so the prose simply starts at the left margin. */}
-      <div className="py-6">
-        <div className="max-w-[58ch]">
-          {dict.about.body.map((paragraph, i) => (
-            <Reveal key={i} delay={i * 40}>
-              <p className="mb-4 text-[13.5px] leading-[1.75] text-dim">{paragraph}</p>
-            </Reveal>
-          ))}
+      <div className="mx-auto max-w-6xl px-5 sm:px-12">
+        {/* No two-column grid here. Skills and Parcours use one because their left
+            column carries real data (levels, periods); About has none. An empty
+            cell read as an unexplained indent on desktop and collapsed into a dead
+            gap on mobile, so the prose simply starts at the left margin. */}
+        <div className="py-6">
+          <div className="max-w-[58ch]">
+            {dict.about.body.map((paragraph, i) => (
+              <Reveal key={i} delay={i * 40}>
+                <p className="mb-4 text-[13.5px] leading-[1.75] text-dim">{paragraph}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -2042,25 +2058,30 @@ const EMAIL = 'nomenymitia.andria@gmail.com'
 
 export function Contact({ dict }: { dict: Dictionary }) {
   return (
-    <section id="contact" aria-labelledby="contact-title"
-             className="mx-auto mt-11 max-w-6xl border-t border-line px-5 py-11 sm:px-12">
-      <div className="flex flex-col justify-between gap-8 md:flex-row">
-        <div className="max-w-md">
-          <h2 id="contact-title" className="mb-[10px] max-w-[18ch] font-display text-[27px] font-semibold tracking-[-0.03em]">
-            {dict.contact.title}
-          </h2>
-          <p className="mb-5 text-[13px] leading-[1.65] text-dim">{dict.contact.body}</p>
-          <p className="label mb-[7px]">{dict.contact.emailLabel}</p>
-          <a href={`mailto:${EMAIL}`} className="font-mono text-[12px] text-amber underline-offset-4 hover:underline">
-            {EMAIL}
-          </a>
+    <section id="contact" aria-labelledby="contact-title" className="mt-11 border-t border-line">
+      <div className="mx-auto max-w-6xl px-5 py-11 sm:px-12">
+        <div className="flex flex-col justify-between gap-8 md:flex-row">
+          <div className="max-w-md">
+            <h2 id="contact-title" className="mb-[10px] max-w-[18ch] font-display text-[27px] font-semibold tracking-[-0.03em]">
+              {dict.contact.title}
+            </h2>
+            <p className="mb-5 text-[13px] leading-[1.65] text-dim">{dict.contact.body}</p>
+            <p className="label mb-[7px]">{dict.contact.emailLabel}</p>
+            <a href={`mailto:${EMAIL}`} className="font-mono text-[12px] text-amber underline-offset-4 hover:underline">
+              {EMAIL}
+            </a>
+          </div>
+          <ContactForm dict={dict} />
         </div>
-        <ContactForm dict={dict} />
       </div>
     </section>
   )
 }
 ```
+
+`border-t` moved to the section itself (full width, like `Credibility`'s `border-y`) since Contact has no
+`SectionHead`/`Rule` of its own — its top border is the section-level hairline that marks the boundary, so it
+breaks out edge to edge on the same logic as every other section-level rule in this document.
 
 - [ ] **Step 5: Document the environment variable**
 
