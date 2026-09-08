@@ -34,7 +34,6 @@ test('content below the fold is genuinely visible on first paint, without scroll
 test('the cursor reticle is absent under reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/fr/')
-  await page.mouse.move(200, 200)
   await expect(page.locator('.will-change-transform')).toHaveCount(0)
 })
 
@@ -52,7 +51,6 @@ test('the cursor reticle is present on a fine pointer without reduced motion (po
 }) => {
   test.skip(isMobile, 'reticle only renders for (pointer: fine); the mobile project emulates touch')
   await page.goto('/fr/')
-  await page.mouse.move(200, 200)
   const reticle = page.locator('.will-change-transform')
   await expect(reticle).toHaveCount(1)
   await expect(reticle).toHaveAttribute('aria-hidden', 'true')

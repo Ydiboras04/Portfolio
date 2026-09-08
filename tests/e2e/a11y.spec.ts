@@ -1,7 +1,17 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { locales } from '@/lib/i18n/config'
+import { caseStudySlugs } from '@/lib/content/case-studies'
 
-const PAGES = ['/fr/', '/en/', '/fr/travaux/soluchat/', '/en/travaux/automatisation/']
+// Built from locales x caseStudySlugs rather than hand-listing paths, so a
+// future case study or locale is scanned automatically instead of depending
+// on someone remembering to add it here. The original hand-picked list only
+// covered a diagonal of the case-study space (fr/soluchat, en/automatisation)
+// and silently skipped fr/automatisation and en/soluchat.
+const PAGES = [
+  ...locales.map((locale) => `/${locale}/`),
+  ...locales.flatMap((locale) => caseStudySlugs.map((slug) => `/${locale}/travaux/${slug}/`)),
+]
 
 for (const path of PAGES) {
   test(`${path} has no accessibility violations`, async ({ page }) => {
@@ -35,7 +45,11 @@ for (const path of PAGES) {
   })
 }
 
-test('every interactive element is keyboard reachable', async ({ page }) => {
+// Named for exactly what it checks — the skip link and the locale switch —
+// not "every interactive element," which this test never verified (it never
+// touches work-item links, footer links, or the contact form). An
+// overclaiming name is how someone later assumes coverage that isn't there.
+test('the skip link and locale switch are keyboard reachable', async ({ page }) => {
   await page.goto('/fr/')
   await page.keyboard.press('Tab')
   const skipLink = page.getByRole('link', { name: /aller au contenu/i })
