@@ -72,3 +72,86 @@ describe('Services', () => {
     expect(ol).toHaveAttribute('role', 'list')
   })
 })
+
+describe('Services card grid', () => {
+  // Fails if the three-up layout regresses to a single column at md (or never
+  // reaches three columns at all), or if the mobile stack is dropped so cards
+  // overflow a 320px viewport.
+  it('lays the list out as a three-column grid at md, stacked to one column below it', () => {
+    const dict = getDictionary('fr')
+    const { container } = render(<Services dict={dict} />)
+    const ol = container.querySelector('ol') as HTMLElement
+    expect(ol.className).toContain('grid')
+    expect(ol.className).toContain('grid-cols-1')
+    expect(ol.className).toContain('md:grid-cols-3')
+  })
+
+  // Fails if a card loses its hairline border, exceeds the project's 3px radius
+  // ceiling (e.g. rounded-lg), or gains a shadow/glow -- borders are the permitted
+  // exception here, elevation still is not.
+  it('gives each card a hairline border and the 3px radius ceiling, never a shadow or glow', () => {
+    const dict = getDictionary('fr')
+    render(<Services dict={dict} />)
+    dict.services.items.forEach((item) => {
+      const title = screen.getByText(item.title)
+      const row = title.closest('li') as HTMLElement
+      const card = row.firstElementChild as HTMLElement
+      expect(card.className).toContain('border')
+      expect(card.className).toContain('border-line')
+      expect(card.className).toContain('rounded-[3px]')
+      expect(card.className).not.toMatch(/shadow|glow/)
+    })
+  })
+
+  // Fails if amber spreads from the index onto the title or description --
+  // amber marks wayfinding here and nothing else in this section.
+  it('keeps amber on the index only, not on the title or description', () => {
+    const dict = getDictionary('fr')
+    render(<Services dict={dict} />)
+    dict.services.items.forEach((item) => {
+      const title = screen.getByText(item.title)
+      const description = screen.getByText(item.description)
+      expect(title.className).not.toContain('text-amber')
+      expect(description.className).not.toContain('text-amber')
+      const row = title.closest('li') as HTMLElement
+      const index = within(row).getByText(new RegExp(`^0\\d$`))
+      expect(index.className).toContain('text-amber')
+    })
+  })
+
+  // Fails if the card stops filling its <li> (dropping h-full leaves ragged
+  // bottoms once the grid stretches shorter cards to match the tallest), or if
+  // equal height is instead achieved by hard-coding a fixed height utility,
+  // which would break the moment copy length changes.
+  it('fills the row via the grid\'s stretch, with no hard-coded height', () => {
+    const dict = getDictionary('fr')
+    render(<Services dict={dict} />)
+    dict.services.items.forEach((item) => {
+      const title = screen.getByText(item.title)
+      const card = title.closest('li')!.firstElementChild as HTMLElement
+      expect(card.className).toContain('h-full')
+      expect(card.className).not.toMatch(/\bh-\[/)
+      expect(card.getAttribute('style') ?? '').not.toContain('height')
+    })
+  })
+
+  // Fails if card styling moves onto a <div> nested inside Reveal instead of
+  // staying on Reveal's own wrapper -- that extra nesting is the exact defect
+  // called out elsewhere in this build (an invalid div-in-div inside a <dl>).
+  // Here the risk is silent rather than invalid markup, so this pins the
+  // shape directly: each <li> must have exactly one element child (Reveal's
+  // own div), which must in turn hold the index, title and description
+  // directly with no wrapper of its own.
+  it("keeps each card on Reveal's own wrapper, with no extra div nested inside it", () => {
+    const dict = getDictionary('fr')
+    render(<Services dict={dict} />)
+    dict.services.items.forEach((item) => {
+      const title = screen.getByText(item.title)
+      const row = title.closest('li') as HTMLElement
+      expect(row.children).toHaveLength(1)
+      const card = row.firstElementChild as HTMLElement
+      expect(card.tagName).toBe('DIV')
+      expect(card.querySelectorAll('div')).toHaveLength(0)
+    })
+  })
+})

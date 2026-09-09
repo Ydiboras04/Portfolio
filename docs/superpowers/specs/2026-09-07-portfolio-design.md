@@ -93,7 +93,7 @@ Micro-labels are uppercase mono at ~9.5px with `.19em` tracking. Headings run ti
 
 **Structure**
 
-Hairline rules and a faint 32px background grid carry the layout. No floating cards, no glow, no border-radius above 3px. Density is a feature: a recruiter should see four projects, the stack and the timeline before scrolling twice.
+Hairline rules and a faint 32px background grid carry the layout. The one deliberate exception is Services: three parallel offers read better as bordered cards side by side than as a stacked list, so that section alone uses hairline-bordered cards on a three-column grid. Everywhere, including those cards, the rules hold: no glow, no border-radius above 3px. Density is a feature: a recruiter should see four projects, the stack and the timeline before scrolling twice.
 
 ## 7. Motion system
 
