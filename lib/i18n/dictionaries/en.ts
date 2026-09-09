@@ -54,6 +54,7 @@ export const en: Dictionary = {
       { period: '01/25 — 09/25', role: 'MSc year 1, Applied Business Computing', org: 'ESMIA Innovation', detail: 'Advanced web technologies, machine learning, advanced HCI, ERP.' },
       { period: '02/24 — 05/24', role: 'Web Developer — final-year placement', org: 'CIDST Tsimbazaza', detail: 'Collaboration platform for doctoral researchers in Angular and Django.' },
       { period: '07/23 — 09/23', role: 'Java Developer — internship', org: 'Groupe Tahina Ivandry', detail: 'Equipment tracking software in Java Swing.' },
+      { period: '07/22 — 09/22', role: 'IT Intern', org: 'National Tourism Development', detail: 'Hardware inventory, bookkeeping entries and data processing in SAGE.' },
       { period: '03/22 — 10/24', role: 'BSc Computer Science, Risk and Decision', org: 'ESMIA Innovation', detail: 'Top of class — "ROHY" cohort.' },
     ],
   },

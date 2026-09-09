@@ -56,6 +56,7 @@ export const fr: Dictionary = {
       { period: '01/25 — 09/25', role: 'Master I MIAGE', org: 'ESMIA Innovation', detail: 'Technologies web avancées, machine learning, IHM avancée, PGI.' },
       { period: '02/24 — 05/24', role: "Développeur Web — Stage de fin d'études", org: 'CIDST Tsimbazaza', detail: 'Application de collaboration pour doctorants en Angular et Django.' },
       { period: '07/23 — 09/23', role: 'Développeur Java — Stage', org: 'Groupe Tahina Ivandry', detail: "Logiciel de suivi d'équipements en Java Swing." },
+      { period: '07/22 — 09/22', role: 'Stagiaire Informatique', org: 'National Tourism Development', detail: "Inventaire du matériel informatique, saisies comptables et traitement de données sous SAGE." },
       { period: '03/22 — 10/24', role: 'Licence Informatique, Risque et Décision', org: 'ESMIA Innovation', detail: 'Major de promotion — Promotion « ROHY ».' },
     ],
   },
