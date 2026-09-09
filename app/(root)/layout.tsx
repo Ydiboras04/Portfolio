@@ -15,7 +15,10 @@ const mono = JetBrains_Mono({
 
 export default function RootRedirectLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={defaultLocale} suppressHydrationWarning>
+    // data-scroll-behavior: see the note in app/[locale]/layout.tsx. Every
+    // root-level <html> in this app needs it, because each one imports the
+    // globals.css that turns smooth scrolling on.
+    <html lang={defaultLocale} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
         {/* Reveal and Rule both render hidden and rely on IntersectionObserver.
             Without JS the observer never fires, so force the revealed/drawn

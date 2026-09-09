@@ -1,6 +1,6 @@
 # Decisions taken during the portfolio build
 
-**2026-09-07 – 2026-09-08.** Every judgement call I made on your behalf while building the site, in the
+**2026-09-07 – 2026-09-09.** Every judgement call I made on your behalf while building the site, in the
 order I made them, each with what it costs if it was wrong.
 
 These were decisions you weren't asked about — either because they were technical enough that stopping
@@ -222,3 +222,8 @@ A plain app/not-found.tsx cannot compose into either root layout here and Next w
 
 My instruction was to swap value/accent in the French entry; done literally that yields "Européens clients", which is not French. The implementer followed the intent over the letter and said so. Renders FR "Clients <amber>européens</amber>", EN "<amber>European</amber> clients" — each highlighting the differentiator, each grammatical. The key-shape parity test makes the optional field load-bearing rather than decorative, since English must declare it too.
 
+### 54. implement smooth section scrolling in CSS rather than JavaScript, and opt back into Next's route-transition override
+
+Two lines of CSS on `<html>` (`scroll-behavior: smooth`, `scroll-padding-top: 64px`) do the whole job, because the header's section links are plain `<a>` elements with same-document `#fragment` hrefs — the browser owns that scroll, not the router. The JavaScript alternative (`preventDefault` plus `scrollIntoView`) would have to re-implement two things the browser already does correctly and that are easy to get silently wrong: updating the URL hash so the position is shareable and survives Back, and moving focus to the target so a keyboard or screen-reader user actually arrives there rather than only the viewport arriving. Cost if wrong: none that degrades — a browser without `scroll-behavior` support jumps instantly, which is the previous behaviour.
+
+The second half was not optional, and I only found it because I measured rather than assumed. Through Next 15 the router forced `scroll-behavior: auto` around every SPA transition so navigation stayed instant; Next 16 dropped that override by default and gates it behind `data-scroll-behavior="smooth"` on `<html>`. Without it, the two CSS lines silently changed something nobody asked to change: clicking a Work row while scrolled down rendered the case study and *then* animated it up to the top, showing the reader the middle of the page before its title — measured at 2000 → 382 → 218 → 19 → 0 over roughly 300ms, on exactly the pages the site exists to send people to. The attribute goes on all three root-level `<html>` files, the 404 included, since each imports the stylesheet that turns smooth scrolling on and the 404's "back home" link is a route transition like any other. Cost if wrong: SILENT, the same shape as the font-wiring bug — a root-level file that misses the attribute looks fine in a green test run and merely transitions oddly in a browser, so `assertScrollBehaviorOptIn` now sits beside `assertFontVariablesOnBody` in the smoke suite, called once per root-level file for the same counting reason.

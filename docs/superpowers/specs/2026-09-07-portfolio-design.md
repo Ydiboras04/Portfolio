@@ -105,10 +105,17 @@ Character: **precise and mechanical** — an instrument needle settling, never a
 - **Row hover** — amber index brightens, background lifts a few percent, arrow slides in. 150ms.
 - **Status light** — the amber availability dot pulses slowly and continuously. It is a state indicator, not decoration.
 - **Page transitions** — 250ms crossfade with slight scale between home and case studies.
+- **In-page section jumps** — the header's section links scroll rather than cut. Sections here share one
+  hairline vocabulary, so an instant jump reads as the content having been swapped; travelling the distance is
+  what tells the reader the page moved and roughly how far. Duration and easing are the browser's on this one:
+  a full-page scroll necessarily runs past the 150–350ms budget above, which governs element-level motion, and
+  no CSS hook exposes scroll timing. Scroll targets carry a 64px offset — two background-grid cells — so a
+  section heading lands below the sticky header rather than behind it. Route changes stay instant: only
+  same-document jumps animate.
 - **Cursor reticle** (desktop only) — a small crosshair that snaps to interactive elements. The one flourish, and it fits the instrument metaphor. Disabled on touch.
 - **Explicitly rejected:** counting-up number animations (they delay comprehension and are overused), parallax, scroll-jacking, entrance animations on above-the-fold content.
 
-**`prefers-reduced-motion: reduce` is a first-class path, not a fallback.** All transforms drop to opacity-only or instant; hairlines render static; the reticle and the pulse are disabled. The European Accessibility Act has been in force since June 2025 — an animation-rich site that degrades correctly is a competence signal to exactly the employers being targeted.
+**`prefers-reduced-motion: reduce` is a first-class path, not a fallback.** All transforms drop to opacity-only or instant; hairlines render static; the reticle and the pulse are disabled; section jumps cut instead of scrolling, that being the largest single movement the site makes. The European Accessibility Act has been in force since June 2025 — an animation-rich site that degrades correctly is a competence signal to exactly the employers being targeted.
 
 **Scroll-driven and entrance animation runs on `transform` and `opacity` only** — those are the animations that
 run during scrolling, where compositing cost is real. Short hover and focus feedback on interactive elements may

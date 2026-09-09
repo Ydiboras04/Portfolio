@@ -40,7 +40,11 @@ const mono = JetBrains_Mono({
 
 export default function GlobalNotFound() {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    // data-scroll-behavior: see the note in app/[locale]/layout.tsx. This page
+    // is not exempt despite being a dead end -- its "back home" Link is a
+    // client route transition like any other, and it imports the same
+    // globals.css.
+    <html lang="fr" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={`${display.variable} ${body.variable} ${mono.variable}
           flex min-h-screen flex-col items-center justify-center gap-4 bg-bg px-5 text-center text-ink`}

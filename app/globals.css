@@ -20,7 +20,30 @@
 }
 
 @layer base {
-  html { color-scheme: dark; }
+  html {
+    color-scheme: dark;
+
+    /* The header's section links are same-document fragment hrefs on plain
+       <a> elements, so the browser -- not the router -- owns this scroll.
+       An instant jump between sections built from one hairline vocabulary
+       reads as a content swap rather than as movement; carrying the reader
+       through the intervening sections is what tells them where they are.
+       Turned off wholesale under prefers-reduced-motion below: a full-page
+       scroll is the largest movement on the site, and `scroll-behavior` is
+       neither an animation nor a transition, so the blanket duration
+       override down there does not reach it.
+
+       scroll-padding-top offsets every scroll target by two 32px background
+       grid cells. The sticky header measures 49px (47.25px below `sm:`,
+       where the section list is hidden), and section top margins collapse
+       through their <section>, so a jump with no offset parks the <h2> behind
+       the header. 64px clears it at both widths and leaves the heading a
+       grid-aligned gap below. It stays outside the reduced-motion override
+       on purpose: it is positioning, not motion, and the target has to
+       clear the header whether the scroll animates or not. */
+    scroll-behavior: smooth;
+    scroll-padding-top: 64px;
+  }
 
   body {
     background-color: var(--color-bg);
@@ -49,6 +72,9 @@
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Outside `@layer`, so it beats the base-layer rule above without !important. */
+  html { scroll-behavior: auto; }
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

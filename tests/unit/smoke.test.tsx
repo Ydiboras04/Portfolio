@@ -35,6 +35,20 @@ function assertFontVariablesOnBody(): void {
   expect(document.body.className).toContain('--font-jetbrains-mono')
 }
 
+// The same duplication hazard, one attribute over. globals.css sets
+// `scroll-behavior: smooth` on <html>, and from Next 16 the router only
+// suppresses that during SPA transitions when the <html> element carries
+// data-scroll-behavior="smooth". Every root-level file imports that stylesheet,
+// so every one of them needs the attribute; a file that renders <html> without
+// it gets the smooth scroll and none of the suppression, which shows up as a
+// route transition that animates the *new* page up to the top after it has
+// already rendered. Like the fonts, that is invisible in a green test run and
+// looks like nothing worse than a slightly odd transition in a browser. Called
+// once per root-level file below, for the same reason.
+function assertScrollBehaviorOptIn(): void {
+  expect(document.documentElement.dataset.scrollBehavior).toBe('smooth')
+}
+
 describe('locale layout', () => {
   // app/[locale]/layout.tsx is an async Server Component, so it must be
   // invoked and awaited directly to get the element tree, rather than
@@ -60,6 +74,12 @@ describe('locale layout', () => {
     render(ui)
     expect(document.documentElement.lang).toBe('en')
   })
+
+  it('carries the data-scroll-behavior opt-in on <html>', async () => {
+    const ui = await LocaleLayout({ children: <span />, params: Promise.resolve({ locale: 'fr' }) })
+    render(ui)
+    assertScrollBehaviorOptIn()
+  })
 })
 
 describe('root redirect layout', () => {
@@ -77,6 +97,11 @@ describe('root redirect layout', () => {
     render(<RootRedirectLayout><span /></RootRedirectLayout>)
     expect(document.documentElement.lang).toBe('fr')
   })
+
+  it('carries the data-scroll-behavior opt-in on <html>', () => {
+    render(<RootRedirectLayout><span /></RootRedirectLayout>)
+    assertScrollBehaviorOptIn()
+  })
 })
 
 describe('global not-found page', () => {
@@ -93,5 +118,10 @@ describe('global not-found page', () => {
   it('applies all three font variables to the body', () => {
     render(<GlobalNotFound />)
     assertFontVariablesOnBody()
+  })
+
+  it('carries the data-scroll-behavior opt-in on <html>', () => {
+    render(<GlobalNotFound />)
+    assertScrollBehaviorOptIn()
   })
 })

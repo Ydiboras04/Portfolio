@@ -56,7 +56,16 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound()
   const dict = getDictionary(locale)
   return (
-    <html lang={locale} suppressHydrationWarning>
+    // data-scroll-behavior="smooth" is Next 16's opt-in, not decoration, and it
+    // is required by the `scroll-behavior: smooth` in globals.css rather than a
+    // duplicate of it. Through Next 15 the router forced `scroll-behavior` to
+    // `auto` around every SPA transition so navigation stayed instant; Next 16
+    // dropped that override by default and gates it behind this attribute.
+    // Without it, clicking a Work row while scrolled down renders the case
+    // study first and *then* animates it up to the top -- the reader is shown
+    // the middle of the page before its title. Measured here before the fix:
+    // 2000 -> 382 -> 218 -> 19 -> 0 over roughly 300ms.
+    <html lang={locale} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
         {/* Reveal and Rule both render hidden and rely on IntersectionObserver.
             Without JS the observer never fires, so force the revealed/drawn
