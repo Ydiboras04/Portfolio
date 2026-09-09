@@ -14,7 +14,9 @@ export const en: Dictionary = {
     summary:
       'I build web applications that hold up in production — Python, TypeScript and Rust — and automate the document processes that quietly cost teams hours every week. MSc in Applied Business Computing, one year in post at a Salesforce integrator, delivering for European clients.',
     ctaWork: 'See the work',
-    ctaCv: 'Download CV',
+    // Says 'French' because the English download currently serves the French PDF.
+    // Truthful until a translated CV exists; change this string when one does.
+    ctaCv: 'Download CV (French)',
   },
   credibility: [
     { value: 'Top', accent: ' of class', label: 'BSc Computer Science — "ROHY" cohort' },
