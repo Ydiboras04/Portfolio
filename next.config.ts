@@ -1,5 +1,11 @@
 import createMDX from '@next/mdx'
 import type { NextConfig } from 'next'
+import { assertClientEnv } from './lib/env'
+
+// Production builds only. `next dev` is left alone deliberately: a missing key
+// there costs nothing but a failed submission the developer can see immediately,
+// whereas a production build is the last moment the value can still be inlined.
+if (process.env.NODE_ENV === 'production') assertClientEnv(process.env)
 
 const nextConfig: NextConfig = {
   output: 'export',

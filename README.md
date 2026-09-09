@@ -60,6 +60,23 @@ build time rather than read at request time — setting them alone has no
 effect on the already-deployed output. **Redeploy after setting or changing
 either one** for the new value to take effect.
 
+Two things about that redeploy, both of which have already caused a live site
+with a dead contact form:
+
+- **Enable each variable for every environment**, not Production alone. A
+  branch deploy builds as *Preview* and inlines an empty string for anything
+  scoped to Production only. Neither variable is a secret — `NEXT_PUBLIC_`
+  values ship to every visitor in the JS bundle by design, which is how a
+  static form works with no server — so there is nothing to protect by
+  withholding them from Preview.
+- **Uncheck "Use existing Build Cache"** when redeploying after a change. The
+  value lives inside an already-compiled chunk; a cached build restores that
+  chunk and ignores the new variable entirely.
+
+`next build` refuses to run at all when `NEXT_PUBLIC_WEB3FORMS_KEY` is empty
+(see `lib/env.ts`), so a misconfigured deploy fails on the build host with an
+explanation rather than shipping a form that rejects every message silently.
+
 After deploying, check by hand on the live URL:
 
 - `/` redirects to `/fr/`
