@@ -34,6 +34,15 @@ describe('Hero', () => {
     expect(cvLink).toHaveAttribute('href', '/cv/nomeny-mitia-andriamaheva-fr.pdf')
     expect(workLink.getAttribute('href')).not.toBe(cvLink.getAttribute('href'))
   })
+
+  // The CV download must follow the selected language: English visitors get the
+  // English PDF, not the French one.
+  it('serves the English CV in the English locale', () => {
+    const dict = getDictionary('en')
+    render(<Hero locale="en" dict={dict} />)
+    const cvLink = screen.getByRole('link', { name: new RegExp(dict.hero.ctaCv, 'i') })
+    expect(cvLink).toHaveAttribute('href', '/cv/nomeny-mitia-andriamaheva-en.pdf')
+  })
 })
 
 describe('Credibility', () => {

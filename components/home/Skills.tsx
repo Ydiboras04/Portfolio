@@ -15,7 +15,8 @@ export function Skills({ dict }: { dict: Dictionary }) {
             // forbids: a div wrapping a dt/dd pair must contain them directly.
             <Reveal
               key={group.level}
-              delay={i * 40}
+              delay={i * 50}
+              variant="up"
               className="grid grid-cols-1 items-start gap-2 border-b border-line py-[14px] sm:grid-cols-[118px_1fr] sm:gap-4"
             >
               <dt className={`label pt-1 ${i === dict.skills.groups.length - 1 ? '' : 'text-amber'}`}>
@@ -23,7 +24,12 @@ export function Skills({ dict }: { dict: Dictionary }) {
               </dt>
               <dd className="flex flex-wrap gap-[7px]">
                 {group.items.map((item) => (
-                  <span key={item} className="rounded-[3px] border border-line px-[9px] py-1 text-[12px]">
+                  <span
+                    key={item}
+                    className="cursor-default rounded-[3px] border border-line px-[9px] py-1 text-[12px]
+                               transition-[transform,color,border-color] duration-200 ease-[var(--ease-pop)]
+                               hover:-translate-y-0.5 hover:border-amber/50 hover:text-amber"
+                  >
                     {item}
                   </span>
                 ))}

@@ -19,8 +19,9 @@ export function Work({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             const copy = dict.work.projects[project.slug]
             const row = (
               <div className="grid grid-cols-[26px_1fr] items-center gap-4 border-b border-line py-4
-                              transition-colors duration-150 ease-instrument
-                              md:grid-cols-[32px_1fr_2fr_150px_54px] group-hover:border-amber/25 group-hover:bg-white/[0.03]">
+                              transition-[color,background-color,border-color,transform] duration-200 ease-[var(--ease-pop)]
+                              md:grid-cols-[32px_1fr_2fr_150px_54px] group-hover:translate-x-1
+                              group-hover:border-amber/25 group-hover:bg-white/[0.03]">
                 {/* The motion spec's own colour-transition carve-out exists
                     specifically for this: "the amber index brightens on row
                     hover" is a `color` change, not a transform, so it has to

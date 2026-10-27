@@ -24,8 +24,9 @@ export function Services({ dict }: { dict: Dictionary }) {
             // carrying the border needs to be told to fill that inherited height.
             <li key={item.title} className="h-full">
               <Reveal
-                delay={i * 40}
-                className="flex h-full flex-col gap-2 rounded-[3px] border border-line p-5"
+                delay={i * 60}
+                variant="scale"
+                className="flex h-full flex-col gap-2 rounded-[3px] border border-line p-5 hover:-translate-y-1 hover:border-amber/40 hover:bg-white/[0.025] hover:duration-200"
               >
                 <span className="font-mono text-[10px] text-amber">
                   {String(i + 1).padStart(2, '0')}
