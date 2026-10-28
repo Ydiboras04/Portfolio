@@ -36,12 +36,12 @@
        neither an animation nor a transition, so the blanket duration
        override down there does not reach it.
 
-       scroll-padding-top offsets every scroll target by two 32px background
-       grid cells. The sticky header measures 49px (47.25px below `sm:`,
-       where the section list is hidden), and section top margins collapse
-       through their <section>, so a jump with no offset parks the <h2> behind
-       the header. 64px clears it at both widths and leaves the heading a
-       grid-aligned gap below. It stays outside the reduced-motion override
+       scroll-padding-top offsets every scroll target by 64px. The sticky
+       header measures 49px (47.25px below `sm:`, where the section list is
+       hidden), and section top margins collapse through their <section>, so a
+       jump with no offset parks the <h2> behind the header. 64px clears it at
+       both widths and leaves the heading a small gap below. It stays outside
+       the reduced-motion override
        on purpose: it is positioning, not motion, and the target has to
        clear the header whether the scroll animates or not. */
     scroll-behavior: smooth;
@@ -52,10 +52,6 @@
     background-color: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-body);
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
-    background-size: 32px 32px;
   }
 
   :focus-visible {
