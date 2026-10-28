@@ -97,6 +97,14 @@
 @keyframes rise-in     { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 @keyframes aurora-a    { 0%, 100% { transform: translate3d(-6%, -4%, 0) scale(1); } 50% { transform: translate3d(12%, 8%, 0) scale(1.3); } }
 @keyframes aurora-b    { 0%, 100% { transform: translate3d(8%, 10%, 0) scale(1.15); } 50% { transform: translate3d(-10%, -6%, 0) scale(0.85); } }
+/* Two gentle opposing drifts for the ambient card field. The resting rotation
+   (--r) and per-tile duration (--dur) are set inline per card so a single
+   keyframe pair yields a varied, non-synchronised field. Zeroed wholesale by
+   the prefers-reduced-motion block below, which leaves the tiles as a static
+   decorative lattice. No `will-change` here on purpose: the motion e2e suite
+   asserts the cursor reticle is the *only* will-change element on the page. */
+@keyframes card-drift-a { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(2%, -3.5%, 0) rotate(calc(var(--r, 0deg) + 2deg)); } }
+@keyframes card-drift-b { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(-2.5%, 3%, 0) rotate(calc(var(--r, 0deg) - 2deg)); } }
 @keyframes sheen       { 0% { transform: translateX(-130%) skewX(-18deg); } 55%, 100% { transform: translateX(260%) skewX(-18deg); } }
 @keyframes grid-pan    { from { background-position: 0 0; } to { background-position: 32px 32px; } }
 @keyframes bob         { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
@@ -105,6 +113,19 @@
 .aurora-blob { position: absolute; border-radius: 9999px; filter: blur(70px); opacity: 0.5; }
 .aurora-a { animation: aurora-a 20s ease-in-out infinite; }
 .aurora-b { animation: aurora-b 26s ease-in-out infinite; }
+
+/* Ambient translucent card field behind the whole page. Hairline-bordered
+   tiles on a faint diagonal fill, matching the site's rounded-[3px] +
+   rgba-white line vocabulary, so they read as part of the backdrop rather
+   than as UI. Positioned/sized/animated per tile via inline style. */
+.card-tile {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.004));
+}
+.card-tile.drift-a { animation: card-drift-a var(--dur, 24s) ease-in-out infinite; }
+.card-tile.drift-b { animation: card-drift-b var(--dur, 24s) ease-in-out infinite; }
 
 /* Sliding sheen for primary buttons (the amber CTA). */
 .sheen-host { position: relative; overflow: hidden; }
