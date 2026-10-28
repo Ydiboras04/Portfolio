@@ -61,23 +61,52 @@ async function fetchRepos(): Promise<RawRepo[]> {
       signal: controller.signal,
     })
     if (!res.ok) throw new Error(`GitHub API responded ${res.status}`)
-    const data = (await res.json()) as GithubApiRepo[]
-    return data
-      .filter((r) => !r.fork && r.name !== GITHUB_USER)
-      .map((r) => ({
-        name: r.name,
-        description: r.description ?? '',
-        language: r.language ?? '',
-        stars: r.stargazers_count,
-        url: r.html_url,
-      }))
+    return rawFromApi((await res.json()) as GithubApiRepo[])
   } finally {
     clearTimeout(timer)
   }
 }
 
+// Drop forks and the profile README repo, and keep only the fields we render.
+function rawFromApi(data: GithubApiRepo[]): RawRepo[] {
+  return data
+    .filter((r) => !r.fork && r.name !== GITHUB_USER)
+    .map((r) => ({
+      name: r.name,
+      description: r.description ?? '',
+      language: r.language ?? '',
+      stars: r.stargazers_count,
+      url: r.html_url,
+    }))
+}
+
 function toProject(r: RawRepo): GithubProject {
   return { ...r, label: r.name.replace(/[-_]/g, ' ') }
+}
+
+// Brightest first, then alphabetical (stable, sensible vertex order); a
+// tesseract has 16 vertices, so never pin more than that. Shared by the
+// build-time and browser paths so both produce an identical ordering.
+function normalize(repos: RawRepo[]): GithubProject[] {
+  return [...repos]
+    .sort((a, b) => b.stars - a.stars || a.name.localeCompare(b.name))
+    .slice(0, 16)
+    .map(toProject)
+}
+
+// Best-effort live refresh from the browser. No custom User-Agent (browsers
+// forbid setting it and send their own); api.github.com returns permissive CORS
+// headers. Returns null on any failure -- offline, or the unauthenticated rate
+// limit (60/hour per IP) exhausted -- so the caller keeps the baked snapshot.
+export async function fetchGithubProjectsBrowser(): Promise<GithubProject[] | null> {
+  try {
+    const res = await fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
+    if (!res.ok) return null
+    const list = normalize(rawFromApi((await res.json()) as GithubApiRepo[]))
+    return list.length ? list : null
+  } catch {
+    return null
+  }
 }
 
 // Module-level memo so the fetch runs once even though both locale pages call
@@ -94,10 +123,7 @@ export function getGithubProjects(): Promise<GithubProject[]> {
       } catch {
         repos = [...FALLBACK]
       }
-      // Brightest first, then alphabetical -- stable, and a sensible vertex order.
-      repos.sort((a, b) => b.stars - a.stars || a.name.localeCompare(b.name))
-      // A tesseract has 16 vertices; never pin more than that.
-      return repos.slice(0, 16).map(toProject)
+      return normalize(repos)
     })()
   }
   return cache
