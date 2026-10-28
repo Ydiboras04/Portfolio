@@ -105,6 +105,11 @@
    asserts the cursor reticle is the *only* will-change element on the page. */
 @keyframes card-drift-a { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(2%, -3.5%, 0) rotate(calc(var(--r, 0deg) + 2deg)); } }
 @keyframes card-drift-b { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(-2.5%, 3%, 0) rotate(calc(var(--r, 0deg) - 2deg)); } }
+/* Ambient breathing glow for each card tile: a soft amber halo that fades in
+   and out on its own cycle (separate from the drift), so the field reads as
+   gently lit rather than static. Opacity-only, so it is cheap and the
+   reduced-motion block below freezes it at its resting state. */
+@keyframes card-glow { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
 @keyframes sheen       { 0% { transform: translateX(-130%) skewX(-18deg); } 55%, 100% { transform: translateX(260%) skewX(-18deg); } }
 @keyframes grid-pan    { from { background-position: 0 0; } to { background-position: 32px 32px; } }
 @keyframes bob         { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
@@ -126,6 +131,19 @@
 }
 .card-tile.drift-a { animation: card-drift-a var(--dur, 24s) ease-in-out infinite; }
 .card-tile.drift-b { animation: card-drift-b var(--dur, 24s) ease-in-out infinite; }
+
+/* The breathing halo: a blurred amber radial that bleeds past the tile edges
+   for a soft ambient light. Its own duration/delay (set inline per tile) keep
+   it out of sync with both the drift and the other tiles. */
+.card-tile::after {
+  content: '';
+  position: absolute;
+  inset: -18px;
+  border-radius: 10px;
+  background: radial-gradient(ellipse at center, rgba(232, 163, 61, 0.07), transparent 70%);
+  animation: card-glow var(--glow-dur, 9s) ease-in-out infinite;
+  animation-delay: var(--glow-delay, 0s);
+}
 
 /* Sliding sheen for primary buttons (the amber CTA). */
 .sheen-host { position: relative; overflow: hidden; }
