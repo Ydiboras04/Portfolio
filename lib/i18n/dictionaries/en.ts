@@ -4,22 +4,20 @@ export const en: Dictionary = {
   meta: {
     title: 'Nomeny Mitia Andriamaheva — Full-Stack Developer',
     description:
-      'Full-stack developer. Custom web applications in Python, TypeScript and Rust, plus Salesforce document automation. Available remote from Antananarivo.',
+      'Full-stack developer. Custom web applications in Python, React and TypeScript, plus Salesforce document automation. Available remote from Antananarivo.',
   },
   nav: { work: 'Work', skills: 'Skills', path: 'Background', services: 'Services', contact: 'Contact', toggleLabel: 'Switch language', skipToContent: 'Skip to content' },
   hero: {
     availability: 'Available — full-time & contract · Remote Europe',
-    headlineBefore: 'Full-stack, and ',
-    headlineAccent: 'document automation',
+    headlineBefore: 'Developer ',
+    headlineAccent: 'Fullstack',
     summary:
-      'I build web applications that hold up in production — Python, TypeScript and Rust — and automate the document processes that quietly cost teams hours every week. MSc in Applied Business Computing, one year in post at a Salesforce integrator, delivering for European clients.',
+      'I build web applications that hold up in production — real-time interfaces and REST APIs in Python, React and TypeScript — and automate the document processes that quietly cost teams hours every week. MSc in Applied Business Computing, full-stack developer and Salesforce automation.',
     ctaWork: 'See the work',
-    // Says 'French' because the English download currently serves the French PDF.
-    // Truthful until a translated CV exists; change this string when one does.
-    ctaCv: 'Download CV (French)',
+    ctaCv: 'Download CV',
   },
   credibility: [
-    { value: 'Top', accent: ' of class', label: 'BSc Computer Science — "ROHY" cohort' },
+    { value: 'Top', accent: ' of class', label: 'BSc Computer Science — "ROHY" cohort', href: '/en/rohy/' },
     { value: '1 year', accent: ' in post', label: 'Plus three industry internships' },
     // accentFirst: false here (explicit, matching fr.ts's use of the same key on its
     // "Clients européens" entry) -- English's "European clients" already puts the
@@ -36,6 +34,14 @@ export const en: Dictionary = {
       zarahay: { name: 'Zarahay Doctorants', description: 'Resource sharing and collaboration for doctoral researchers.' },
       inventaire: { name: 'Equipment tracking', description: 'Inventory check-in and check-out management software.' },
     },
+  },
+  openSource: {
+    title: 'Open source',
+    note: 'Live from GitHub',
+    intro:
+      'My public repositories, pinned to the vertices of a tesseract — a four-dimensional cube — rotating through 4D. Hover or drag to explore; click a project to open it on GitHub.',
+    hint: 'Hover or drag to explore · click to open',
+    view: 'View on GitHub',
   },
   skills: {
     title: 'Skills',

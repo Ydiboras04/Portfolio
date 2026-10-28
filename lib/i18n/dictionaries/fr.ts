@@ -4,20 +4,20 @@ export const fr: Dictionary = {
   meta: {
     title: 'Nomeny Mitia Andriamaheva — Développeur Full-Stack',
     description:
-      "Développeur full-stack. Applications web sur mesure en Python, TypeScript et Rust, et automatisation documentaire Salesforce. Disponible en remote depuis Antananarivo.",
+      "Développeur full-stack. Applications web sur mesure en Python, React et TypeScript, et automatisation documentaire Salesforce. Disponible en remote depuis Antananarivo.",
   },
   nav: { work: 'Travaux', skills: 'Compétences', path: 'Parcours', services: 'Services', contact: 'Contact', toggleLabel: 'Changer de langue', skipToContent: 'Aller au contenu' },
   hero: {
     availability: 'Disponible — CDI & missions · Remote Europe',
-    headlineBefore: 'Full-stack, et ',
-    headlineAccent: 'automatisation documentaire',
+    headlineBefore: 'Développeur ',
+    headlineAccent: 'Full-Stack',
     summary:
-      "Je construis des applications web robustes en Python, TypeScript et Rust — et j'automatise les processus documentaires qui font perdre des heures aux équipes. Master II MIAGE, un an en poste chez un intégrateur Salesforce, pour des clients européens.",
+      "Je construis des applications web robustes et des interfaces temps réel en Python, React et TypeScript — et j'automatise les processus documentaires qui font perdre des heures aux équipes. Master II en informatique appliquée au management, développeur full-stack et automatisation Salesforce.",
     ctaWork: 'Voir les travaux',
     ctaCv: 'Télécharger le CV',
   },
   credibility: [
-    { value: 'Major', accent: ' de promo', label: 'Licence Informatique — Promotion « ROHY »' },
+    { value: 'Major', accent: ' de promo', label: 'Licence Informatique — Promotion « ROHY »', href: '/fr/rohy/' },
     { value: '1 an', accent: ' en poste', label: 'Et trois stages en entreprise' },
     // "européens" is the differentiator (not everyone's clients are European), so it
     // carries the amber -- but French puts the adjective after the noun ("clients
@@ -36,6 +36,14 @@ export const fr: Dictionary = {
       zarahay: { name: 'Zarahay Doctorants', description: 'Partage de ressources et collaboration entre doctorants.' },
       inventaire: { name: "Suivi d'équipements", description: "Logiciel de gestion des entrées et sorties d'inventaire." },
     },
+  },
+  openSource: {
+    title: 'Open source',
+    note: 'En direct de GitHub',
+    intro:
+      "Mes dépôts publics, épinglés aux sommets d'un tesseract — un cube en quatre dimensions — en rotation dans la 4D. Survolez ou faites glisser pour explorer ; cliquez sur un projet pour l'ouvrir sur GitHub.",
+    hint: 'Survolez ou faites glisser · cliquez pour ouvrir',
+    view: 'Voir sur GitHub',
   },
   skills: {
     title: 'Compétences',

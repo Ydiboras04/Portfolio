@@ -19,12 +19,17 @@ export interface Dictionary {
   // `accentFirst` lets a fact render `accent` before the amber `value`
   // while both fields keep their fixed meaning (value = amber, accent =
   // plain). Optional and false by default, so existing entries are unaffected.
-  credibility: Array<{ value: string; accent: string; accentFirst?: boolean; label: string }>
+  // `href` (optional) turns a fact into a link to a page that backs it up.
+  // It is a full, locale-prefixed path (e.g. `/en/rohy/`) rather than a bare
+  // slug: the Credibility component takes only the dictionary, not the locale,
+  // so each locale's dictionary carries its own ready-to-use href.
+  credibility: Array<{ value: string; accent: string; accentFirst?: boolean; label: string; href?: string }>
   work: {
     title: string
     note: string
     projects: Record<ProjectSlug, { name: string; description: string }>
   }
+  openSource: { title: string; note: string; intro: string; hint: string; view: string }
   skills: { title: string; note: string; groups: Array<{ level: string; items: string[] }> }
   parcours: {
     title: string

@@ -17,6 +17,9 @@
   --font-mono:    var(--font-jetbrains-mono), monospace;
 
   --ease-instrument: cubic-bezier(0.2, 0.8, 0.25, 1);
+  /* A springy ease with a little overshoot — the "playful" counterpart to the
+     restrained instrument curve. Used for entrances and pop interactions. */
+  --ease-pop: cubic-bezier(0.34, 1.46, 0.5, 1);
 }
 
 @layer base {
@@ -33,12 +36,12 @@
        neither an animation nor a transition, so the blanket duration
        override down there does not reach it.
 
-       scroll-padding-top offsets every scroll target by two 32px background
-       grid cells. The sticky header measures 49px (47.25px below `sm:`,
-       where the section list is hidden), and section top margins collapse
-       through their <section>, so a jump with no offset parks the <h2> behind
-       the header. 64px clears it at both widths and leaves the heading a
-       grid-aligned gap below. It stays outside the reduced-motion override
+       scroll-padding-top offsets every scroll target by 64px. The sticky
+       header measures 49px (47.25px below `sm:`, where the section list is
+       hidden), and section top margins collapse through their <section>, so a
+       jump with no offset parks the <h2> behind the header. 64px clears it at
+       both widths and leaves the heading a small gap below. It stays outside
+       the reduced-motion override
        on purpose: it is positioning, not motion, and the target has to
        clear the header whether the scroll animates or not. */
     scroll-behavior: smooth;
@@ -49,10 +52,6 @@
     background-color: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-body);
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
-    background-size: 32px 32px;
   }
 
   :focus-visible {
@@ -70,6 +69,151 @@
 }
 
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+/* Ydiboras AI mascot + chat widget animations. All of these are neutralised by
+   the prefers-reduced-motion block below (it zeroes every animation-duration),
+   so no per-rule guarding is needed here. */
+@keyframes ydi-float  { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes ydi-blink  { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+@keyframes ydi-twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.82); } }
+@keyframes ydi-ring   { 0% { transform: scale(0.85); opacity: 0.55; } 100% { transform: scale(1.5); opacity: 0; } }
+@keyframes ydi-in     { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes ydi-dot    { 0%, 60%, 100% { opacity: 0.25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-2px); } }
+
+.ydi-float    { animation: ydi-float 4s ease-in-out infinite; }
+.ydi-blink    { animation: ydi-blink 5.5s ease-in-out infinite; }
+.ydi-twinkle  { animation: ydi-twinkle 3s ease-in-out infinite; }
+.ydi-ring     { animation: ydi-ring 2.4s ease-out infinite; }
+.ydi-panel-in { animation: ydi-in 0.26s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+.ydi-typing-dot { animation: ydi-dot 1.2s ease-in-out infinite; }
+
+/* ---- App-wide motion: entrances, ambient accents, micro-interactions ----
+   All of these sit above the prefers-reduced-motion block below, which zeroes
+   every animation/transition duration, so they are each self-disabling. */
+@keyframes rise-in     { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes aurora-a    { 0%, 100% { transform: translate3d(-6%, -4%, 0) scale(1); } 50% { transform: translate3d(12%, 8%, 0) scale(1.3); } }
+@keyframes aurora-b    { 0%, 100% { transform: translate3d(8%, 10%, 0) scale(1.15); } 50% { transform: translate3d(-10%, -6%, 0) scale(0.85); } }
+/* Galaxy backdrop. Star layers drift by exactly one background tile, so the
+   repeating field loops seamlessly -- an endless "infinity" fall through
+   space. Parallax (different --speed per layer) is what gives it depth. The
+   nebula swirls to suggest a slow galactic rotation. All zeroed by the
+   prefers-reduced-motion block below, leaving a still starfield. No
+   `will-change`: the motion e2e suite asserts the cursor reticle is the
+   *only* will-change element on the page.
+
+   The drift is a `transform`, NOT `background-position`: a transform is
+   GPU-composited (the star tile is painted once and moved by the compositor),
+   whereas animating background-position repaints the whole layer on the main
+   thread every frame -- which, running forever, starved the page's keyboard
+   and scroll handling. Each layer overflows its box by one tile on every side
+   (see .galaxy-layer inset), so translating by exactly one tile stays covered
+   and seamless. */
+@keyframes star-drift   { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, var(--tile, 400px), 0); } }
+@keyframes star-twinkle { 0%, 100% { opacity: var(--max-o, 1); } 50% { opacity: calc(var(--max-o, 1) * 0.5); } }
+@keyframes nebula-swirl { from { transform: rotate(0deg) scale(1.25); } to { transform: rotate(360deg) scale(1.25); } }
+@keyframes sheen       { 0% { transform: translateX(-130%) skewX(-18deg); } 55%, 100% { transform: translateX(260%) skewX(-18deg); } }
+@keyframes grid-pan    { from { background-position: 0 0; } to { background-position: 32px 32px; } }
+@keyframes bob         { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+/* Ambient amber aurora behind the whole page. */
+.aurora-blob { position: absolute; border-radius: 9999px; filter: blur(70px); opacity: 0.5; }
+.aurora-a { animation: aurora-a 20s ease-in-out infinite; }
+.aurora-b { animation: aurora-b 26s ease-in-out infinite; }
+
+/* Galaxy behind the whole page: parallax star layers over a swirling nebula.
+   Each star layer's dots are a repeating background tile (built inline per
+   layer); the per-layer background-size / --tile / --speed come from inline
+   style. --max-o is the layer's peak opacity, so twinkle fades from it rather
+   than always to full white. */
+.galaxy-layer {
+  position: absolute;
+  /* Overflow the box by one tile on every side so the transform-drift (down by
+     one tile) never uncovers an edge; overflow is clipped by the wrapper. */
+  inset: calc(-1 * var(--tile, 400px));
+  background-repeat: repeat;
+  animation: star-drift var(--speed, 160s) linear infinite;
+}
+.galaxy-layer.twinkle {
+  animation:
+    star-drift var(--speed, 160s) linear infinite,
+    star-twinkle var(--twk, 6s) ease-in-out infinite;
+}
+
+/* The nebula: soft amber/blue clouds, oversized and scaled past the viewport
+   so the slow rotation never exposes an edge. */
+.galaxy-nebula {
+  position: absolute;
+  inset: -25%;
+  animation: nebula-swirl var(--speed, 220s) linear infinite;
+}
+
+/* Sliding sheen for primary buttons (the amber CTA). */
+.sheen-host { position: relative; overflow: hidden; }
+.sheen-host::after {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-130%) skewX(-18deg); pointer-events: none;
+}
+.sheen-host:hover::after { animation: sheen 0.9s var(--ease-instrument); }
+
+/* ---- Black-hole cursor ----------------------------------------------------
+   Replaces the crosshair reticle: a black core ringed by a slowly spinning
+   amber accretion disk. On left-press the core implodes and a shockwave ring
+   bursts outward. The spin/burst are zeroed by the reduced-motion block below,
+   and CursorReticle renders nothing at all under reduced motion anyway. */
+@keyframes bh-spin  { to { transform: rotate(360deg); } }
+
+.bh-core {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  /* Black event horizon with a bright photon ring fading to an amber glow. */
+  background: radial-gradient(circle, #000 40%, rgba(255, 212, 150, 0.95) 47%, rgba(232, 163, 61, 0.5) 56%, transparent 70%);
+  box-shadow: 0 0 7px 1px rgba(232, 163, 61, 0.4);
+  transition: transform 0.18s var(--ease-pop), box-shadow 0.18s var(--ease-instrument);
+}
+.bh-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  /* A bright arc swept around by the rotation = the accretion disk. */
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 200, 120, 0) 90deg, rgba(255, 214, 150, 0.85) 180deg, rgba(232, 163, 61, 0.2) 250deg, transparent 320deg);
+  -webkit-mask: radial-gradient(circle, transparent 44%, #000 48%, #000 64%, transparent 70%);
+          mask: radial-gradient(circle, transparent 44%, #000 48%, #000 64%, transparent 70%);
+  animation: bh-spin 3.2s linear infinite;
+}
+/* Held-down state: the core collapses inward and the disk spins up. */
+.bh.pressing .bh-core { transform: scale(0.72); box-shadow: 0 0 12px 3px rgba(232, 163, 61, 0.6); }
+.bh.pressing .bh-ring { animation-duration: 1.1s; }
+
+/* Black hole as the only cursor: hide the native pointer everywhere while the
+   effect is active (fine pointer, motion allowed). Cosmetic only -- text carets
+   still appear on focus. */
+body.bh-active,
+body.bh-active * { cursor: none !important; }
+
+/* One-shot black-hole burst left at each click point. A core that forms then
+   implodes, inside an expanding shockwave ring. Each node is created on press
+   and removed when it finishes. */
+@keyframes bh-click-ring { from { transform: scale(0.4); opacity: 0.9; } to { transform: scale(5); opacity: 0; } }
+@keyframes bh-click-core { 0% { transform: scale(0); opacity: 0; } 32% { transform: scale(2.2); opacity: 1; } 100% { transform: scale(0.05); opacity: 0; } }
+.bh-click {
+  position: fixed;
+  z-index: 59;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px; /* centre on the click point */
+  pointer-events: none;
+}
+.bh-click span { position: absolute; inset: 0; border-radius: 9999px; }
+.bh-click .ring {
+  border: 1.5px solid rgba(232, 163, 61, 0.8);
+  animation: bh-click-ring 0.6s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+}
+.bh-click .core {
+  background: radial-gradient(circle, #000 34%, rgba(255, 212, 150, 0.9) 52%, rgba(232, 163, 61, 0.35) 64%, transparent 74%);
+  animation: bh-click-core 0.6s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+}
 
 @media (prefers-reduced-motion: reduce) {
   /* Outside `@layer`, so it beats the base-layer rule above without !important. */

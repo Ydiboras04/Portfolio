@@ -82,9 +82,10 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
       </div>
 
       <button type="submit" disabled={status === 'sending'}
-        className="rounded-[3px] bg-amber px-[18px] py-[11px] font-mono text-[10.5px] font-medium uppercase
-                   tracking-[0.11em] text-bg transition-opacity duration-150 ease-instrument
-                   hover:opacity-90 disabled:opacity-60">
+        className="sheen-host rounded-[3px] bg-amber px-[18px] py-[11px] font-mono text-[10.5px] font-medium uppercase
+                   tracking-[0.11em] text-bg transition-[transform,opacity] duration-200 ease-[var(--ease-pop)]
+                   hover:-translate-y-0.5 hover:opacity-95 active:translate-y-0 disabled:opacity-60
+                   disabled:hover:translate-y-0">
         {status === 'sending' ? dict.contact.sending : dict.contact.submit}
       </button>
 
