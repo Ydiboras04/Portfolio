@@ -21,6 +21,7 @@ function getFinePointerServerSnapshot(): boolean {
 
 export function CursorReticle() {
   const ref = useRef<HTMLDivElement>(null)
+  const burstRef = useRef<HTMLSpanElement>(null)
   const reduced = useReducedMotion()
   // Mirrors useReducedMotion's useSyncExternalStore pattern rather than an
   // effect + setState pair: deriving `enabled` from two subscriptions keeps
@@ -39,22 +40,42 @@ export function CursorReticle() {
     const onMove = (event: PointerEvent) => {
       cancelAnimationFrame(frame)
       frame = requestAnimationFrame(() => {
-        el.style.transform = `translate3d(${event.clientX - 9}px, ${event.clientY - 9}px, 0)`
+        el.style.transform = `translate3d(${event.clientX - 11}px, ${event.clientY - 11}px, 0)`
       })
     }
+    // Left-press: collapse the core (held) and fire a one-shot shockwave ring.
+    const onDown = (event: PointerEvent) => {
+      if (event.button !== 0) return
+      el.classList.add('pressing')
+      const burst = burstRef.current
+      if (burst) {
+        burst.classList.remove('go')
+        void burst.offsetWidth // reflow so the animation replays on every click
+        burst.classList.add('go')
+      }
+    }
+    const onUp = () => el.classList.remove('pressing')
     window.addEventListener('pointermove', onMove, { passive: true })
-    return () => { window.removeEventListener('pointermove', onMove); cancelAnimationFrame(frame) }
+    window.addEventListener('pointerdown', onDown, { passive: true })
+    window.addEventListener('pointerup', onUp, { passive: true })
+    window.addEventListener('pointercancel', onUp, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
+      cancelAnimationFrame(frame)
+    }
   }, [enabled])
 
   if (!enabled) return null
 
   return (
     <div ref={ref} aria-hidden="true"
-         className="pointer-events-none fixed left-0 top-0 z-[60] h-[18px] w-[18px] will-change-transform">
-      <span className="absolute left-1/2 top-0 h-[6px] w-px -translate-x-1/2 bg-amber/60" />
-      <span className="absolute bottom-0 left-1/2 h-[6px] w-px -translate-x-1/2 bg-amber/60" />
-      <span className="absolute left-0 top-1/2 h-px w-[6px] -translate-y-1/2 bg-amber/60" />
-      <span className="absolute right-0 top-1/2 h-px w-[6px] -translate-y-1/2 bg-amber/60" />
+         className="bh pointer-events-none fixed left-0 top-0 z-[60] h-[22px] w-[22px] will-change-transform">
+      <span className="bh-ring" />
+      <span className="bh-core" />
+      <span ref={burstRef} className="bh-burst" />
     </div>
   )
 }
