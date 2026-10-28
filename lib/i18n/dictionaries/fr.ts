@@ -37,6 +37,13 @@ export const fr: Dictionary = {
       inventaire: { name: "Suivi d'équipements", description: "Logiciel de gestion des entrées et sorties d'inventaire." },
     },
   },
+  openSource: {
+    title: 'Open source',
+    note: 'En direct de GitHub',
+    intro:
+      "Mes dépôts publics, épinglés aux sommets d'un tesseract — un cube en quatre dimensions — en rotation dans la 4D. Survolez un projet pour le mettre en avant ; cliquez pour l'ouvrir sur GitHub.",
+    hint: 'Survolez un sommet pour cibler un projet',
+  },
   skills: {
     title: 'Compétences',
     note: 'Classées par profondeur réelle',

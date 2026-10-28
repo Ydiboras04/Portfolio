@@ -35,6 +35,13 @@ export const en: Dictionary = {
       inventaire: { name: 'Equipment tracking', description: 'Inventory check-in and check-out management software.' },
     },
   },
+  openSource: {
+    title: 'Open source',
+    note: 'Live from GitHub',
+    intro:
+      'My public repositories, pinned to the vertices of a tesseract — a four-dimensional cube — rotating through 4D. Hover a project to focus it; click to open it on GitHub.',
+    hint: 'Hover a vertex to focus a project',
+  },
   skills: {
     title: 'Skills',
     note: 'Graded by actual depth',

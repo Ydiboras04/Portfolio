@@ -29,6 +29,7 @@ export interface Dictionary {
     note: string
     projects: Record<ProjectSlug, { name: string; description: string }>
   }
+  openSource: { title: string; note: string; intro: string; hint: string }
   skills: { title: string; note: string; groups: Array<{ level: string; items: string[] }> }
   parcours: {
     title: string
