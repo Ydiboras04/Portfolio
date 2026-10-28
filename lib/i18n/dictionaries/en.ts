@@ -39,8 +39,9 @@ export const en: Dictionary = {
     title: 'Open source',
     note: 'Live from GitHub',
     intro:
-      'My public repositories, pinned to the vertices of a tesseract — a four-dimensional cube — rotating through 4D. Hover a project to focus it; click to open it on GitHub.',
-    hint: 'Hover a vertex to focus a project',
+      'My public repositories, pinned to the vertices of a tesseract — a four-dimensional cube — rotating through 4D. Hover or drag to explore; click a project to open it on GitHub.',
+    hint: 'Hover or drag to explore · click to open',
+    view: 'View on GitHub',
   },
   skills: {
     title: 'Skills',

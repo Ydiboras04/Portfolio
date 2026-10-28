@@ -16,7 +16,7 @@ export function OpenSource({ dict, projects }: { dict: Dictionary; projects: Git
       <div className="mx-auto max-w-6xl px-5 sm:px-12">
         <Reveal>
           <p className="mb-6 max-w-[58ch] text-[13px] leading-[1.7] text-dim">{dict.openSource.intro}</p>
-          <Tesseract projects={projects} hint={dict.openSource.hint} />
+          <Tesseract projects={projects} hint={dict.openSource.hint} viewLabel={dict.openSource.view} />
         </Reveal>
       </div>
     </section>
