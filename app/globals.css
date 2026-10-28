@@ -103,8 +103,16 @@
    nebula swirls to suggest a slow galactic rotation. All zeroed by the
    prefers-reduced-motion block below, leaving a still starfield. No
    `will-change`: the motion e2e suite asserts the cursor reticle is the
-   *only* will-change element on the page. */
-@keyframes star-drift   { from { background-position: 0 0; } to { background-position: 0 var(--tile, 400px); } }
+   *only* will-change element on the page.
+
+   The drift is a `transform`, NOT `background-position`: a transform is
+   GPU-composited (the star tile is painted once and moved by the compositor),
+   whereas animating background-position repaints the whole layer on the main
+   thread every frame -- which, running forever, starved the page's keyboard
+   and scroll handling. Each layer overflows its box by one tile on every side
+   (see .galaxy-layer inset), so translating by exactly one tile stays covered
+   and seamless. */
+@keyframes star-drift   { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, var(--tile, 400px), 0); } }
 @keyframes star-twinkle { 0%, 100% { opacity: var(--max-o, 1); } 50% { opacity: calc(var(--max-o, 1) * 0.5); } }
 @keyframes nebula-swirl { from { transform: rotate(0deg) scale(1.25); } to { transform: rotate(360deg) scale(1.25); } }
 @keyframes sheen       { 0% { transform: translateX(-130%) skewX(-18deg); } 55%, 100% { transform: translateX(260%) skewX(-18deg); } }
@@ -123,7 +131,9 @@
    than always to full white. */
 .galaxy-layer {
   position: absolute;
-  inset: 0;
+  /* Overflow the box by one tile on every side so the transform-drift (down by
+     one tile) never uncovers an edge; overflow is clipped by the wrapper. */
+  inset: calc(-1 * var(--tile, 400px));
   background-repeat: repeat;
   animation: star-drift var(--speed, 160s) linear infinite;
 }
