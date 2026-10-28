@@ -97,19 +97,16 @@
 @keyframes rise-in     { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 @keyframes aurora-a    { 0%, 100% { transform: translate3d(-6%, -4%, 0) scale(1); } 50% { transform: translate3d(12%, 8%, 0) scale(1.3); } }
 @keyframes aurora-b    { 0%, 100% { transform: translate3d(8%, 10%, 0) scale(1.15); } 50% { transform: translate3d(-10%, -6%, 0) scale(0.85); } }
-/* Two gentle opposing drifts for the ambient card field. The resting rotation
-   (--r) and per-tile duration (--dur) are set inline per card so a single
-   keyframe pair yields a varied, non-synchronised field. Zeroed wholesale by
-   the prefers-reduced-motion block below, which leaves the tiles as a static
-   decorative lattice. No `will-change` here on purpose: the motion e2e suite
-   asserts the cursor reticle is the *only* will-change element on the page. */
-@keyframes card-drift-a { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(2%, -3.5%, 0) rotate(calc(var(--r, 0deg) + 2deg)); } }
-@keyframes card-drift-b { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(-2.5%, 3%, 0) rotate(calc(var(--r, 0deg) - 2deg)); } }
-/* Ambient breathing glow for each card tile: a soft amber halo that fades in
-   and out on its own cycle (separate from the drift), so the field reads as
-   gently lit rather than static. Opacity-only, so it is cheap and the
-   reduced-motion block below freezes it at its resting state. */
-@keyframes card-glow { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
+/* Galaxy backdrop. Star layers drift by exactly one background tile, so the
+   repeating field loops seamlessly -- an endless "infinity" fall through
+   space. Parallax (different --speed per layer) is what gives it depth. The
+   nebula swirls to suggest a slow galactic rotation. All zeroed by the
+   prefers-reduced-motion block below, leaving a still starfield. No
+   `will-change`: the motion e2e suite asserts the cursor reticle is the
+   *only* will-change element on the page. */
+@keyframes star-drift   { from { background-position: 0 0; } to { background-position: 0 var(--tile, 400px); } }
+@keyframes star-twinkle { 0%, 100% { opacity: var(--max-o, 1); } 50% { opacity: calc(var(--max-o, 1) * 0.5); } }
+@keyframes nebula-swirl { from { transform: rotate(0deg) scale(1.25); } to { transform: rotate(360deg) scale(1.25); } }
 @keyframes sheen       { 0% { transform: translateX(-130%) skewX(-18deg); } 55%, 100% { transform: translateX(260%) skewX(-18deg); } }
 @keyframes grid-pan    { from { background-position: 0 0; } to { background-position: 32px 32px; } }
 @keyframes bob         { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
@@ -119,30 +116,29 @@
 .aurora-a { animation: aurora-a 20s ease-in-out infinite; }
 .aurora-b { animation: aurora-b 26s ease-in-out infinite; }
 
-/* Ambient translucent card field behind the whole page. Hairline-bordered
-   tiles on a faint diagonal fill, matching the site's rounded-[3px] +
-   rgba-white line vocabulary, so they read as part of the backdrop rather
-   than as UI. Positioned/sized/animated per tile via inline style. */
-.card-tile {
+/* Galaxy behind the whole page: parallax star layers over a swirling nebula.
+   Each star layer's dots are a repeating background tile (built inline per
+   layer); the per-layer background-size / --tile / --speed come from inline
+   style. --max-o is the layer's peak opacity, so twinkle fades from it rather
+   than always to full white. */
+.galaxy-layer {
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.004));
+  inset: 0;
+  background-repeat: repeat;
+  animation: star-drift var(--speed, 160s) linear infinite;
 }
-.card-tile.drift-a { animation: card-drift-a var(--dur, 24s) ease-in-out infinite; }
-.card-tile.drift-b { animation: card-drift-b var(--dur, 24s) ease-in-out infinite; }
+.galaxy-layer.twinkle {
+  animation:
+    star-drift var(--speed, 160s) linear infinite,
+    star-twinkle var(--twk, 6s) ease-in-out infinite;
+}
 
-/* The breathing halo: a blurred amber radial that bleeds past the tile edges
-   for a soft ambient light. Its own duration/delay (set inline per tile) keep
-   it out of sync with both the drift and the other tiles. */
-.card-tile::after {
-  content: '';
+/* The nebula: soft amber/blue clouds, oversized and scaled past the viewport
+   so the slow rotation never exposes an edge. */
+.galaxy-nebula {
   position: absolute;
-  inset: -18px;
-  border-radius: 10px;
-  background: radial-gradient(ellipse at center, rgba(232, 163, 61, 0.07), transparent 70%);
-  animation: card-glow var(--glow-dur, 9s) ease-in-out infinite;
-  animation-delay: var(--glow-delay, 0s);
+  inset: -25%;
+  animation: nebula-swirl var(--speed, 220s) linear infinite;
 }
 
 /* Sliding sheen for primary buttons (the amber CTA). */

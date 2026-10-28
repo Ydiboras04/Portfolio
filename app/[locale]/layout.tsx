@@ -7,7 +7,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { CursorReticle } from '@/components/ui/CursorReticle'
 import { Aurora } from '@/components/ui/Aurora'
-import { CardField } from '@/components/ui/CardField'
+import { Galaxy } from '@/components/ui/Galaxy'
 import { ScrollProgress } from '@/components/ui/ScrollProgress'
 import { YdiborasAI } from '@/components/chat/YdiborasAI'
 import { getSiteUrl } from '@/lib/site'
@@ -72,7 +72,7 @@ export default async function LocaleLayout({
     <html lang={locale} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
         <Aurora />
-        <CardField />
+        <Galaxy />
         <ScrollProgress />
         {/* Reveal and Rule both render hidden and rely on IntersectionObserver.
             Without JS the observer never fires, so force the revealed/drawn
